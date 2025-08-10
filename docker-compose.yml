@@ -8,6 +8,14 @@ services:
       target: production
     restart: unless-stopped
     
+    # Traefik labels for Coolify proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`ukccw88kc4s4ggog8w0gk8gc.152.230.49.250.sslip.io`)"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.services.app.loadbalancer.server.port=80"
+      - "coolify.managed=true"
+    
     # Environment variables
     environment:
       - NODE_ENV=production
