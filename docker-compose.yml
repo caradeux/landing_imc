@@ -14,10 +14,6 @@ services:
     labels:
       - coolify.managed=true
       - coolify.type=application
-      - traefik.enable=true
-      - traefik.http.routers.imc-website.rule=Host(`192.168.1.12`)
-      - traefik.http.routers.imc-website.entrypoints=web
-      - traefik.http.services.imc-website.loadbalancer.server.port=8080
       
     # Environment variables
     environment:
@@ -28,6 +24,9 @@ services:
     # Port mapping for Coolify
     ports:
       - "8080:8080"
+    
+    # Network mode for Coolify
+    network_mode: "coolify"
       
     # Health check
     healthcheck:
