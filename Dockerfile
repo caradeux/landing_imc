@@ -43,16 +43,21 @@ COPY --chown=nginx:nginx public/.htaccess /usr/share/nginx/html/
 COPY --chown=nginx:nginx public/sitemap.xml /usr/share/nginx/html/
 COPY --chown=nginx:nginx public/robots.txt /usr/share/nginx/html/
 
+# Switch to root to create health check and install curl
+USER root
+
 # Create health check endpoint
-RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /usr/share/nginx/html/health
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /usr/share/nginx/html/health && \
+    chown nginx:nginx /usr/share/nginx/html/health
+
+# Install curl for health check
+RUN apk add --no-cache curl
+
+# Switch back to nginx user
+USER nginx
 
 # Expose port 3000 for Coolify
 EXPOSE 3000
-
-# Install curl for health check
-USER root
-RUN apk add --no-cache curl
-USER nginx
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
