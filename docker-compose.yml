@@ -8,6 +8,14 @@ services:
       target: production
     restart: unless-stopped
     
+    # Traefik labels for domain routing
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.imc-app.rule=Host(`ukccw88kc4s4ggog8w0gk8gc.152.230.49.250.sslip.io`)"
+      - "traefik.http.routers.imc-app.entrypoints=http"
+      - "traefik.http.services.imc-app.loadbalancer.server.port=80"
+      - "coolify.managed=true"
+    
     # Environment variables
     environment:
       - NODE_ENV=production
