@@ -8,12 +8,18 @@ services:
       target: production
     restart: unless-stopped
     
+    # Explicit network configuration
+    networks:
+      - coolify
+    
     # Traefik labels for domain routing
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.imc-app.rule=Host(`ukccw88kc4s4ggog8w0gk8gc.152.230.49.250.sslip.io`)"
-      - "traefik.http.routers.imc-app.entrypoints=http"
-      - "traefik.http.services.imc-app.loadbalancer.server.port=80"
+      - "traefik.docker.network=coolify"
+      - "traefik.http.routers.imc-landing.rule=Host(`ukccw88kc4s4ggog8w0gk8gc.152.230.49.250.sslip.io`)"
+      - "traefik.http.routers.imc-landing.entrypoints=http"
+      - "traefik.http.routers.imc-landing.service=imc-landing"
+      - "traefik.http.services.imc-landing.loadbalancer.server.port=80"
       - "coolify.managed=true"
     
     # Environment variables
@@ -27,3 +33,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 5s
+
+networks:
+  coolify:
+    external: true
