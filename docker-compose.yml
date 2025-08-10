@@ -1,32 +1,16 @@
 version: '3.8'
 
 services:
-  imc-website:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
       target: production
-    image: imc-servicios-chile:latest
-    container_name: imc-website
     restart: unless-stopped
     
-    # Coolify labels for management
-    labels:
-      - coolify.managed=true
-      - coolify.type=application
-      
     # Environment variables
     environment:
       - NODE_ENV=production
-      - NGINX_WORKER_PROCESSES=auto
-      - NGINX_WORKER_CONNECTIONS=1024
-      
-    # Port mapping for Coolify
-    ports:
-      - "3000:3000"
-    
-    # Network mode for Coolify
-    network_mode: "coolify"
       
     # Health check
     healthcheck:
@@ -34,20 +18,4 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-      
-    # Resource limits
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.5'
-        reservations:
-          memory: 128M
-          cpus: '0.25'
-          
-    # Temporary filesystems for writable directories
-    tmpfs:
-      - /tmp
-      - /var/cache/nginx
-      - /var/run
+      start_period: 5s
