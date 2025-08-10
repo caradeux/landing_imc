@@ -16,7 +16,7 @@ WORKDIR /app
 # Install dependencies first for better caching
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm \
-    npm ci --only=production=false --no-audit --no-fund
+    npm ci --include=dev --no-audit --no-fund
 
 # Copy source code
 COPY . .
