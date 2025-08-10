@@ -1,0 +1,123 @@
+# Coolify deployment configuration for IMC Servicios Chile SpA
+# Optimized for React + Vite application with Docker deployment
+
+version: '1.0'
+
+# Application metadata
+metadata:
+  name: "IMC Servicios Chile SpA"
+  description: "Sitio web corporativo para empresa de construcción y servicios especializados"
+  version: "1.0.0"
+  author: "IMC Servicios Chile SpA"
+
+# Build configuration
+build:
+  dockerfile: "Dockerfile"
+  context: "."
+  target: "production"
+  
+  # Build arguments
+  args:
+    NODE_VERSION: "22.14.0-alpine"
+    NGINX_VERSION: "alpine3.21"
+    
+  # Build cache optimization
+  cache_from:
+    - "node:22.14.0-alpine"
+    - "nginxinc/nginx-unprivileged:alpine3.21"
+
+# Deployment configuration
+deploy:
+  # Resource limits
+  resources:
+    limits:
+      memory: "256M"
+      cpus: "0.5"
+    reservations:
+      memory: "128M"
+      cpus: "0.25"
+      
+  # Restart policy
+  restart_policy: "unless-stopped"
+  
+  # Health check
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+    interval: "30s"
+    timeout: "10s"
+    retries: 3
+    start_period: "40s"
+
+# Network configuration
+network:
+  # Use Coolify's default network
+  name: "coolify"
+  external: true
+  
+  # Port mapping
+  ports:
+    - "8080:8080"
+
+# Environment variables
+environment:
+  NODE_ENV: "production"
+  NGINX_WORKER_PROCESSES: "auto"
+  NGINX_WORKER_CONNECTIONS: "1024"
+
+# Labels for Coolify management
+labels:
+  coolify.managed: "true"
+  coolify.type: "application"
+  coolify.domain: "192.168.1.12:8000"
+  
+  # Traefik configuration
+  traefik.enable: "true"
+  traefik.http.routers.imc-website.rule: "Host(`192.168.1.12`)"
+  traefik.http.routers.imc-website.entrypoints: "web"
+  traefik.http.services.imc-website.loadbalancer.server.port: "8080"
+
+# Security configuration
+security:
+  # Run as non-root user
+  user: "nginx"
+  
+  # Security options
+  options:
+    - "no-new-privileges:true"
+    
+  # Read-only root filesystem
+  read_only: true
+  
+  # Temporary filesystems
+  tmpfs:
+    - "/tmp:noexec,nosuid,size=50m"
+    - "/var/cache/nginx:noexec,nosuid,size=50m"
+    - "/var/run:noexec,nosuid,size=50m"
+
+# Monitoring and logging
+monitoring:
+  # Enable health checks
+  health_check: true
+  
+  # Log configuration
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+# Backup configuration (if needed)
+backup:
+  # Static files don't need backup as they're built from source
+  enabled: false
+
+# Performance optimization
+performance:
+  # Enable gzip compression
+  gzip: true
+  
+  # Cache static assets
+  static_cache: "1y"
+  
+  # HTML cache
+  html_cache: "1h"

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  imc-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: imc-servicios-chile:latest
+    container_name: imc-website
+    restart: unless-stopped
+    
+    # Coolify labels for management
+    labels:
+      - coolify.managed=true
+      - coolify.type=application
+      - traefik.enable=true
+      - traefik.lhttp.routers.imc-website.rule=Host(`192.168.1.12`)
+      - traefik.http.routers.imc-website.entrypoints=web
+      - traefik.http.services.imc-website.loadbalancer.server.port=8080
+      
+    # Environment variables
+    environment:
+      - NODE_ENV=production
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=1024
+      
+    # Port mapping for Coolify
+    ports:
+      - "8080:8080"
+      
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+      
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+          cpus: '0.25'
+          
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+      
+    # Read-only root filesystem for security
+    read_only: true
+    
+    # Temporary filesystems for writable directories
+    tmpfs:
+      - /tmp:noexec,nosuid,size=50m
+      - /var/cache/nginx:noexec,nosuid,size=50m
+      - /var/run:noexec,nosuid,size=50m
+
+networks:
+  default:
+    name: coolify
+    external: true

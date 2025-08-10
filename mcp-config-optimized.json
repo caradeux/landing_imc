@@ -1,0 +1,135 @@
+{
+    "mcpServers": {
+      "playwright-smithery": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@smithery/cli@latest",
+          "run",
+          "@executeautomation/playwright-mcp-server",
+          "--key",
+          "002e0e92-93ad-4bbc-9837-f0d9e6538951",
+          "--profile",
+          "ltd-nightingale-PZwSrQ"
+        ],
+        "env": {},
+        "disabled": false,
+        "autoApprove": [
+          "playwright_navigate",
+          "playwright_screenshot",
+          "playwright_get_visible_text",
+          "playwright_get_visible_html"
+        ]
+      },
+      "context7": {
+        "type": "url",
+        "url": "https://mcp.context7.com/mcp",
+        "headers": {},
+        "disabled": false,
+        "autoApprove": [
+          "resolve-library-id",
+          "get-library-docs"
+        ]
+      },
+      "memory": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-memory"
+        ],
+        "env": {},
+        "disabled": false,
+        "autoApprove": [
+          "mcp_memory_read_graph",
+          "mcp_memory_search_nodes",
+          "mcp_memory_create_entities"
+        ]
+      },
+      "puppeteer": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-puppeteer"
+        ],
+        "env": {},
+        "disabled": false,
+        "autoApprove": [
+          "mcp_puppeteer_puppeteer_navigate",
+          "mcp_puppeteer_puppeteer_screenshot",
+          "mcp_puppeteer_puppeteer_get_visible_text"
+        ]
+      },
+      "sequential-thinking": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-sequential-thinking"
+        ],
+        "env": {},
+        "disabled": false,
+        "autoApprove": [
+          "mcp_sequential_thinking_sequentialthinking"
+        ]
+      },
+      "coolify": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "coolify-mcp-server"
+        ],
+        "env": {
+          "COOLIFY_BASE_URL": "http://192.168.1.12:8000", 
+          "COOLIFY_EMAIL": "caradeux2010@gmail.com",
+          "COOLIFY_PASSWORD": "Karadox9.."
+        },
+        "disabled": false,
+        "autoApprove": [
+          "get_version",
+          "health_check",
+          "list_servers",
+          "list_applications",
+          "deploy",
+          "create_private_key"
+        ]
+      }
+    },
+    "mcp": {
+      "inputs": [
+        {
+          "type": "promptString",
+          "id": "github_token",
+          "description": "GitHub Personal Access Token",
+          "password": true
+        },
+        {
+          "type": "promptString",
+          "id": "coolify_token",
+          "description": "Coolify API Token",
+          "password": true
+        }
+      ],
+      "servers": {
+        "github": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "GITHUB_PERSONAL_ACCESS_TOKEN",
+            "ghcr.io/github/github-mcp-server"
+          ],
+          "env": {
+            "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+          },
+          "disabled": false
+        }
+      }
+    }
+  }
+  

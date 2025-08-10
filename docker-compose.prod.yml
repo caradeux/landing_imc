@@ -1,0 +1,181 @@
+# Production Docker Compose configuration for IMC Servicios Chile SpA
+# Optimized for Coolify deployment with enhanced security and monitoring
+
+version: '3.8'
+
+services:
+  imc-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        NODE_VERSION: 22.14.0-alpine
+        NGINX_VERSION: alpine3.21
+    
+    image: imc-servicios-chile:production
+    container_name: imc-website-prod
+    hostname: imc-website
+    restart: unless-stopped
+    
+    # Production environment variables
+    env_file:
+      - .env.production
+    
+    environment:
+      - NODE_ENV=production
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=1024
+      
+    # Coolify and Traefik labels
+    labels:
+      # Coolify management
+      - coolify.managed=true
+      - coolify.type=application
+      - coolify.applicationId=imc-servicios-chile
+      - coolify.version=1.0.0
+      
+      # Traefik routing
+      - traefik.enable=true
+      - traefik.http.routers.imc-website-prod.rule=Host(`192.168.1.12`)
+      - traefik.http.routers.imc-website-prod.entrypoints=web,websecure
+      - traefik.http.routers.imc-website-prod.tls=true
+      - traefik.http.services.imc-website-prod.loadbalancer.server.port=8080
+      
+      # Security headers middleware
+      - traefik.http.middlewares.imc-security.headers.frameDeny=true
+      - traefik.http.middlewares.imc-security.headers.sslRedirect=true
+      - traefik.http.middlewares.imc-security.headers.browserXssFilter=true
+      - traefik.http.middlewares.imc-security.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.imc-security.headers.forceSTSHeader=true
+      - traefik.http.middlewares.imc-security.headers.stsIncludeSubdomains=true
+      - traefik.http.middlewares.imc-security.headers.stsPreload=true
+      - traefik.http.middlewares.imc-security.headers.stsSeconds=31536000
+      
+      # Apply security middleware
+      - traefik.http.routers.imc-website-prod.middlewares=imc-security
+      
+    # Port mapping
+    ports:
+      - "8080:8080"
+      
+    # Enhanced health check
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+      
+    # Production resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 128M
+          cpus: '0.25'
+      
+      # Restart policy
+      restart_policy:
+        condition: unless-stopped
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+        
+    # Security configuration
+    security_opt:
+      - no-new-privileges:true
+      - apparmor:unconfined
+      
+    # Capabilities
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - NET_BIND_SERVICE
+      
+    # Read-only root filesystem
+    read_only: true
+    
+    # Temporary filesystems for writable directories
+    tmpfs:
+      - /tmp:noexec,nosuid,size=50m,uid=101,gid=101
+      - /var/cache/nginx:noexec,nosuid,size=50m,uid=101,gid=101
+      - /var/run:noexec,nosuid,size=50m,uid=101,gid=101
+      - /var/log/nginx:noexec,nosuid,size=100m,uid=101,gid=101
+      
+    # Logging configuration
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service,version"
+        
+    # Network configuration
+    networks:
+      - coolify
+      - internal
+      
+    # DNS configuration
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      
+    # User namespace
+    user: "101:101"  # nginx user
+    
+    # Process limits
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+        
+    # Memory swappiness
+    sysctls:
+      - net.core.somaxconn=65535
+      - net.ipv4.tcp_syncookies=1
+      
+  # Optional: Monitoring sidecar (uncomment if needed)
+  # monitoring:
+  #   image: prom/node-exporter:latest
+  #   container_name: imc-monitoring
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9100:9100"
+  #   volumes:
+  #     - /proc:/host/proc:ro
+  #     - /sys:/host/sys:ro
+  #     - /:/rootfs:ro
+  #   command:
+  #     - '--path.procfs=/host/proc'
+  #     - '--path.sysfs=/host/sys'
+  #     - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+  #   networks:
+  #     - internal
+
+# Networks
+networks:
+  coolify:
+    external: true
+    name: coolify
+  internal:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volumes (if needed for future enhancements)
+volumes:
+  nginx-cache:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=100m,uid=101,gid=101
