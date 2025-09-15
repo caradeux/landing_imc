@@ -24,24 +24,41 @@ const Contact = () => {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        service: '',
-        message: ''
+    try {
+      const response = await fetch('http://localhost:3001/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
       })
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false)
-      }, 5000)
-    }, 2000)
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setIsSubmitted(true)
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          service: '',
+          message: ''
+        })
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false)
+        }, 5000)
+      } else {
+        throw new Error(result.error || 'Error al enviar el mensaje')
+      }
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error)
+      alert('Error al enviar el mensaje. Por favor, inténtalo de nuevo.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const services = [
@@ -86,8 +103,60 @@ const Contact = () => {
   ]
 
   return (
-    <section id="contact" className="section">
-      <div className="container">
+    <section id="contact" className="section" style={{
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%, #f8fafc 100%)',
+      backgroundSize: '400% 400%',
+      animation: 'gradientFlow 8s ease infinite',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Background Elements */}
+      <div style={{
+        position: 'absolute',
+        top: '-100px',
+        right: '-100px',
+        width: '300px',
+        height: '300px',
+        background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+        borderRadius: '50%',
+        zIndex: 1
+      }} />
+      
+      <div style={{
+        position: 'absolute',
+        bottom: '-50px',
+        left: '-50px',
+        width: '200px',
+        height: '200px',
+        background: 'radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, transparent 70%)',
+        borderRadius: '50%',
+        zIndex: 1
+      }} />
+
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%)',
+        borderRadius: '50%',
+        zIndex: 1
+      }} />
+
+      {/* Grid pattern overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 0h30v30H30zM0 30h30v30H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        zIndex: 2
+      }} />
+
+      <div className="container" style={{ position: 'relative', zIndex: 3 }}>
         <div className="section-title">
           <h2>Contáctanos</h2>
           <p>Estamos listos para hacer realidad tu próximo proyecto. Contáctanos para una cotización personalizada</p>
@@ -450,6 +519,13 @@ const Contact = () => {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
           }
+        }
+      `}</style>
+      
+      <style jsx>{`
+        @keyframes gradientFlow {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
       `}</style>
     </section>

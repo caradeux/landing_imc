@@ -95,24 +95,6 @@ const Projects = () => {
         "Sistemas inteligentes",
         "Espacios colaborativos"
       ]
-    },
-    {
-      id: 6,
-      title: "Planta Industrial",
-      category: "Industrial",
-      year: "2023",
-      area: "12,000 m²",
-      duration: "12 meses",
-      location: "Melipilla, Santiago",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      description: "Planta industrial completa con infraestructura especializada y sistemas de seguridad.",
-      services: ["Obras Civiles", "Soldadura", "Instalaciones"],
-      highlights: [
-        "Infraestructura industrial completa",
-        "Sistemas de seguridad avanzados",
-        "Soldadura certificada AWS",
-        "Control de calidad integral"
-      ]
     }
   ]
 
@@ -134,7 +116,7 @@ const Projects = () => {
 
   return (
     <section id="projects" className="section" style={{ background: '#f8fafc' }}>
-      <div className="container">
+      <div style={{ maxWidth: 'none', width: '100%' }}>
         <div className="section-title">
           <h2>Proyectos Destacados</h2>
           <p>Conoce algunos de nuestros proyectos más representativos que demuestran nuestra experiencia y calidad</p>
@@ -174,18 +156,38 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-3">
+        {/* Projects Grid - Ancho Completo */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '25px',
+          width: '100%',
+          maxWidth: 'none',
+          padding: '0 40px',
+          justifyContent: 'center'
+        }}>
           {filteredProjects.map((project) => (
             <div 
               key={project.id} 
-              className="card"
               style={{
-                padding: 0,
+                background: 'white',
+                borderRadius: '16px',
                 overflow: 'hidden',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
+                transition: 'all 0.3s ease',
+                border: '1px solid rgba(0, 0, 0, 0.05)',
+                height: 'fit-content'
               }}
               onClick={() => setSelectedProject(project)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)'
+                e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.15)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)'
+              }}
             >
               <div style={{
                 height: '200px',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Award, CheckCircle, Shield, Target, Star, Clock } from 'lucide-react'
+import Marquee from 'react-fast-marquee'
 
 const About = () => {
     const [currentClientSlide, setCurrentClientSlide] = useState(0)
@@ -35,47 +36,47 @@ const About = () => {
     const clients = [
         { 
             name: "Jumbo", 
-            logo: "https://via.placeholder.com/160x80/ffffff/1e40af?text=JUMBO",
+            logo: "/images/logos/jumbo.png",
             sector: "Retail",
             achievement: "50+ Remodelaciones",
             year: "2019-2024",
             description: "Socio estratégico en la modernización de supermercados a nivel nacional"
         },
         { 
-            name: "Construmart", 
-            logo: "https://via.placeholder.com/160x80/ffffff/0f172a?text=CONSTRUMART",
-            sector: "Industrial",
+            name: "Contrumart", 
+            logo: "/images/logos/contrumart.png",
+            sector: "Retail",
             achievement: "15 Bodegas",
             year: "2020-2024",
             description: "Construcción de infraestructura logística y centros de distribución"
         },
         { 
             name: "Santa Isabel", 
-            logo: "https://via.placeholder.com/160x80/ffffff/dc2626?text=SANTA+ISABEL",
-            sector: "Logística",
+            logo: "/images/logos/Santa_Isabel.png",
+            sector: "Retail",
             achievement: "8 Centros",
             year: "2021-2024",
             description: "Desarrollo de centros logísticos de última generación"
         },
         { 
             name: "Easy", 
-            logo: "https://via.placeholder.com/160x80/ffffff/ea580c?text=EASY",
+            logo: "/images/logos/easy.png",
             sector: "Retail",
             achievement: "25+ Tiendas",
             year: "2018-2024",
             description: "Modernización integral de tiendas y mejoramiento continuo"
         },
         { 
-            name: "Walmart Chile", 
-            logo: "https://via.placeholder.com/160x80/ffffff/059669?text=WALMART",
-            sector: "Corporativo",
+            name: "Líder", 
+            logo: "/images/logos/Lider.png",
+            sector: "Retail",
             achievement: "12 Proyectos",
             year: "2022-2024",
             description: "Expansión y renovación de infraestructura comercial"
         },
         { 
-            name: "Sodimac", 
-            logo: "https://via.placeholder.com/160x80/ffffff/7c3aed?text=SODIMAC",
+            name: "Homecenter Sodimac", 
+            logo: "/images/logos/Homecenter_Sodimac.png",
             sector: "Retail",
             achievement: "30+ Instalaciones",
             year: "2019-2024",
@@ -209,396 +210,650 @@ const About = () => {
                     </div>
                 </div>
 
-                {/* Value Propositions */}
+                 {/* Value Propositions - CORPORATE PROFESSIONAL */}
                 <div style={{
-                    background: 'linear-gradient(135deg, #1e40af 0%, #0f172a 100%)',
-                    borderRadius: '24px',
-                    padding: '60px 40px',
-                    marginBottom: '80px',
+                     background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 20%, #334155 40%, #475569 60%, #334155 80%, #0f172a 100%)',
+                     borderRadius: '0',
+                     padding: '80px 0',
+                     marginBottom: '60px',
                     position: 'relative',
-                    overflow: 'hidden'
-                }}>
-                    {/* Background Pattern */}
+                     overflow: 'hidden',
+                     width: '100vw',
+                     marginLeft: 'calc(-50vw + 50%)',
+                     backgroundSize: '600% 600%',
+                     animation: 'corporateFlow 20s ease infinite'
+                 }}>
+                    {/* Professional Background Elements */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '-300px',
+                        right: '-300px',
+                        width: '800px',
+                        height: '800px',
+                        background: 'radial-gradient(circle, rgba(30, 64, 175, 0.08) 0%, transparent 70%)',
+                        borderRadius: '50%',
+                        zIndex: 1,
+                        animation: 'corporateFloat 12s ease-in-out infinite'
+                    }} />
+                    
+                    <div style={{
+                        position: 'absolute',
+                        bottom: '-200px',
+                        left: '-200px',
+                        width: '700px',
+                        height: '700px',
+                        background: 'radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%)',
+                        borderRadius: '50%',
+                        zIndex: 1,
+                        animation: 'corporateFloat 15s ease-in-out infinite reverse'
+                    }} />
+
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '1000px',
+                        height: '1000px',
+                        background: 'radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%)',
+                        borderRadius: '50%',
+                        zIndex: 1,
+                        animation: 'corporatePulse 25s ease-in-out infinite'
+                    }} />
+
+                    {/* Corporate Grid Pattern */}
                     <div style={{
                         position: 'absolute',
                         top: 0,
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        opacity: 0.1,
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                        zIndex: 1
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M50 0h50v50H50zM0 50h50v50H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                        zIndex: 2
                     }} />
 
-                    <div style={{ position: 'relative', zIndex: 2 }}>
-                        <h3 style={{
-                            textAlign: 'center',
-                            fontSize: '2.5rem',
+                    {/* Corporate Lines */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '20%',
+                        left: '10%',
+                        width: '2px',
+                        height: '200px',
+                        background: 'linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.3) 50%, transparent 100%)',
+                        zIndex: 2
+                    }} />
+                    
+                    <div style={{
+                        position: 'absolute',
+                        top: '30%',
+                        right: '15%',
+                        width: '150px',
+                        height: '2px',
+                        background: 'linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.3) 50%, transparent 100%)',
+                        zIndex: 2
+                    }} />
+
+                     <div style={{ 
+                         position: 'relative', 
+                         zIndex: 3,
+                         maxWidth: '1400px',
+                         margin: '0 auto',
+                         padding: '0 40px'
+                     }}>
+                         {/* Corporate Header Section */}
+                         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                             {/* Corporate Badge */}
+                             <div style={{
+                                 display: 'inline-block',
+                                 background: 'linear-gradient(135deg, rgba(30, 64, 175, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%)',
+                                 padding: '12px 30px',
+                                 borderRadius: '50px',
+                                 fontSize: '12px',
                             fontWeight: '800',
-                            marginBottom: '20px',
+                                 marginBottom: '25px',
+                                 border: '1px solid rgba(59, 130, 246, 0.3)',
+                                 backdropFilter: 'blur(15px)',
+                                 textTransform: 'uppercase',
+                                 letterSpacing: '1.5px',
+                                 boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
                             color: 'white',
-                            textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
-                        }}>
-                            ¿Por Qué Elegir IMC Servicios Chile?
+                                 position: 'relative',
+                                 overflow: 'hidden'
+                             }}>
+                                 <div style={{
+                                     position: 'absolute',
+                                     top: 0,
+                                     left: '-100%',
+                                     width: '100%',
+                                     height: '100%',
+                                     background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+                                     animation: 'corporateShimmer 3s ease-in-out infinite'
+                                 }} />
+                                 <span style={{ position: 'relative', zIndex: 2 }}>
+                                     🏆 EXCELENCIA CORPORATIVA
+                                 </span>
+                             </div>
+                             
+                             {/* Main Title */}
+                             <h3 style={{
+                                 fontSize: '3.2rem',
+                                 fontWeight: '900',
+                                 marginBottom: '25px',
+                                 color: 'white',
+                                 textShadow: '0 8px 25px rgba(0, 0, 0, 0.5)',
+                                 lineHeight: '1.1',
+                                 letterSpacing: '-1px',
+                                 position: 'relative'
+                             }}>
+                                 Nuestros Pilares
+                                 <br />
+                                 <span style={{
+                                     background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 30%, #1e40af 60%, #1e3a8a 100%)',
+                                     WebkitBackgroundClip: 'text',
+                                     WebkitTextFillColor: 'transparent',
+                                     backgroundClip: 'text',
+                                     position: 'relative',
+                                     display: 'inline-block',
+                                     filter: 'drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3))'
+                                 }}>
+                                     Estratégicos
+                                     <div style={{
+                                         position: 'absolute',
+                                         bottom: '-12px',
+                                         left: '0',
+                                         right: '0',
+                                         height: '6px',
+                                         background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%)',
+                                         borderRadius: '3px',
+                                         opacity: 0.8,
+                                         boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)'
+                                     }} />
+                                 </span>
                         </h3>
 
+                             {/* Corporate Subtitle */}
                         <p style={{
-                            textAlign: 'center',
                             fontSize: '1.2rem',
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            marginBottom: '50px',
-                            maxWidth: '700px',
-                            margin: '0 auto 50px'
-                        }}>
-                            Somos tu socio estratégico para proyectos de construcción exitosos
-                        </p>
+                                 color: 'rgba(255, 255, 255, 0.85)',
+                                 marginBottom: '40px',
+                                 maxWidth: '800px',
+                                 margin: '0 auto 40px',
+                                 lineHeight: '1.6',
+                                 fontWeight: '400',
+                                 textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                                 letterSpacing: '0.3px'
+                             }}>
+                                 Lideramos el mercado con estándares internacionales, certificaciones profesionales y un compromiso inquebrantable con la excelencia operacional
+                             </p>
 
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                            gap: '25px'
-                        }} className="value-props-grid">
+                         </div>
+
+                         {/* Corporate Value Props Grid */}
+                         <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: 'repeat(4, 1fr)',
+                             gap: '25px',
+                             marginBottom: '50px'
+                         }} className="value-props-grid">
                             {valueProps.map((prop, index) => {
                                 const IconComponent = prop.icon
                                 return (
-                                    <div key={index} style={{
-                                        textAlign: 'center',
-                                        padding: '35px 20px',
-                                        background: 'rgba(255, 255, 255, 0.15)',
-                                        backdropFilter: 'blur(10px)',
-                                        borderRadius: '20px',
-                                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        position: 'relative',
-                                        overflow: 'hidden',
-                                        cursor: 'pointer'
-                                    }}
+                                     <div key={index} style={{
+                                         textAlign: 'center',
+                                         padding: '35px 20px',
+                                         background: 'rgba(255, 255, 255, 0.06)',
+                                         backdropFilter: 'blur(20px)',
+                                         borderRadius: '20px',
+                                         border: '1px solid rgba(255, 255, 255, 0.12)',
+                                         transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                                         position: 'relative',
+                                         overflow: 'hidden',
+                                         cursor: 'pointer',
+                                         transform: 'translateY(0)',
+                                         animation: `corporateFadeIn 0.8s ease-out ${index * 0.1}s both`,
+                                         boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)'
+                                     }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(-8px)'
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)'
-                                            e.currentTarget.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.2)'
+                                             e.currentTarget.style.transform = 'translateY(-20px) scale(1.03)'
+                                             e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)'
+                                             e.currentTarget.style.boxShadow = `0 35px 80px rgba(0, 0, 0, 0.4), 0 0 0 2px ${prop.color}50`
+                                             e.currentTarget.style.borderColor = `${prop.color}70`
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(0)'
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
-                                            e.currentTarget.style.boxShadow = 'none'
-                                        }}
-                                    >
-                                        {/* Glow effect */}
+                                             e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                                             e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)'
+                                             e.currentTarget.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.2)'
+                                             e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)'
+                                         }}
+                                     >
+                                         {/* Corporate Corner Accent */}
                                         <div style={{
                                             position: 'absolute',
-                                            top: '-50%',
-                                            left: '-50%',
-                                            width: '200%',
-                                            height: '200%',
-                                            background: `radial-gradient(circle, ${prop.color}20 0%, transparent 70%)`,
-                                            zIndex: 1
-                                        }} />
+                                             top: '0',
+                                             right: '0',
+                                             width: '60px',
+                                             height: '60px',
+                                             background: `linear-gradient(135deg, ${prop.color} 0%, ${prop.color}dd 100%)`,
+                                             clipPath: 'polygon(100% 0%, 0% 0%, 100% 100%)',
+                                             opacity: 0.8
+                                         }} />
 
-                                        <div style={{ position: 'relative', zIndex: 2 }}>
+                                         {/* Professional Glow Effect */}
                                             <div style={{
-                                                width: '80px',
-                                                height: '80px',
-                                                background: `linear-gradient(135deg, ${prop.color} 0%, ${prop.color}cc 100%)`,
-                                                borderRadius: '50%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                margin: '0 auto 25px',
-                                                boxShadow: `0 8px 25px ${prop.color}40`
-                                            }}>
-                                                <IconComponent
-                                                    size={36}
-                                                    style={{ color: 'white' }}
-                                                />
+                                             position: 'absolute',
+                                             top: '-60%',
+                                             left: '-60%',
+                                             width: '220%',
+                                             height: '220%',
+                                             background: `radial-gradient(circle, ${prop.color}15 0%, transparent 70%)`,
+                                             zIndex: 1,
+                                             animation: `corporatePulse 6s ease-in-out infinite ${index * 0.8}s`
+                                         }} />
+
+                                         {/* Corporate Shimmer */}
+                                         <div style={{
+                                             position: 'absolute',
+                                             top: 0,
+                                             left: '-100%',
+                                             width: '100%',
+                                             height: '100%',
+                                             background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%)',
+                                             transition: 'left 1s ease',
+                                             opacity: 0,
+                                             zIndex: 2
+                                         }} className="corporate-shimmer" />
+
+                                         <div style={{ position: 'relative', zIndex: 3 }}>
+                                             {/* Professional Icon Container */}
+                                             <div style={{
+                                                 width: '90px',
+                                                 height: '90px',
+                                                 background: `linear-gradient(135deg, ${prop.color} 0%, ${prop.color}cc 100%)`,
+                                                 borderRadius: '50%',
+                                                 display: 'flex',
+                                                 alignItems: 'center',
+                                                 justifyContent: 'center',
+                                                 margin: '0 auto 20px',
+                                                 boxShadow: `0 15px 35px ${prop.color}50`,
+                                                 position: 'relative',
+                                                 overflow: 'hidden',
+                                                 border: '2px solid rgba(255, 255, 255, 0.2)'
+                                             }}>
+                                                 {/* Professional Icon Glow */}
+                                                 <div style={{
+                                                     position: 'absolute',
+                                                     top: '50%',
+                                                     left: '50%',
+                                                     transform: 'translate(-50%, -50%)',
+                                                     width: '110px',
+                                                     height: '110px',
+                                                     background: `radial-gradient(circle, ${prop.color}40 0%, transparent 70%)`,
+                                                     borderRadius: '50%',
+                                                     animation: `corporatePulse 4s ease-in-out infinite ${index * 0.4}s`
+                                                 }} />
+                                                 
+                                                 <IconComponent
+                                                     size={36}
+                                                     style={{ 
+                                                         color: 'white',
+                                                         position: 'relative',
+                                                         zIndex: 2,
+                                                         filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
+                                                     }}
+                                                 />
                                             </div>
 
-                                            <h4 style={{
-                                                fontSize: '1.4rem',
-                                                fontWeight: '700',
-                                                color: 'white',
-                                                marginBottom: '15px',
-                                                textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
-                                            }}>
-                                                {prop.title}
-                                            </h4>
+                                             {/* Professional Title */}
+                                             <h4 style={{
+                                                 fontSize: '1.4rem',
+                                                 fontWeight: '900',
+                                                 color: 'white',
+                                                 marginBottom: '15px',
+                                                 textShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                                                 lineHeight: '1.2',
+                                                 letterSpacing: '-0.3px'
+                                             }}>
+                                                 {prop.title}
+                                             </h4>
 
-                                            <p style={{
-                                                fontSize: '1rem',
-                                                color: 'rgba(255, 255, 255, 0.9)',
-                                                lineHeight: '1.5',
-                                                margin: 0
-                                            }}>
-                                                {prop.description}
-                                            </p>
+                                             {/* Professional Description */}
+                                             <p style={{
+                                                 fontSize: '1rem',
+                                                 color: 'rgba(255, 255, 255, 0.85)',
+                                                 lineHeight: '1.5',
+                                                 margin: 0,
+                                                 fontWeight: '400',
+                                                 letterSpacing: '0.2px'
+                                             }}>
+                                                 {prop.description}
+                                             </p>
+
+                                             {/* Professional Indicator */}
+                                             <div style={{
+                                                 marginTop: '15px',
+                                                 display: 'flex',
+                                                 alignItems: 'center',
+                                                 justifyContent: 'center',
+                                                 gap: '6px'
+                                             }}>
+                                                 <div style={{
+                                                     width: '6px',
+                                                     height: '6px',
+                                                     borderRadius: '50%',
+                                                     background: prop.color,
+                                                     boxShadow: `0 0 8px ${prop.color}50`
+                                                 }} />
+                                                 <span style={{
+                                                     fontSize: '0.75rem',
+                                                     color: 'rgba(255, 255, 255, 0.7)',
+                                                     fontWeight: '600',
+                                                     textTransform: 'uppercase',
+                                                     letterSpacing: '0.8px'
+                                                 }}>
+                                                     Certificado
+                                                 </span>
+                                             </div>
                                         </div>
                                     </div>
                                 )
                             })}
                         </div>
 
-                        {/* Call to Action */}
-                        <div style={{
-                            textAlign: 'center',
-                            marginTop: '50px',
-                            padding: '30px',
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            borderRadius: '20px',
-                            border: '1px solid rgba(255, 255, 255, 0.2)'
-                        }}>
-                            <h4 style={{
-                                color: 'white',
-                                fontSize: '1.5rem',
-                                fontWeight: '700',
-                                marginBottom: '15px'
-                            }}>
-                                ¿Listo para tu próximo proyecto?
-                            </h4>
-                            <p style={{
-                                color: 'rgba(255, 255, 255, 0.9)',
-                                fontSize: '1.1rem',
-                                marginBottom: '25px'
-                            }}>
-                                Obtén una cotización personalizada y descubre cómo podemos transformar tu visión en realidad
-                            </p>
-                            <button 
-                                style={{
-                                    background: 'linear-gradient(135deg, #dc2626 0%, #ea580c 100%)',
-                                    color: 'white',
-                                    border: 'none',
-                                    padding: '15px 35px',
-                                    borderRadius: '25px',
-                                    fontSize: '1.1rem',
-                                    fontWeight: '600',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.3s ease',
-                                    boxShadow: '0 8px 25px rgba(220, 38, 38, 0.3)'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.target.style.transform = 'translateY(-2px)'
-                                    e.target.style.boxShadow = '0 12px 35px rgba(220, 38, 38, 0.4)'
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.style.transform = 'translateY(0)'
-                                    e.target.style.boxShadow = '0 8px 25px rgba(220, 38, 38, 0.3)'
-                                }}
-                                onClick={() => document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' })}
-                            >
-                                Solicitar Cotización Gratuita
-                            </button>
-                        </div>
+                         {/* Simplified Call to Action */}
+                         <div style={{
+                             textAlign: 'center',
+                             padding: '50px 40px',
+                             background: 'rgba(255, 255, 255, 0.06)',
+                             borderRadius: '24px',
+                             border: '1px solid rgba(255, 255, 255, 0.12)',
+                             backdropFilter: 'blur(20px)',
+                             position: 'relative',
+                             overflow: 'hidden',
+                             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.2)'
+                         }}>
+                             <div style={{ position: 'relative', zIndex: 2 }}>
+                                 <h4 style={{
+                                     color: 'white',
+                                     fontSize: '2rem',
+                                     fontWeight: '800',
+                                     marginBottom: '20px',
+                                     textShadow: '0 4px 15px rgba(0, 0, 0, 0.4)'
+                                 }}>
+                                     ¿Listo para tu próximo proyecto?
+                                 </h4>
+                                 <p style={{
+                                     color: 'rgba(255, 255, 255, 0.85)',
+                                     fontSize: '1.2rem',
+                                     marginBottom: '30px',
+                                     maxWidth: '600px',
+                                     margin: '0 auto 30px',
+                                     lineHeight: '1.6'
+                                 }}>
+                                     Obtén una cotización personalizada y descubre cómo podemos transformar tu visión en realidad
+                                 </p>
+                                 
+                                 <button 
+                                     style={{
+                                         background: 'linear-gradient(135deg, #dc2626 0%, #ea580c 100%)',
+                                         color: 'white',
+                                         border: 'none',
+                                         padding: '18px 45px',
+                                         borderRadius: '30px',
+                                         fontSize: '1.1rem',
+                                         fontWeight: '700',
+                                         cursor: 'pointer',
+                                         transition: 'all 0.4s ease',
+                                         boxShadow: '0 15px 40px rgba(220, 38, 38, 0.4)',
+                                         textTransform: 'uppercase',
+                                         letterSpacing: '1px'
+                                     }}
+                                     onMouseEnter={(e) => {
+                                         e.target.style.transform = 'translateY(-3px)'
+                                         e.target.style.boxShadow = '0 20px 50px rgba(220, 38, 38, 0.5)'
+                                     }}
+                                     onMouseLeave={(e) => {
+                                         e.target.style.transform = 'translateY(0)'
+                                         e.target.style.boxShadow = '0 15px 40px rgba(220, 38, 38, 0.4)'
+                                     }}
+                                     onClick={() => document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' })}
+                                 >
+                                     Solicitar Cotización Gratuita
+                                 </button>
+                             </div>
+                         </div>
                     </div>
                 </div>
 
-                {/* Clients Showcase */}
+                 {/* Clients Marquee - PROFESIONAL */}
                 <div style={{ 
                     marginBottom: '80px',
                     position: 'relative',
-                    overflow: 'hidden'
-                }}>
-                    {/* Background with geometric patterns */}
+                     overflow: 'hidden',
+                     width: '100vw',
+                     marginLeft: 'calc(-50vw + 50%)',
+                     background: 'linear-gradient(135deg, #0a0f1c 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0a0f1c 100%)',
+                     padding: '100px 0',
+                     backgroundSize: '400% 400%',
+                     animation: 'gradientFlow 8s ease infinite'
+                 }}>
+                     {/* Animated background elements */}
                     <div style={{
                         position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #0f172a 100%)',
-                        borderRadius: '32px',
-                        zIndex: 1
-                    }} />
-                    
-                    {/* Geometric decorations */}
+                         top: '-150px',
+                         right: '-150px',
+                         width: '400px',
+                         height: '400px',
+                         background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+                         borderRadius: '50%',
+                         zIndex: 1,
+                         animation: 'float 6s ease-in-out infinite'
+                     }} />
+                     
                     <div style={{
                         position: 'absolute',
-                        top: '-100px',
-                        right: '-100px',
+                         bottom: '-100px',
+                         left: '-100px',
                         width: '300px',
                         height: '300px',
-                        background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                         background: 'radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 70%)',
                         borderRadius: '50%',
-                        zIndex: 2
+                         zIndex: 1,
+                         animation: 'float 8s ease-in-out infinite reverse'
                     }} />
                     
                     <div style={{
                         position: 'absolute',
-                        bottom: '-50px',
-                        left: '-50px',
-                        width: '200px',
-                        height: '200px',
-                        background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)',
+                         top: '50%',
+                         left: '50%',
+                         transform: 'translate(-50%, -50%)',
+                         width: '600px',
+                         height: '600px',
+                         background: 'radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%)',
                         borderRadius: '50%',
+                         zIndex: 1,
+                         animation: 'pulse 10s ease-in-out infinite'
+                     }} />
+
+                     {/* Grid pattern overlay */}
+                     <div style={{
+                         position: 'absolute',
+                         top: 0,
+                         left: 0,
+                         right: 0,
+                         bottom: 0,
+                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M30 0h30v30H30zM0 30h30v30H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                         zIndex: 2
                     }} />
 
                     <div style={{
                         position: 'relative',
                         zIndex: 3,
-                        padding: '80px 60px',
-                        color: 'white'
-                    }}>
-                        {/* Header Section */}
-                        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                         color: 'white',
+                         maxWidth: '1400px',
+                         margin: '0 auto',
+                         padding: '0 40px'
+                     }}>
+                         {/* Header Section - PROFESIONAL */}
+                         <div style={{ textAlign: 'center', marginBottom: '80px' }}>
                             <div style={{
                                 display: 'inline-block',
-                                background: 'rgba(255, 255, 255, 0.1)',
-                                padding: '8px 20px',
-                                borderRadius: '25px',
+                                 background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(251, 191, 36, 0.2) 100%)',
+                                 padding: '12px 32px',
+                                 borderRadius: '50px',
                                 fontSize: '14px',
-                                fontWeight: '600',
-                                marginBottom: '20px',
-                                border: '1px solid rgba(255, 255, 255, 0.2)'
+                                 fontWeight: '700',
+                                 marginBottom: '30px',
+                                 border: '1px solid rgba(255, 255, 255, 0.2)',
+                                 backdropFilter: 'blur(10px)',
+                                 textTransform: 'uppercase',
+                                 letterSpacing: '1px',
+                                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
                             }}>
                                 🏆 CLIENTES CORPORATIVOS
                             </div>
                             
                             <h3 style={{
-                                fontSize: '3rem',
+                                 fontSize: '3.5rem',
                                 fontWeight: '900',
-                                marginBottom: '20px',
-                                textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-                                lineHeight: '1.1'
+                                 marginBottom: '30px',
+                                 textShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+                                 lineHeight: '1.1',
+                                 letterSpacing: '-1px'
                             }}>
                                 Empresas Líderes que
                                 <br />
                                 <span style={{
-                                    background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                                     background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #dc2626 100%)',
                                     WebkitBackgroundClip: 'text',
                                     WebkitTextFillColor: 'transparent',
-                                    backgroundClip: 'text'
+                                     backgroundClip: 'text',
+                                     position: 'relative',
+                                     display: 'inline-block'
                                 }}>
                                     Confían en Nosotros
+                                     <div style={{
+                                         position: 'absolute',
+                                         bottom: '-8px',
+                                         left: '0',
+                                         right: '0',
+                                         height: '4px',
+                                         background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #dc2626 100%)',
+                                         borderRadius: '2px',
+                                         opacity: 0.6
+                                     }} />
                                 </span>
                             </h3>
 
                             <p style={{
-                                fontSize: '1.3rem',
+                                 fontSize: '1.4rem',
                                 opacity: 0.9,
-                                maxWidth: '700px',
+                                 maxWidth: '800px',
                                 margin: '0 auto',
-                                lineHeight: '1.6'
+                                 lineHeight: '1.6',
+                                 fontWeight: '300',
+                                 textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
                             }}>
                                 Más de 6 años construyendo relaciones sólidas con las empresas más importantes de Chile
                             </p>
                         </div>
 
-                        {/* Clients Grid */}
+                         {/* Marquee - Continuo Sin Espacios */}
                         <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(3, 1fr)',
-                            gap: '30px',
-                            marginBottom: '50px'
-                        }} className="clients-showcase-grid">
-                            {clients.map((client, index) => (
-                                <div key={index} style={{
-                                    background: 'rgba(255, 255, 255, 0.95)',
-                                    borderRadius: '24px',
-                                    padding: '40px 30px',
-                                    textAlign: 'center',
+                             width: '100vw',
+                             marginLeft: 'calc(-50vw + 50%)',
                                     position: 'relative',
                                     overflow: 'hidden',
-                                    transition: 'all 0.4s ease',
-                                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                                    backdropFilter: 'blur(10px)'
+                             background: 'rgba(255, 255, 255, 0.05)',
+                             padding: '40px 0',
+                             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                             borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+                         }}>
+                             <Marquee
+                                 speed={60}
+                                 gradient={false}
+                                 style={{
+                                     width: '100%',
+                                     display: 'flex',
+                                     alignItems: 'center'
+                                 }}
+                             >
+                                 {/* Duplicamos los logos para crear continuidad */}
+                                 {[...clients, ...clients, ...clients].map((client, index) => (
+                                     <div key={`continuous-${index}`} style={{
+                                         display: 'flex',
+                                         alignItems: 'center',
+                                         justifyContent: 'center',
+                                         width: '260px',
+                                         height: '140px',
+                                         background: 'transparent',
+                                         borderRadius: '20px',
+                                         padding: '20px',
+                                         margin: '0 20px',
+                                         boxShadow: 'none',
+                                         border: 'none',
+                                         transition: 'all 0.3s ease',
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                         flexShrink: 0
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)'
-                                    e.currentTarget.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.2)'
+                                         e.currentTarget.style.transform = 'scale(1.1) translateY(-8px)'
+                                         e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)'
+                                         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
+                                         e.currentTarget.style.borderRadius = '25px'
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                                         e.currentTarget.style.transform = 'scale(1) translateY(0)'
                                     e.currentTarget.style.boxShadow = 'none'
+                                         e.currentTarget.style.background = 'transparent'
+                                         e.currentTarget.style.borderRadius = '20px'
                                 }}
                                 >
-                                    {/* Animated background gradient */}
+                                         {/* Shine effect - Solo en hover */}
                                     <div style={{
                                         position: 'absolute',
                                         top: 0,
                                         left: 0,
                                         right: 0,
-                                        height: '6px',
-                                        background: `linear-gradient(135deg, #1e40af 0%, #fbbf24 50%, #dc2626 100%)`,
-                                        backgroundSize: '200% 100%',
-                                        animation: 'gradientShift 3s ease-in-out infinite'
-                                    }} />
-
-                                    {/* Company Logo */}
-                                    <div style={{
-                                        width: '100px',
-                                        height: '100px',
-                                        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-                                        borderRadius: '20px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        margin: '0 auto 25px',
-                                        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
-                                        border: '2px solid #f1f5f9'
-                                    }}>
+                                             bottom: 0,
+                                             background: 'linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%)',
+                                             animation: 'shimmer 3s ease-in-out infinite',
+                                             opacity: 0,
+                                             transition: 'opacity 0.3s ease'
+                                         }} 
+                                         onMouseEnter={(e) => {
+                                             e.target.style.opacity = '1'
+                                         }}
+                                         onMouseLeave={(e) => {
+                                             e.target.style.opacity = '0'
+                                         }}
+                                         />
+                                         
                                         <img
                                             src={client.logo}
                                             alt={client.name}
                                             style={{
-                                                height: '60px',
-                                                objectFit: 'contain'
-                                            }}
-                                        />
-                                    </div>
-                                    
-                                    <h4 style={{
-                                        fontSize: '1.5rem',
-                                        fontWeight: '800',
-                                        color: '#0f172a',
-                                        marginBottom: '12px'
-                                    }}>
-                                        {client.name}
-                                    </h4>
-
-                                    {/* Sector Badge */}
-                                    <div style={{
-                                        display: 'inline-block',
-                                        background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
-                                        color: 'white',
-                                        padding: '6px 16px',
-                                        borderRadius: '20px',
-                                        fontSize: '12px',
-                                        fontWeight: '700',
-                                        marginBottom: '15px',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.5px'
-                                    }}>
-                                        {client.sector}
-                                    </div>
-                                    
-
-
-
+                                                 height: '100px',
+                                                 width: 'auto',
+                                                 maxWidth: '220px',
+                                                 objectFit: 'contain',
+                                                 position: 'relative',
+                                                 zIndex: 1,
+                                                 filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))',
+                                                 transition: 'all 0.3s ease'
+                                             }}
+                                             onMouseEnter={(e) => {
+                                                 e.target.style.filter = 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2))'
+                                             }}
+                                             onMouseLeave={(e) => {
+                                                 e.target.style.filter = 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))'
+                                             }}
+                                         />
                                 </div>
                             ))}
+                             </Marquee>
                         </div>
-
-
                     </div>
-
-                    <style jsx>{`
-                        @keyframes gradientShift {
-                            0%, 100% { background-position: 0% 50%; }
-                            50% { background-position: 100% 50%; }
-                        }
-                        
-                        @media (max-width: 768px) {
-                            .clients-showcase-grid {
-                                grid-template-columns: 1fr !important;
-                                gap: 20px !important;
-                            }
-                        }
-                        
-                        @media (max-width: 1024px) {
-                            .clients-showcase-grid {
-                                grid-template-columns: repeat(2, 1fr) !important;
-                            }
-                        }
-                    `}</style>
                 </div>
 
                 {/* Certifications */}
@@ -648,6 +903,83 @@ const About = () => {
             </div>
 
             <style jsx>{`
+                @keyframes gradientFlow {
+                    0%, 100% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                }
+                
+                @keyframes gradientShift {
+                    0%, 100% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                }
+                
+                @keyframes shimmer {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+                
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px) rotate(0deg); }
+                    50% { transform: translateY(-20px) rotate(5deg); }
+                }
+                
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); opacity: 0.7; }
+                    50% { transform: scale(1.1); opacity: 1; }
+                }
+                
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(40px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                @keyframes corporateFlow {
+                    0%, 100% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                }
+                
+                @keyframes corporateFloat {
+                    0%, 100% { transform: translateY(0px) rotate(0deg); }
+                    50% { transform: translateY(-30px) rotate(3deg); }
+                }
+                
+                @keyframes corporatePulse {
+                    0%, 100% { transform: scale(1); opacity: 0.6; }
+                    50% { transform: scale(1.05); opacity: 1; }
+                }
+                
+                @keyframes corporateFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(50px) scale(0.95);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+                
+                @keyframes corporateShimmer {
+                    0% { left: -100%; }
+                    100% { left: 100%; }
+                }
+                
+                .value-props-grid > div:hover .corporate-shimmer {
+                    opacity: 1;
+                    left: 100%;
+                }
+                
+                .value-props-grid > div:hover .corporate-button-shimmer {
+                    opacity: 1;
+                    left: 100%;
+                }
+                
         @media (max-width: 768px) {
           .about-grid {
             grid-template-columns: 1fr !important;
@@ -657,9 +989,14 @@ const About = () => {
             grid-template-columns: 1fr 1fr !important;
             gap: 20px !important;
           }
-          .clients-carousel-grid {
+                    .clients-showcase-grid {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
+          }
+        }
+                @media (max-width: 1024px) {
+                    .clients-showcase-grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 480px) {

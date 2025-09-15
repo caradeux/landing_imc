@@ -21,6 +21,17 @@ body {
   padding: 0 20px;
 }
 
+.container-fullwidth {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.container-fullwidth-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -56,6 +67,12 @@ body {
 
 .section {
   padding: 80px 0;
+}
+
+.section-fullwidth {
+  padding: 80px 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .section-title {
@@ -207,7 +224,19 @@ body {
     padding: 0 15px;
   }
   
+  .container-fullwidth {
+    padding: 0 15px;
+  }
+  
+  .container-fullwidth-content {
+    padding: 0 15px;
+  }
+  
   .section {
+    padding: 60px 0;
+  }
+  
+  .section-fullwidth {
     padding: 60px 0;
   }
   
