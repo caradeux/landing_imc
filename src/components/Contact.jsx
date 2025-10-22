@@ -82,14 +82,14 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      info: 'contacto@imcs.cl',
-      link: 'mailto:contacto@imcs.cl',
+      info: 'contacto@imcsonline.online',
+      link: 'mailto:contacto@imcsonline.online',
       color: '#0f172a'
     },
     {
       icon: MapPin,
       title: 'Ubicación',
-      info: 'Región Metropolitana, Santiago, Chile',
+      info: 'Quillota 801, Viña del Mar, Chile',
       link: '#',
       color: '#dc2626'
     },

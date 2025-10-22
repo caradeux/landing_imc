@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Zap, Hammer, Wrench, Home, Palette, Shield, ArrowRight } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import ParallaxSection from './ParallaxSection'
 
 const Services = () => {
 
@@ -207,14 +209,15 @@ const Services = () => {
         </div>
 
         {/* All Services Grid */}
-        <div className="services-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 1fr)',
-          gap: '20px',
-          maxWidth: 'none',
-          margin: '0 auto',
-          padding: '0 20px'
-        }}>
+        <ParallaxSection speed={0.2} direction="up">
+          <div className="services-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(6, 1fr)',
+            gap: '20px',
+            maxWidth: 'none',
+            margin: '0 auto',
+            padding: '0 20px'
+          }}>
           {services.map((service, index) => {
             const IconComponent = service.icon
             return (
@@ -439,21 +442,6 @@ const Services = () => {
                       </span>
                     </div>
                   ))}
-                      {service.features.length > 3 && (
-                        <div style={{
-                          fontSize: '12px',
-                          color: service.color,
-                          fontWeight: '700',
-                          textAlign: 'center',
-                          padding: '8px',
-                          background: `rgba(${parseInt(service.color.slice(1, 3), 16)}, ${parseInt(service.color.slice(3, 5), 16)}, ${parseInt(service.color.slice(5, 7), 16)}, 0.12)`,
-                          borderRadius: '10px',
-                          border: `1px solid ${service.color}40`,
-                          boxShadow: `0 2px 8px ${service.color}30`
-                        }}>
-                          +{service.features.length - 3} servicios más
-                        </div>
-                      )}
                 </div>
               </div>
 
@@ -510,6 +498,7 @@ const Services = () => {
             )
           })}
         </div>
+        </ParallaxSection>
       </div>
 
       <style jsx>{`

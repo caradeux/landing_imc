@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Calendar, MapPin, Users, Clock, ArrowRight, X } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import ParallaxSection from './ParallaxSection'
 
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null)
@@ -117,44 +119,74 @@ const Projects = () => {
   return (
     <section id="projects" className="section" style={{ background: '#f8fafc' }}>
       <div style={{ maxWidth: 'none', width: '100%' }}>
-        <div className="section-title">
-          <h2>Proyectos Destacados</h2>
-          <p>Conoce algunos de nuestros proyectos más representativos que demuestran nuestra experiencia y calidad</p>
-        </div>
+        <ParallaxSection speed={0.3} direction="up">
+          <div className="section-title">
+            <motion.h2
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              Proyectos Destacados
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Conoce algunos de nuestros proyectos más representativos que demuestran nuestra experiencia y calidad
+            </motion.p>
+          </div>
+        </ParallaxSection>
 
         {/* Filter Buttons */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '15px',
-          marginBottom: '50px',
-          flexWrap: 'wrap'
-        }}>
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setFilter(category)}
-              style={{
-                padding: '10px 20px',
-                border: 'none',
-                borderRadius: '25px',
-                background: filter === category 
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  : 'white',
-                color: filter === category ? 'white' : '#666',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                fontSize: '14px',
-                fontWeight: '600',
-                boxShadow: filter === category 
-                  ? '0 4px 15px rgba(102, 126, 234, 0.3)'
-                  : '0 2px 10px rgba(0, 0, 0, 0.1)'
-              }}
-            >
-              {category === 'all' ? 'Todos' : category}
-            </button>
-          ))}
-        </div>
+        <ParallaxSection speed={0.2} direction="up">
+          <motion.div 
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '15px',
+              marginBottom: '50px',
+              flexWrap: 'wrap'
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            {categories.map((category, index) => (
+              <motion.button
+                key={category}
+                onClick={() => setFilter(category)}
+                style={{
+                  padding: '10px 20px',
+                  border: 'none',
+                  borderRadius: '25px',
+                  background: filter === category 
+                    ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                    : 'white',
+                  color: filter === category ? 'white' : '#666',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  boxShadow: filter === category 
+                    ? '0 4px 15px rgba(102, 126, 234, 0.3)'
+                    : '0 2px 10px rgba(0, 0, 0, 0.1)'
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {category === 'all' ? 'Todos' : category}
+              </motion.button>
+            ))}
+          </motion.div>
+        </ParallaxSection>
 
         {/* Projects Grid - Ancho Completo */}
         <div style={{
@@ -166,8 +198,8 @@ const Projects = () => {
           padding: '0 40px',
           justifyContent: 'center'
         }}>
-          {filteredProjects.map((project) => (
-            <div 
+          {filteredProjects.map((project, index) => (
+            <motion.div 
               key={project.id} 
               style={{
                 background: 'white',
@@ -180,22 +212,28 @@ const Projects = () => {
                 height: 'fit-content'
               }}
               onClick={() => setSelectedProject(project)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-5px)'
-                e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.15)'
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 * index }}
+              viewport={{ once: true }}
+              whileHover={{ 
+                y: -10,
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+                transition: { duration: 0.3 }
               }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)'
-              }}
+              whileTap={{ scale: 0.98 }}
             >
-              <div style={{
-                height: '200px',
-                backgroundImage: `url(${project.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                position: 'relative'
-              }}>
+              <motion.div 
+                style={{
+                  height: '200px',
+                  backgroundImage: `url(${project.image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  position: 'relative'
+                }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
                 <div style={{
                   position: 'absolute',
                   top: '15px',
@@ -223,7 +261,7 @@ const Projects = () => {
                 }}>
                   {project.year}
                 </div>
-              </div>
+              </motion.div>
 
               <div style={{ padding: '25px' }}>
                 <h3 style={{
@@ -305,15 +343,29 @@ const Projects = () => {
                   />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
       {/* Project Modal */}
       {selectedProject && (
-        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <motion.div 
+          className="modal-overlay" 
+          onClick={() => setSelectedProject(null)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div 
+            className="modal" 
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
             <button 
               className="close-btn"
               onClick={() => setSelectedProject(null)}
@@ -449,8 +501,8 @@ const Projects = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </section>
   )

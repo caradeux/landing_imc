@@ -49,11 +49,28 @@ const QuoteModal = ({ onClose }) => {
   const handleSubmit = async () => {
     setIsSubmitting(true)
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:3001/api/send-quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setIsSubmitting(false)
+        setIsSubmitted(true)
+      } else {
+        throw new Error(result.error || 'Error al enviar la cotización')
+      }
+    } catch (error) {
+      console.error('Error al enviar la cotización:', error)
+      alert('Error al enviar la cotización. Por favor, inténtalo de nuevo.')
       setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 2000)
+    }
   }
 
   const nextStep = () => {

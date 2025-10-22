@@ -37,22 +37,10 @@ const Header = ({ isScrolled, onQuoteClick }) => {
       <div className="container">
         <div style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           padding: '15px 0'
         }}>
-          {/* Logo */}
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '800',
-            background: 'linear-gradient(135deg, #1e40af 0%, #0f172a 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-            IMC SERVICIOS CHILE
-          </div>
-
           {/* Desktop Navigation */}
           <nav style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <div style={{ display: 'flex', gap: '30px' }} className="desktop-nav">

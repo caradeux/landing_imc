@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Award, CheckCircle, Shield, Target, Star, Clock } from 'lucide-react'
 import Marquee from 'react-fast-marquee'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import ParallaxSection from './ParallaxSection'
 
 const About = () => {
     const [currentClientSlide, setCurrentClientSlide] = useState(0)
@@ -100,19 +102,36 @@ const About = () => {
     return (
         <section id="about" className="section">
             <div className="container">
-                <div className="section-title">
-                    <h2>Sobre IMC Servicios Chile</h2>
-                    <p>Más de 15 años liderando el mercado de construcción y servicios especializados en Chile</p>
-                </div>
+                <ParallaxSection speed={0.3} direction="up">
+                    <div className="section-title">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            viewport={{ once: true }}
+                        >
+                            Sobre IMC Servicios Chile
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            viewport={{ once: true }}
+                        >
+                            Más de 15 años liderando el mercado de construcción y servicios especializados en Chile
+                        </motion.p>
+                    </div>
+                </ParallaxSection>
 
                 {/* Company Story */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: '60px',
-                    alignItems: 'center',
-                    marginBottom: '80px'
-                }} className="about-grid">
+                <ParallaxSection speed={0.2} direction="up">
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '60px',
+                        alignItems: 'center',
+                        marginBottom: '80px'
+                    }} className="about-grid">
 
                     <div>
                         <h3 style={{
@@ -208,7 +227,8 @@ const About = () => {
                             </span>
                         </div>
                     </div>
-                </div>
+                    </div>
+                </ParallaxSection>
 
                  {/* Value Propositions - CORPORATE PROFESSIONAL */}
                 <div style={{
