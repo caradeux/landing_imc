@@ -39,7 +39,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html
 
 # Copy additional static files
-COPY --chown=nginx:nginx public/.htaccess /usr/share/nginx/html/
 COPY --chown=nginx:nginx public/sitemap.xml /usr/share/nginx/html/
 COPY --chown=nginx:nginx public/robots.txt /usr/share/nginx/html/
 

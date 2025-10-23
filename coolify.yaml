@@ -42,7 +42,7 @@ deploy:
   
   # Health check
   healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+    test: ["CMD", "curl", "-f", "http://localhost:80/health"]
     interval: "30s"
     timeout: "10s"
     retries: 3
@@ -56,7 +56,7 @@ network:
   
   # Port mapping
   ports:
-    - "8080:8080"
+    - "80:80"
 
 # Environment variables
 environment:
@@ -74,7 +74,7 @@ labels:
   traefik.enable: "true"
   traefik.http.routers.imc-website.rule: "Host(`192.168.1.12`)"
   traefik.http.routers.imc-website.entrypoints: "web"
-  traefik.http.services.imc-website.loadbalancer.server.port: "8080"
+  traefik.http.services.imc-website.loadbalancer.server.port: "80"
 
 # Security configuration
 security:
