@@ -32,8 +32,8 @@ FROM node:18-alpine AS production
 # Install nginx and curl
 RUN apk add --no-cache nginx curl
 
-# Create nginx user and directories
-RUN adduser -D -s /bin/sh nginx && \
+# Create nginx user and directories (if not exists)
+RUN if ! id nginx >/dev/null 2>&1; then adduser -D -s /bin/sh nginx; fi && \
     mkdir -p /var/log/nginx /var/lib/nginx /tmp/nginx && \
     chown -R nginx:nginx /var/log/nginx /var/lib/nginx /tmp/nginx
 
