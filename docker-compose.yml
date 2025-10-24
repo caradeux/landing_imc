@@ -25,6 +25,8 @@ services:
     # Environment variables
     environment:
       - NODE_ENV=production
+      - PORT=3001
+      - NGINX_PORT=8080
       
     # Health check
     healthcheck:

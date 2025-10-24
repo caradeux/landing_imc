@@ -25,34 +25,48 @@ COPY . .
 RUN npm run build
 
 # =========================================
-# Stage 2: Production Stage - Nginx Server
+# Stage 2: Production Stage - Full Stack
 # =========================================
-FROM nginxinc/nginx-unprivileged:alpine3.21 AS production
+FROM node:18-alpine AS production
 
-# Use non-root user for security
-USER nginx
+# Install nginx and curl
+RUN apk add --no-cache nginx curl
 
-# Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Create nginx user and directories
+RUN adduser -D -s /bin/sh nginx && \
+    mkdir -p /var/log/nginx /var/lib/nginx /tmp/nginx && \
+    chown -R nginx:nginx /var/log/nginx /var/lib/nginx /tmp/nginx
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json ./
+
+# Install production dependencies only
+RUN npm ci --only=production --no-audit --no-fund
+
+# Copy server code
+COPY server.js ./
 
 # Copy built React app from builder stage
-COPY --chown=nginx:nginx --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist ./public
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy additional static files
-COPY --chown=nginx:nginx public/sitemap.xml /usr/share/nginx/html/
-COPY --chown=nginx:nginx public/robots.txt /usr/share/nginx/html/
+COPY public/sitemap.xml ./public/
+COPY public/robots.txt ./public/
 
-# Switch to root to create health check and install curl
-USER root
+# Copy startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Create health check endpoint
-RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /usr/share/nginx/html/health && \
-    chown nginx:nginx /usr/share/nginx/html/health
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /app/public/health
 
-# Install curl for health check
-RUN apk add --no-cache curl
-
-# Switch back to nginx user
+# Switch to nginx user
 USER nginx
 
 # Expose port 8080 for Coolify
@@ -62,6 +76,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
-# Start Nginx
-ENTRYPOINT ["nginx"]
-CMD ["-g", "daemon off;"]
+# Start both services
+CMD ["/start.sh"]
