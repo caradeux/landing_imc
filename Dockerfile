@@ -63,8 +63,12 @@ COPY public/robots.txt ./public/
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Create health check endpoint
-RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /app/public/health
+# Switch to root for health check setup
+USER root
+
+# Create health check endpoint and ensure nginx can access it
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>OK</h1></body></html>' > /app/public/health && \
+    chown nginx:nginx /app/public/health
 
 # Switch to nginx user
 USER nginx
@@ -73,7 +77,7 @@ USER nginx
 EXPOSE 8080
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
 # Start both services
