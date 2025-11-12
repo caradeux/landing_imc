@@ -5,11 +5,13 @@ echo "🚀 Iniciando IMC Servicios Chile SpA - Full Stack..."
 
 # Configurar variables de entorno
 export NODE_ENV=${NODE_ENV:-production}
-export PORT=${PORT:-3001}
+# Node.js debe correr en puerto 3001 (interno), nginx escucha en 8080 (exterior)
+export PORT=3001
 
 echo "📋 Configuración:"
 echo "   - NODE_ENV: $NODE_ENV"
-echo "   - PORT: $PORT"
+echo "   - PORT (Node.js): $PORT"
+echo "   - NGINX_PORT: 8080"
 
 # Crear directorios necesarios para nginx
 mkdir -p /var/log/nginx /var/lib/nginx /tmp/nginx
