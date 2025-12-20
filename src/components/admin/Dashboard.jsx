@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
-import { LogOut, Briefcase, FolderOpen, MessageSquare, Image, Menu, X } from 'lucide-react'
+import { LogOut, Briefcase, FolderOpen, MessageSquare, Image, Menu, X, Phone, Settings, TrendingUp, Building2, Award, HelpCircle, Mail } from 'lucide-react'
 import ServicesManager from './ServicesManager'
 import ProjectsManager from './ProjectsManager'
 import TestimonialsManager from './TestimonialsManager'
 import ImagesManager from './ImagesManager'
+import ContactInfoManager from './ContactInfoManager'
+import SiteSettingsManager from './SiteSettingsManager'
+import StatsManager from './StatsManager'
+import ClientsManager from './ClientsManager'
+import CertificationsManager from './CertificationsManager'
+import FAQManager from './FAQManager'
+import EmailSettingsManager from './EmailSettingsManager'
 
 const Dashboard = () => {
   const { signOut, user } = useAuth()
@@ -23,7 +30,14 @@ const Dashboard = () => {
     { id: 'services', label: 'Servicios', icon: Briefcase },
     { id: 'projects', label: 'Proyectos', icon: FolderOpen },
     { id: 'testimonials', label: 'Testimonios', icon: MessageSquare },
-    { id: 'images', label: 'Imágenes', icon: Image }
+    { id: 'images', label: 'Imágenes', icon: Image },
+    { id: 'contact', label: 'Contacto', icon: Phone },
+    { id: 'settings', label: 'Configuración', icon: Settings },
+    { id: 'stats', label: 'Estadísticas', icon: TrendingUp },
+    { id: 'clients', label: 'Clientes', icon: Building2 },
+    { id: 'certifications', label: 'Certificaciones', icon: Award },
+    { id: 'faqs', label: 'FAQ', icon: HelpCircle },
+    { id: 'email', label: 'Email', icon: Mail }
   ]
 
   return (
@@ -152,6 +166,13 @@ const Dashboard = () => {
             {activeTab === 'projects' && <ProjectsManager />}
             {activeTab === 'testimonials' && <TestimonialsManager />}
             {activeTab === 'images' && <ImagesManager />}
+            {activeTab === 'contact' && <ContactInfoManager />}
+            {activeTab === 'settings' && <SiteSettingsManager />}
+            {activeTab === 'stats' && <StatsManager />}
+            {activeTab === 'clients' && <ClientsManager />}
+            {activeTab === 'certifications' && <CertificationsManager />}
+            {activeTab === 'faqs' && <FAQManager />}
+            {activeTab === 'email' && <EmailSettingsManager />}
           </div>
         </div>
       </div>
