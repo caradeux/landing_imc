@@ -1,104 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Calendar, MapPin, Users, Clock, ArrowRight, X } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { supabase } from '../lib/supabase'
 import ParallaxSection from './ParallaxSection'
 
 const Projects = () => {
+  const [projects, setProjects] = useState([])
+  const [loading, setLoading] = useState(true)
   const [selectedProject, setSelectedProject] = useState(null)
   const [filter, setFilter] = useState('all')
 
-  const projects = [
-    {
-      id: 1,
-      title: "Remodelación Jumbo Maipú",
-      category: "Retail",
-      year: "2024",
-      area: "2,500 m²",
-      duration: "3 meses",
-      location: "Maipú, Santiago",
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      description: "Remodelación integral de supermercado Jumbo incluyendo sistemas eléctricos, obras civiles y acabados premium.",
-      services: ["Servicios Eléctricos", "Obras Civiles", "Acabados Premium"],
-      highlights: [
-        "Instalación de sistema LED completo",
-        "Renovación de pisos industriales",
-        "Modernización de sistemas eléctricos",
-        "Acabados de alta calidad"
-      ]
-    },
-    {
-      id: 2,
-      title: "Construcción Bodega Construmart",
-      category: "Industrial",
-      year: "2023",
-      area: "5,000 m²",
-      duration: "6 meses",
-      location: "Quilicura, Santiago",
-      image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      description: "Construcción de bodega industrial con estructuras de alta resistencia y sistemas especializados.",
-      services: ["Obras Civiles", "Estructuras Metálicas", "Techumbres"],
-      highlights: [
-        "Fundaciones de alta resistencia",
-        "Estructuras metálicas certificadas",
-        "Sistema de techumbre industrial",
-        "Instalaciones eléctricas industriales"
-      ]
-    },
-    {
-      id: 3,
-      title: "Modernización Easy Providencia",
-      category: "Retail",
-      year: "2024",
-      area: "3,200 m²",
-      duration: "4 meses",
-      location: "Providencia, Santiago",
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      description: "Modernización completa de tienda Easy con nuevos estándares de diseño y funcionalidad.",
-      services: ["Carpintería Especializada", "Servicios Eléctricos", "Acabados"],
-      highlights: [
-        "Mobiliario comercial personalizado",
-        "Sistemas de iluminación LED",
-        "Carpintería en metalcom",
-        "Acabados arquitectónicos"
-      ]
-    },
-    {
-      id: 4,
-      title: "Centro Logístico Santa Isabel",
-      category: "Logística",
-      year: "2023",
-      area: "8,000 m²",
-      duration: "8 meses",
-      location: "Pudahuel, Santiago",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      description: "Centro de distribución logística con tecnología avanzada y sistemas automatizados.",
-      services: ["Obras Civiles", "Automatización", "Estructuras"],
-      highlights: [
-        "Sistemas automatizados",
-        "Estructuras de gran envergadura",
-        "Pavimentación especializada",
-        "Instalaciones de alta tecnología"
-      ]
-    },
-    {
-      id: 5,
-      title: "Oficinas Corporativas",
-      category: "Corporativo",
-      year: "2024",
-      area: "1,800 m²",
-      duration: "5 meses",
-      location: "Las Condes, Santiago",
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      description: "Oficinas corporativas modernas con diseño arquitectónico de vanguardia.",
-      services: ["Carpintería", "Acabados Premium", "Servicios Eléctricos"],
-      highlights: [
-        "Diseño arquitectónico moderno",
-        "Acabados de lujo",
-        "Sistemas inteligentes",
-        "Espacios colaborativos"
-      ]
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('active', true)
+        .order('display_order', { ascending: true })
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch (error) {
+      console.error('Error al cargar proyectos:', error)
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
+
+  if (loading) {
+    return (
+      <section id="projects" className="section" style={{ background: '#f8fafc', textAlign: 'center', padding: '100px 40px' }}>
+        <div>Cargando proyectos...</div>
+      </section>
+    )
+  }
 
   const categories = ['all', 'Retail', 'Industrial', 'Logística', 'Corporativo']
 
@@ -223,10 +162,10 @@ const Projects = () => {
               }}
               whileTap={{ scale: 0.98 }}
             >
-              <motion.div 
+              <motion.div
                 style={{
                   height: '200px',
-                  backgroundImage: `url(${project.image})`,
+                  backgroundImage: `url(${project.image_url})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   position: 'relative'
@@ -375,7 +314,7 @@ const Projects = () => {
 
             <div style={{
               height: '300px',
-              backgroundImage: `url(${selectedProject.image})`,
+              backgroundImage: `url(${selectedProject.image_url})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               position: 'relative',

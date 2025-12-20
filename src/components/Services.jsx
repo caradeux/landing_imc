@@ -1,102 +1,56 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Zap, Hammer, Wrench, Home, Palette, Shield, ArrowRight } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { supabase } from '../lib/supabase'
 import ParallaxSection from './ParallaxSection'
 
-const Services = () => {
+const iconMap = {
+  Zap,
+  Hammer,
+  Wrench,
+  Home,
+  Palette,
+  Shield
+}
 
-  const services = [
-    {
-      icon: Zap,
-      title: "Servicios Eléctricos",
-      description: "Instalaciones certificadas y sistemas de automatización",
-      features: [
-        "Instalaciones domiciliarias certificadas",
-        "Electricidad semi-industrial",
-        "Sistemas de iluminación LED",
-        "Automatización y control",
-        "Mantenimiento preventivo",
-        "Certificaciones SEC"
-      ],
-      image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: "#1e40af"
-    },
-    {
-      icon: Hammer,
-      title: "Obras Civiles",
-      description: "Construcción de alta resistencia y calidad certificada",
-      features: [
-        "Hormigón de alta resistencia",
-        "Enfierraduras especializadas",
-        "Fundaciones y cimientos",
-        "Estructuras de concreto",
-        "Pavimentación industrial",
-        "Control de calidad certificado"
-      ],
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: "#0f172a"
-    },
-    {
-      icon: Wrench,
-      title: "Carpintería Especializada",
-      description: "Soluciones arquitectónicas y mobiliario comercial",
-      features: [
-        "Carpintería en metalcom",
-        "Estructuras de aluminio",
-        "Mobiliario comercial",
-        "Soluciones arquitectónicas",
-        "Acabados de lujo",
-        "Diseño personalizado"
-      ],
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: "#dc2626"
-    },
-    {
-      icon: Home,
-      title: "Techumbres Industriales",
-      description: "Cubiertas metálicas y sistemas de protección",
-      features: [
-        "Cubiertas metálicas",
-        "Sistemas de drenaje",
-        "Aislación térmica",
-        "Impermeabilización",
-        "Mantenimiento especializado",
-        "Garantía extendida"
-      ],
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: "#ea580c"
-    },
-    {
-      icon: Palette,
-      title: "Acabados Premium",
-      description: "Pintura industrial y acabados especiales",
-      features: [
-        "Pintura industrial",
-        "Acabados especiales",
-        "Protección anticorrosiva",
-        "Sistemas de recubrimiento",
-        "Preparación de superficies",
-        "Control de calidad"
-      ],
-      image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: "#059669"
-    },
-    {
-      icon: Shield,
-      title: "Soldadura Certificada",
-      description: "Soldadura especializada con certificación AWS",
-      features: [
-        "Soldadura especializada",
-        "Estructuras metálicas",
-        "Certificación AWS",
-        "Soldadura bajo agua",
-        "Reparaciones industriales",
-        "Control de calidad"
-      ],
-      image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: "#7c3aed"
+const Services = () => {
+  const [services, setServices] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchServices()
+  }, [])
+
+  const fetchServices = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .eq('active', true)
+        .order('display_order', { ascending: true })
+
+      if (error) throw error
+
+      const servicesWithIcons = (data || []).map(service => ({
+        ...service,
+        icon: iconMap[service.icon] || Zap
+      }))
+
+      setServices(servicesWithIcons)
+    } catch (error) {
+      console.error('Error al cargar servicios:', error)
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
+
+  if (loading) {
+    return (
+      <section id="services" className="section" style={{ background: '#f8fafc', textAlign: 'center', padding: '100px 40px' }}>
+        <div>Cargando servicios...</div>
+      </section>
+    )
+  }
 
   return (
     <section id="services" className="section" style={{ 
@@ -274,7 +228,7 @@ const Services = () => {
                 {/* Service Image */}
                 <div className="service-image" style={{
                   height: '220px',
-                  backgroundImage: `url(${service.image})`,
+                  backgroundImage: `url(${service.image_url})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   position: 'relative',
