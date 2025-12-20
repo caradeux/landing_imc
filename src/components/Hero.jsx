@@ -2,40 +2,59 @@ import React, { useState, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import ParallaxSection from './ParallaxSection'
+import { supabase } from '../lib/supabase'
 
 const Hero = ({ onQuoteClick }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const { scrollYProgress } = useScroll()
-  
-  // Efectos parallax para las imágenes de fondo
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%'])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [1, 1, 0.8, 0])
-  
-  const slides = [
+  const [slides, setSlides] = useState([
     {
       title: "Líderes en Construcción y Servicios Especializados",
       subtitle: "Más de 15 años transformando espacios retail, industriales y comerciales con la más alta calidad y profesionalismo.",
       image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-    },
-    {
-      title: "Servicios Eléctricos Certificados",
-      subtitle: "Instalaciones domiciliarias, electricidad semi-industrial y sistemas de automatización con certificación SEC.",
-      image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80"
-    },
-    {
-      title: "Obras Civiles de Alta Resistencia",
-      subtitle: "Hormigón especializado, fundaciones y estructuras de concreto con control de calidad certificado.",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2076&q=80"
     }
-  ]
+  ])
+  const { scrollYProgress } = useScroll()
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%'])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [1, 1, 0.8, 0])
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
-    return () => clearInterval(timer)
+    loadBannerImages()
   }, [])
+
+  const loadBannerImages = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_images')
+        .select('*')
+        .eq('category', 'banner')
+        .eq('is_active', true)
+        .order('order_index', { ascending: true })
+
+      if (error) throw error
+
+      if (data && data.length > 0) {
+        const formattedSlides = data.map(img => ({
+          title: img.alt_text || "Líderes en Construcción y Servicios Especializados",
+          subtitle: img.description || "Más de 15 años transformando espacios retail, industriales y comerciales.",
+          image: img.url
+        }))
+        setSlides(formattedSlides)
+      }
+    } catch (error) {
+      console.error('Error loading banner images:', error)
+    }
+  }
+
+  useEffect(() => {
+    if (slides.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length)
+      }, 5000)
+      return () => clearInterval(timer)
+    }
+  }, [slides.length])
 
 
 

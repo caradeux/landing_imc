@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
-import { LogOut, Briefcase, FolderOpen, MessageSquare, Menu, X } from 'lucide-react'
+import { LogOut, Briefcase, FolderOpen, MessageSquare, Image, Menu, X } from 'lucide-react'
 import ServicesManager from './ServicesManager'
 import ProjectsManager from './ProjectsManager'
 import TestimonialsManager from './TestimonialsManager'
+import ImagesManager from './ImagesManager'
 
 const Dashboard = () => {
   const { signOut, user } = useAuth()
@@ -21,7 +22,8 @@ const Dashboard = () => {
   const tabs = [
     { id: 'services', label: 'Servicios', icon: Briefcase },
     { id: 'projects', label: 'Proyectos', icon: FolderOpen },
-    { id: 'testimonials', label: 'Testimonios', icon: MessageSquare }
+    { id: 'testimonials', label: 'Testimonios', icon: MessageSquare },
+    { id: 'images', label: 'Imágenes', icon: Image }
   ]
 
   return (
@@ -149,6 +151,7 @@ const Dashboard = () => {
             {activeTab === 'services' && <ServicesManager />}
             {activeTab === 'projects' && <ProjectsManager />}
             {activeTab === 'testimonials' && <TestimonialsManager />}
+            {activeTab === 'images' && <ImagesManager />}
           </div>
         </div>
       </div>
