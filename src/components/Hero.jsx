@@ -13,6 +13,12 @@ const Hero = ({ onQuoteClick }) => {
       image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
     }
   ])
+  const [siteSettings, setSiteSettings] = useState({
+    hero_title: "Líderes en Construcción y Servicios Especializados",
+    hero_subtitle: "Más de 15 años transformando espacios retail, industriales y comerciales con la más alta calidad y profesionalismo.",
+    cta_primary_text: "Cotizar Proyecto",
+    cta_secondary_text: "Ver Servicios"
+  })
   const { scrollYProgress } = useScroll()
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
@@ -21,7 +27,26 @@ const Hero = ({ onQuoteClick }) => {
 
   useEffect(() => {
     loadBannerImages()
+    loadSiteSettings()
   }, [])
+
+  const loadSiteSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('*')
+        .limit(1)
+        .maybeSingle()
+
+      if (error) throw error
+
+      if (data) {
+        setSiteSettings(data)
+      }
+    } catch (error) {
+      console.error('Error loading site settings:', error)
+    }
+  }
 
   const loadBannerImages = async () => {
     try {
@@ -36,8 +61,6 @@ const Hero = ({ onQuoteClick }) => {
 
       if (data && data.length > 0) {
         const formattedSlides = data.map(img => ({
-          title: img.alt_text || "Líderes en Construcción y Servicios Especializados",
-          subtitle: img.description || "Más de 15 años transformando espacios retail, industriales y comerciales.",
           image: img.url
         }))
         setSlides(formattedSlides)
@@ -157,11 +180,11 @@ const Hero = ({ onQuoteClick }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              {slides[currentSlide].title}
+              {siteSettings.hero_title}
             </motion.h1>
-            
-            <motion.p 
-              itemProp="description" 
+
+            <motion.p
+              itemProp="description"
               style={{
                 fontSize: '1.4rem',
                 marginBottom: '50px',
@@ -174,14 +197,14 @@ const Hero = ({ onQuoteClick }) => {
               animate={{ opacity: 0.95, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              {slides[currentSlide].subtitle}
+              {siteSettings.hero_subtitle}
             </motion.p>
 
-            <motion.div 
-              style={{ 
-                display: 'flex', 
-                gap: '25px', 
-                marginBottom: '60px', 
+            <motion.div
+              style={{
+                display: 'flex',
+                gap: '25px',
+                marginBottom: '60px',
                 flexWrap: 'wrap',
                 justifyContent: 'center'
               }}
@@ -189,7 +212,7 @@ const Hero = ({ onQuoteClick }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.1 }}
             >
-              <motion.button 
+              <motion.button
                 className="btn btn-primary"
                 onClick={onQuoteClick}
                 style={{
@@ -206,10 +229,10 @@ const Hero = ({ onQuoteClick }) => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                Cotizar Proyecto <ArrowRight size={22} />
+                {siteSettings.cta_primary_text} <ArrowRight size={22} />
               </motion.button>
-              
-              <motion.button 
+
+              <motion.button
                 className="btn btn-secondary"
                 onClick={() => document.querySelector('#services').scrollIntoView({ behavior: 'smooth' })}
                 style={{
@@ -223,7 +246,7 @@ const Hero = ({ onQuoteClick }) => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                Ver Servicios
+                {siteSettings.cta_secondary_text}
               </motion.button>
             </motion.div>
 
