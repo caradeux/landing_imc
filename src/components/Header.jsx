@@ -51,14 +51,14 @@ const Header = ({ isScrolled, onQuoteClick }) => {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#333',
+                    color: 'var(--color-text)',
                     fontWeight: '500',
                     cursor: 'pointer',
                     transition: 'color 0.3s ease',
                     fontSize: '16px'
                   }}
-                  onMouseEnter={(e) => e.target.style.color = '#667eea'}
-                  onMouseLeave={(e) => e.target.style.color = '#333'}
+                  onMouseEnter={(e) => e.target.style.color = 'var(--color-accent)'}
+                  onMouseLeave={(e) => e.target.style.color = 'var(--color-text)'}
                 >
                   {item.name}
                 </button>
@@ -97,7 +97,7 @@ const Header = ({ isScrolled, onQuoteClick }) => {
             top: '100%',
             left: 0,
             right: 0,
-            background: 'white',
+            background: 'var(--color-background)',
             borderRadius: '0 0 16px 16px',
             boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
             padding: '20px'
@@ -115,9 +115,9 @@ const Header = ({ isScrolled, onQuoteClick }) => {
                   textAlign: 'left',
                   fontSize: '16px',
                   fontWeight: '500',
-                  color: '#333',
+                  color: 'var(--color-text)',
                   cursor: 'pointer',
-                  borderBottom: '1px solid #f0f0f0'
+                  borderBottom: '1px solid var(--color-border)'
                 }}
               >
                 {item.name}

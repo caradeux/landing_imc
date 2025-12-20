@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
-import { LogOut, Briefcase, FolderOpen, MessageSquare, Image, Menu, X, Phone, Settings, TrendingUp, Building2, Award, HelpCircle, Mail } from 'lucide-react'
+import { LogOut, Briefcase, FolderOpen, MessageSquare, Image, Menu, X, Phone, Settings, TrendingUp, Building2, Award, HelpCircle, Mail, Palette } from 'lucide-react'
 import ServicesManager from './ServicesManager'
 import ProjectsManager from './ProjectsManager'
 import TestimonialsManager from './TestimonialsManager'
@@ -12,6 +12,7 @@ import ClientsManager from './ClientsManager'
 import CertificationsManager from './CertificationsManager'
 import FAQManager from './FAQManager'
 import EmailSettingsManager from './EmailSettingsManager'
+import ColorSchemesManager from './ColorSchemesManager'
 
 const Dashboard = () => {
   const { signOut, user } = useAuth()
@@ -33,6 +34,7 @@ const Dashboard = () => {
     { id: 'images', label: 'Imágenes', icon: Image },
     { id: 'contact', label: 'Contacto', icon: Phone },
     { id: 'settings', label: 'Configuración', icon: Settings },
+    { id: 'colors', label: 'Colores', icon: Palette },
     { id: 'stats', label: 'Estadísticas', icon: TrendingUp },
     { id: 'clients', label: 'Clientes', icon: Building2 },
     { id: 'certifications', label: 'Certificaciones', icon: Award },
@@ -168,6 +170,7 @@ const Dashboard = () => {
             {activeTab === 'images' && <ImagesManager />}
             {activeTab === 'contact' && <ContactInfoManager />}
             {activeTab === 'settings' && <SiteSettingsManager />}
+            {activeTab === 'colors' && <ColorSchemesManager />}
             {activeTab === 'stats' && <StatsManager />}
             {activeTab === 'clients' && <ClientsManager />}
             {activeTab === 'certifications' && <CertificationsManager />}
