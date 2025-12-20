@@ -22,7 +22,14 @@ const defaultTheme = {
   border_color: '#e1e5e9',
   hover_color: '#3b82f6',
   gradient_start: '#1e40af',
-  gradient_end: '#0f172a'
+  gradient_end: '#0f172a',
+  button_text_color: '#ffffff',
+  section_bg_light: '#f9fafb',
+  section_bg_dark: '#f3f4f6',
+  success_color: '#10b981',
+  warning_color: '#f59e0b',
+  error_color: '#ef4444',
+  overlay_color: 'rgba(0, 0, 0, 0.5)'
 }
 
 export const ThemeProvider = ({ children }) => {
@@ -70,6 +77,13 @@ export const ThemeProvider = ({ children }) => {
     root.style.setProperty('--color-hover', themeData.hover_color)
     root.style.setProperty('--gradient-start', themeData.gradient_start)
     root.style.setProperty('--gradient-end', themeData.gradient_end)
+    root.style.setProperty('--color-button-text', themeData.button_text_color || '#ffffff')
+    root.style.setProperty('--color-section-bg-light', themeData.section_bg_light || '#f9fafb')
+    root.style.setProperty('--color-section-bg-dark', themeData.section_bg_dark || '#f3f4f6')
+    root.style.setProperty('--color-success', themeData.success_color || '#10b981')
+    root.style.setProperty('--color-warning', themeData.warning_color || '#f59e0b')
+    root.style.setProperty('--color-error', themeData.error_color || '#ef4444')
+    root.style.setProperty('--color-overlay', themeData.overlay_color || 'rgba(0, 0, 0, 0.5)')
   }
 
   const refreshTheme = async () => {

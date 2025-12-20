@@ -47,16 +47,16 @@ const Projects = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'Retail': '#1e40af',
-      'Industrial': '#0f172a',
-      'Logística': '#dc2626',
-      'Corporativo': '#ea580c'
+      'Retail': 'var(--color-primary)',
+      'Industrial': 'var(--color-secondary)',
+      'Logística': 'var(--color-error)',
+      'Corporativo': 'var(--color-warning)'
     }
-    return colors[category] || '#1e40af'
+    return colors[category] || 'var(--color-primary)'
   }
 
   return (
-    <section id="projects" className="section" style={{ background: '#f8fafc' }}>
+    <section id="projects" className="section" style={{ background: 'var(--color-section-bg-light)' }}>
       <div style={{ maxWidth: 'none', width: '100%' }}>
         <ParallaxSection speed={0.3} direction="up">
           <div className="section-title">

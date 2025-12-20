@@ -46,15 +46,15 @@ const Services = () => {
 
   if (loading) {
     return (
-      <section id="services" className="section" style={{ background: '#f8fafc', textAlign: 'center', padding: '100px 40px' }}>
+      <section id="services" className="section" style={{ background: 'var(--color-section-bg-light)', textAlign: 'center', padding: '100px 40px' }}>
         <div>Cargando servicios...</div>
       </section>
     )
   }
 
   return (
-    <section id="services" className="section" style={{ 
-      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)',
+    <section id="services" className="section" style={{
+      background: 'linear-gradient(135deg, var(--color-section-bg-light) 0%, var(--color-section-bg-dark) 50%, var(--color-section-bg-light) 100%)',
       position: 'relative',
       overflow: 'hidden',
       width: '100vw',
@@ -94,16 +94,16 @@ const Services = () => {
           <div style={{
             display: 'inline-block',
             padding: '8px 24px',
-            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%)',
+            background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 10%, transparent) 0%, color-mix(in srgb, var(--color-hover) 10%, transparent) 100%)',
             borderRadius: '25px',
-            border: '1px solid rgba(59, 130, 246, 0.2)',
+            border: '1px solid color-mix(in srgb, var(--color-primary) 20%, transparent)',
             marginBottom: '30px',
             backdropFilter: 'blur(10px)'
           }}>
             <span style={{
               fontSize: '0.9rem',
               fontWeight: '600',
-              color: '#3b82f6',
+              color: 'var(--color-primary)',
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}>
@@ -111,23 +111,22 @@ const Services = () => {
             </span>
         </div>
 
-          <h2 style={{ 
-            fontSize: '3.5rem', 
-            fontWeight: '900', 
-            background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 30%, #60a5fa 60%, #93c5fd 100%)',
+          <h2 style={{
+            fontSize: '3.5rem',
+            fontWeight: '900',
+            background: 'linear-gradient(135deg, var(--gradient-start) 0%, var(--color-primary) 30%, var(--color-hover) 60%, var(--color-accent) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             marginBottom: '30px',
-            lineHeight: '1.2',
-            textShadow: '0 4px 20px rgba(59, 130, 246, 0.3)'
+            lineHeight: '1.2'
           }}>
             Nuestros Servicios Especializados
           </h2>
-          
-          <p style={{ 
-            fontSize: '1.4rem', 
-            color: '#64748b', 
-            maxWidth: '950px', 
+
+          <p style={{
+            fontSize: '1.4rem',
+            color: 'var(--color-text-light)',
+            maxWidth: '950px',
             margin: '0 auto',
             lineHeight: '1.8',
             fontWeight: '400'
@@ -145,19 +144,19 @@ const Services = () => {
             <div style={{
               width: '60px',
               height: '2px',
-              background: 'linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%)'
+              background: 'linear-gradient(90deg, transparent 0%, var(--color-primary) 50%, transparent 100%)'
             }} />
             <div style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
-              boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
+              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-hover) 100%)',
+              boxShadow: '0 0 20px color-mix(in srgb, var(--color-primary) 50%, transparent)'
             }} />
             <div style={{
               width: '60px',
               height: '2px',
-              background: 'linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%)'
+              background: 'linear-gradient(90deg, transparent 0%, var(--color-primary) 50%, transparent 100%)'
             }} />
           </div>
         </div>
@@ -311,11 +310,11 @@ const Services = () => {
                   <h3 style={{
                     fontSize: '1.5rem',
                     fontWeight: '900',
-                    color: '#1e293b',
+                    color: 'var(--color-text)',
                     marginBottom: '15px',
                     marginTop: 0,
                     lineHeight: '1.3',
-                    background: `linear-gradient(135deg, #1e293b 0%, ${service.color} 100%)`,
+                    background: `linear-gradient(135deg, var(--color-text) 0%, ${service.color} 100%)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent'
                   }}>
@@ -324,7 +323,7 @@ const Services = () => {
 
               <p style={{
                     fontSize: '1rem',
-                    color: '#64748b',
+                    color: 'var(--color-text-light)',
                     marginBottom: '25px',
                     lineHeight: '1.6',
                     fontWeight: '400'
@@ -337,7 +336,7 @@ const Services = () => {
                       fontSize: '1rem',
                       fontWeight: '800',
                       marginBottom: '15px',
-                      color: '#1e293b',
+                      color: 'var(--color-text)',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '8px'
@@ -363,20 +362,20 @@ const Services = () => {
                       alignItems: 'center',
                       gap: '10px',
                           padding: '8px 12px',
-                          background: 'rgba(248, 250, 252, 0.9)',
+                          background: 'var(--color-section-bg-light)',
                           borderRadius: '10px',
-                          border: '1px solid rgba(226, 232, 240, 0.6)',
+                          border: '1px solid var(--color-border)',
                           transition: 'all 0.3s ease',
                           cursor: 'pointer'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = `rgba(${parseInt(service.color.slice(1, 3), 16)}, ${parseInt(service.color.slice(3, 5), 16)}, ${parseInt(service.color.slice(5, 7), 16)}, 0.08)`
+                          e.currentTarget.style.background = `color-mix(in srgb, ${service.color} 8%, transparent)`
                           e.currentTarget.style.borderColor = `${service.color}40`
                           e.currentTarget.style.transform = 'translateX(4px)'
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'rgba(248, 250, 252, 0.9)'
-                          e.currentTarget.style.borderColor = 'rgba(226, 232, 240, 0.6)'
+                          e.currentTarget.style.background = 'var(--color-section-bg-light)'
+                          e.currentTarget.style.borderColor = 'var(--color-border)'
                           e.currentTarget.style.transform = 'translateX(0)'
                         }}
                         >
@@ -389,7 +388,7 @@ const Services = () => {
                       }} />
                       <span style={{
                             fontSize: '13px',
-                            color: '#475569',
+                            color: 'var(--color-text)',
                             fontWeight: '600'
                       }}>
                         {feature}

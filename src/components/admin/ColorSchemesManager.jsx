@@ -21,7 +21,14 @@ const ColorSchemesManager = () => {
     border_color: '#e1e5e9',
     hover_color: '#3b82f6',
     gradient_start: '#1e40af',
-    gradient_end: '#0f172a'
+    gradient_end: '#0f172a',
+    button_text_color: '#ffffff',
+    section_bg_light: '#f9fafb',
+    section_bg_dark: '#f3f4f6',
+    success_color: '#10b981',
+    warning_color: '#f59e0b',
+    error_color: '#ef4444',
+    overlay_color: 'rgba(0, 0, 0, 0.5)'
   }
 
   useEffect(() => {
@@ -256,6 +263,44 @@ const ColorSchemesManager = () => {
               label="Fin del Gradiente"
               value={editedScheme.gradient_end}
               onChange={(val) => setEditedScheme({ ...editedScheme, gradient_end: val })}
+            />
+          </div>
+
+          <div>
+            <h4 style={{ marginBottom: '15px', color: '#333', fontSize: '16px' }}>Colores Adicionales</h4>
+            <ColorInput
+              label="Texto de Botones"
+              value={editedScheme.button_text_color || '#ffffff'}
+              onChange={(val) => setEditedScheme({ ...editedScheme, button_text_color: val })}
+            />
+            <ColorInput
+              label="Fondo Sección Clara"
+              value={editedScheme.section_bg_light || '#f9fafb'}
+              onChange={(val) => setEditedScheme({ ...editedScheme, section_bg_light: val })}
+            />
+            <ColorInput
+              label="Fondo Sección Oscura"
+              value={editedScheme.section_bg_dark || '#f3f4f6'}
+              onChange={(val) => setEditedScheme({ ...editedScheme, section_bg_dark: val })}
+            />
+          </div>
+
+          <div>
+            <h4 style={{ marginBottom: '15px', color: '#333', fontSize: '16px' }}>Colores de Estado</h4>
+            <ColorInput
+              label="Color de Éxito"
+              value={editedScheme.success_color || '#10b981'}
+              onChange={(val) => setEditedScheme({ ...editedScheme, success_color: val })}
+            />
+            <ColorInput
+              label="Color de Advertencia"
+              value={editedScheme.warning_color || '#f59e0b'}
+              onChange={(val) => setEditedScheme({ ...editedScheme, warning_color: val })}
+            />
+            <ColorInput
+              label="Color de Error"
+              value={editedScheme.error_color || '#ef4444'}
+              onChange={(val) => setEditedScheme({ ...editedScheme, error_color: val })}
             />
           </div>
         </div>

@@ -176,14 +176,14 @@ const Footer = () => {
                         alignItems: 'center',
                         gap: '8px'
                       }}
-                      onMouseEnter={(e) => e.target.style.color = '#667eea'}
+                      onMouseEnter={(e) => e.target.style.color = 'var(--color-accent)'}
                       onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
                     >
                       <div style={{
                         width: '4px',
                         height: '4px',
                         borderRadius: '50%',
-                        background: '#667eea'
+                        background: 'var(--color-accent)'
                       }} />
                       {service}
                     </a>
@@ -225,14 +225,14 @@ const Footer = () => {
                         gap: '8px',
                         padding: 0
                       }}
-                      onMouseEnter={(e) => e.target.style.color = '#667eea'}
+                      onMouseEnter={(e) => e.target.style.color = 'var(--color-accent)'}
                       onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
                     >
                       <div style={{
                         width: '4px',
                         height: '4px',
                         borderRadius: '50%',
-                        background: '#667eea'
+                        background: 'var(--color-accent)'
                       }} />
                       {link.name}
                     </button>
@@ -268,7 +268,7 @@ const Footer = () => {
                     fontSize: '14px',
                     transition: 'color 0.3s ease'
                   }}
-                  onMouseEnter={(e) => e.target.style.color = '#667eea'}
+                  onMouseEnter={(e) => e.target.style.color = 'var(--color-accent)'}
                   onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
                 >
                   <Phone size={16} />
@@ -286,7 +286,7 @@ const Footer = () => {
                     fontSize: '14px',
                     transition: 'color 0.3s ease'
                   }}
-                  onMouseEnter={(e) => e.target.style.color = '#667eea'}
+                  onMouseEnter={(e) => e.target.style.color = 'var(--color-accent)'}
                   onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.7)'}
                 >
                   <Mail size={16} />
@@ -396,7 +396,7 @@ const Footer = () => {
             <button
               onClick={scrollToTop}
               style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, var(--color-accent) 0%, var(--gradient-end) 100%)',
                 border: 'none',
                 borderRadius: '50%',
                 width: '45px',
