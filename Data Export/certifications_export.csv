@@ -1,0 +1,4 @@
+"id","name","icon","color","description","expiry_date","document_url","order_index","is_active","created_at","updated_at"
+"e32b69f9-f5f6-4214-803e-5cad18c7f521","ISO 9001:2015","Shield","#1e40af","Certificación que garantiza nuestros altos estándares de calidad y seguridad",,,"1","true","2025-12-20 16:12:29.948869+00","2025-12-20 16:12:29.948869+00"
+"78e606b1-b626-4439-9ebf-ad9cec0ca7d8","Certificación SEC","Award","#059669","Certificación que garantiza nuestros altos estándares de calidad y seguridad",,,"2","true","2025-12-20 16:12:29.948869+00","2025-12-20 16:12:29.948869+00"
+"82271301-d65f-4331-9b80-a265d4abdbef","Mutual de Seguridad","CheckCircle","#7c3aed","Certificación que garantiza nuestros altos estándares de calidad y seguridad",,,"3","true","2025-12-20 16:12:29.948869+00","2025-12-20 16:12:29.948869+00"

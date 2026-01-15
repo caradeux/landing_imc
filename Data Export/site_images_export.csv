@@ -1,0 +1,5 @@
+"id","key","url","alt_text","description","category","order_index","is_active","created_at","updated_at"
+"f02d8da9-0a12-4c23-b305-3892460b3a04","hero_banner","https://images.pexels.com/photos/1078884/pexels-photo-1078884.jpeg","Banner principal","Imagen principal del hero","banner","1","true","2025-12-20 16:05:33.425701+00","2025-12-20 16:05:33.425701+00"
+"559f2f51-a6d1-4f38-83f0-2d1eabbc2ff9","about_image","https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg","Sobre nosotros","Imagen de la sección sobre nosotros","content","1","true","2025-12-20 16:05:33.425701+00","2025-12-20 16:05:33.425701+00"
+"6eddefc0-17b8-4777-ac54-51881ed83504","parallax_1","https://images.pexels.com/photos/1170686/pexels-photo-1170686.jpeg","Parallax 1","Primera imagen parallax","banner","1","true","2025-12-20 16:05:33.425701+00","2025-12-20 16:05:33.425701+00"
+"49158bf0-d3a8-43b2-a12f-ff70ce3ddd79","parallax_2","https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg","Parallax 2","Segunda imagen parallax","banner","2","true","2025-12-20 16:05:33.425701+00","2025-12-20 16:05:33.425701+00"

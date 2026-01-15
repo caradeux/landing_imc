@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "deploy": "npm run build && node deploy.js",
     "server": "node server.js",
-    "dev:full": "concurrently \"npm run dev\" \"npm run server\""
+    "dev:full": "concurrently \"npm run dev\" \"npm run server\"",
+    "migrate": "node run-migration.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",
@@ -25,6 +26,7 @@
     "lucide-react": "^0.263.1",
     "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.9",
+    "pg": "^8.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-fast-marquee": "^1.6.5",
