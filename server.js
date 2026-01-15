@@ -596,6 +596,40 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 });
 
+// Test endpoint to check migration file content
+app.get('/api/admin/test-migration', async (req, res) => {
+  try {
+    const fs = await import('fs');
+    const path = await import('path');
+    const { fileURLToPath } = await import('url');
+    
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const migrationPath = path.join(__dirname, 'migrate-simple.sql');
+    
+    if (!fs.existsSync(migrationPath)) {
+      return res.status(404).json({ error: 'Migration file not found', path: migrationPath });
+    }
+    
+    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+    const preview = migrationSQL.substring(0, 500) + '...';
+    
+    res.json({
+      success: true,
+      path: migrationPath,
+      fileExists: true,
+      fileSize: migrationSQL.length,
+      preview: preview
+    });
+    
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Test failed', 
+      details: error.message 
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Servidor API ejecutándose en http://localhost:${port}`);
 });
