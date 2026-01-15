@@ -794,6 +794,60 @@ app.post('/api/admin/migrate', async (req, res) => {
     
     console.log('✅ Sample data inserted successfully!');
     
+    // Insert additional data
+    console.log('📊 Inserting additional data...');
+    
+    // Insert site settings
+    await db.query(
+      `INSERT INTO site_settings (hero_title, hero_subtitle, cta_primary_text, cta_secondary_text, company_description, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, now(), now())`,
+      [
+        'Líderes en Construcción y Servicios Especializados',
+        'Más de 15 años transformando espacios retail, industriales y comerciales con la más alta calidad y profesionalismo.',
+        'Cotizar Proyecto',
+        'Ver Servicios',
+        'En IMC Servicios Chile SpA, nos especializamos en brindar soluciones integrales de construcción y servicios especializados para los sectores retail, industrial y comercial. Con más de 15 años de experiencia, hemos consolidado nuestra posición como líderes en el mercado chileno.'
+      ]
+    );
+    
+    // Insert contact info
+    await db.query(
+      `INSERT INTO contact_info (phone, email, address, schedule, whatsapp, instagram_url, facebook_url, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, now(), now())`,
+      [
+        '+56 9 8854 2926',
+        'contacto@imcsonline.online',
+        'Quillota 801, Viña del Mar, Chile',
+        'Lun-Vie: 8:00-18:00 | Emergencias 24/7',
+        'https://wa.me/56988542926',
+        'https://instagram.com/imcservicioschile',
+        'https://facebook.com/imcservicioschile'
+      ]
+    );
+    
+    // Insert active color scheme
+    await db.query(
+      `INSERT INTO color_schemes (name, is_active, primary_color, secondary_color, accent_color, background_color, text_color, text_light_color, border_color, success_color, warning_color, error_color, overlay_color, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, now(), now())`,
+      [
+        'Azul Profesional',
+        true,
+        '#1e40af',
+        '#3b82f6',
+        '#667eea',
+        '#ffffff',
+        '#333333',
+        '#666666',
+        '#e1e5e9',
+        '#10b981',
+        '#f59e0b',
+        '#ef4444',
+        'rgba(0, 0, 0, 0.5)'
+      ]
+    );
+    
+    console.log('✅ Additional data inserted successfully!');
+    
     // Verify the migration
     const verificationQuery = `
       SELECT 'services' as table_name, count(*) as record_count FROM services
