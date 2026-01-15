@@ -196,6 +196,32 @@ class ApiClient {
     return this.delete(`/admin/testimonials/${id}`);
   }
 
+  // Site Stats Admin
+  async createSiteStat(statData) {
+    return this.post('/admin/site-stats', statData);
+  }
+
+  async updateSiteStat(id, statData) {
+    return this.put(`/admin/site-stats/${id}`, statData);
+  }
+
+  async deleteSiteStat(id) {
+    return this.delete(`/admin/site-stats/${id}`);
+  }
+
+  // Certifications Admin
+  async createCertification(certData) {
+    return this.post('/admin/certifications', certData);
+  }
+
+  async updateCertification(id, certData) {
+    return this.put(`/admin/certifications/${id}`, certData);
+  }
+
+  async deleteCertification(id) {
+    return this.delete(`/admin/certifications/${id}`);
+  }
+
   // =====================================================
   // SUPABASE COMPATIBILITY LAYER
   // =====================================================

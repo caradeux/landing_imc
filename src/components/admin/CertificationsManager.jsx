@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Plus, Edit2, Trash2, Save, X, AlertCircle, Award, ArrowUp, ArrowDown } from 'lucide-react'
 
 const CertificationsManager = () => {
@@ -8,23 +8,11 @@ const CertificationsManager = () => {
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({
     name: '',
-    icon: 'Award',
-    color: '#1e40af',
-    description: '',
-    expiry_date: '',
-    document_url: ''
+    issuer: '',
+    logo_url: ''
   })
   const [isAdding, setIsAdding] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
-
-  const iconOptions = ['Award', 'Shield', 'CheckCircle', 'Star', 'Medal']
-  const colorOptions = [
-    { name: 'Azul', value: '#1e40af' },
-    { name: 'Verde', value: '#059669' },
-    { name: 'Morado', value: '#7c3aed' },
-    { name: 'Rojo', value: '#dc2626' },
-    { name: 'Naranja', value: '#ea580c' }
-  ]
 
   useEffect(() => {
     loadCertifications()
@@ -32,12 +20,7 @@ const CertificationsManager = () => {
 
   const loadCertifications = async () => {
     try {
-      const { data, error } = await supabase
-        .from('certifications')
-        .select('*')
-        .order('order_index', { ascending: true })
-
-      if (error) throw error
+      const data = await api.getCertifications()
       setCertifications(data || [])
     } catch (error) {
       console.error('Error loading certifications:', error)
@@ -52,21 +35,15 @@ const CertificationsManager = () => {
 
     try {
       const maxOrder = Math.max(...certifications.map(c => c.order_index), 0)
-      const { error } = await supabase
-        .from('certifications')
-        .insert([{
-          ...editForm,
-          expiry_date: editForm.expiry_date || null,
-          document_url: editForm.document_url || null,
-          order_index: maxOrder + 1,
-          is_active: true
-        }])
-
-      if (error) throw error
+      await api.createCertification({
+        ...editForm,
+        order_index: maxOrder + 1,
+        is_active: true
+      })
 
       setMessage({ type: 'success', text: 'Certificación agregada correctamente' })
       setIsAdding(false)
-      setEditForm({ name: '', icon: 'Award', color: '#1e40af', description: '', expiry_date: '', document_url: '' })
+      setEditForm({ name: '', issuer: '', logo_url: '' })
       loadCertifications()
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {
@@ -77,17 +54,7 @@ const CertificationsManager = () => {
 
   const handleUpdate = async (id) => {
     try {
-      const { error } = await supabase
-        .from('certifications')
-        .update({
-          ...editForm,
-          expiry_date: editForm.expiry_date || null,
-          document_url: editForm.document_url || null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', id)
-
-      if (error) throw error
+      await api.updateCertification(id, editForm)
 
       setMessage({ type: 'success', text: 'Certificación actualizada correctamente' })
       setEditingId(null)
@@ -103,12 +70,7 @@ const CertificationsManager = () => {
     if (!confirm('¿Estás seguro de eliminar esta certificación?')) return
 
     try {
-      const { error } = await supabase
-        .from('certifications')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
+      await api.deleteCertification(id)
 
       setMessage({ type: 'success', text: 'Certificación eliminada correctamente' })
       loadCertifications()
@@ -121,12 +83,7 @@ const CertificationsManager = () => {
 
   const handleToggleActive = async (id, currentStatus) => {
     try {
-      const { error } = await supabase
-        .from('certifications')
-        .update({ is_active: !currentStatus })
-        .eq('id', id)
-
-      if (error) throw error
+      await api.updateCertification(id, { is_active: !currentStatus })
       loadCertifications()
     } catch (error) {
       console.error('Error toggling certification:', error)
@@ -148,8 +105,8 @@ const CertificationsManager = () => {
 
     try {
       await Promise.all([
-        supabase.from('certifications').update({ order_index: index + 1 }).eq('id', newCerts[index].id),
-        supabase.from('certifications').update({ order_index: newIndex + 1 }).eq('id', newCerts[newIndex].id)
+        api.updateCertification(newCerts[index].id, { order_index: index + 1 }),
+        api.updateCertification(newCerts[newIndex].id, { order_index: newIndex + 1 })
       ])
       loadCertifications()
     } catch (error) {
@@ -161,11 +118,8 @@ const CertificationsManager = () => {
     setEditingId(cert.id)
     setEditForm({
       name: cert.name,
-      icon: cert.icon,
-      color: cert.color,
-      description: cert.description,
-      expiry_date: cert.expiry_date || '',
-      document_url: cert.document_url || ''
+      issuer: cert.issuer,
+      logo_url: cert.logo_url || ''
     })
   }
 
@@ -259,55 +213,26 @@ const CertificationsManager = () => {
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                 style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
               />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                <select
-                  value={editForm.icon}
-                  onChange={(e) => setEditForm({ ...editForm, icon: e.target.value })}
-                  style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
-                >
-                  {iconOptions.map(icon => (
-                    <option key={icon} value={icon}>{icon}</option>
-                  ))}
-                </select>
-                <select
-                  value={editForm.color}
-                  onChange={(e) => setEditForm({ ...editForm, color: e.target.value })}
-                  style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
-                >
-                  {colorOptions.map(color => (
-                    <option key={color.value} value={color.value}>{color.name}</option>
-                  ))}
-                </select>
-              </div>
-              <textarea
-                placeholder="Descripción"
-                value={editForm.description}
-                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                rows="2"
-                style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px', fontFamily: 'inherit' }}
+              <input
+                type="text"
+                placeholder="Entidad emisora"
+                value={editForm.issuer}
+                onChange={(e) => setEditForm({ ...editForm, issuer: e.target.value })}
+                style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
               />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                <input
-                  type="date"
-                  placeholder="Fecha de expiración (opcional)"
-                  value={editForm.expiry_date}
-                  onChange={(e) => setEditForm({ ...editForm, expiry_date: e.target.value })}
-                  style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
-                />
-                <input
-                  type="url"
-                  placeholder="URL del documento (opcional)"
-                  value={editForm.document_url}
-                  onChange={(e) => setEditForm({ ...editForm, document_url: e.target.value })}
-                  style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
-                />
-              </div>
+              <input
+                type="url"
+                placeholder="URL del logo (opcional)"
+                value={editForm.logo_url}
+                onChange={(e) => setEditForm({ ...editForm, logo_url: e.target.value })}
+                style={{ padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px' }}
+              />
             </div>
             <div style={{ marginTop: '15px', display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
               <button
                 onClick={() => {
                   setIsAdding(false)
-                  setEditForm({ name: '', icon: 'Award', color: '#1e40af', description: '', expiry_date: '', document_url: '' })
+                  setEditForm({ name: '', issuer: '', logo_url: '' })
                 }}
                 style={{ padding: '8px 16px', background: '#e5e7eb', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
               >
@@ -352,46 +277,18 @@ const CertificationsManager = () => {
                       onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                       style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
                     />
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      <select
-                        value={editForm.icon}
-                        onChange={(e) => setEditForm({ ...editForm, icon: e.target.value })}
-                        style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                      >
-                        {iconOptions.map(icon => (
-                          <option key={icon} value={icon}>{icon}</option>
-                        ))}
-                      </select>
-                      <select
-                        value={editForm.color}
-                        onChange={(e) => setEditForm({ ...editForm, color: e.target.value })}
-                        style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                      >
-                        {colorOptions.map(color => (
-                          <option key={color.value} value={color.value}>{color.name}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <textarea
-                      value={editForm.description}
-                      onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                      rows="2"
-                      style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px', fontFamily: 'inherit' }}
+                    <input
+                      type="text"
+                      value={editForm.issuer}
+                      onChange={(e) => setEditForm({ ...editForm, issuer: e.target.value })}
+                      style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
                     />
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      <input
-                        type="date"
-                        value={editForm.expiry_date}
-                        onChange={(e) => setEditForm({ ...editForm, expiry_date: e.target.value })}
-                        style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                      />
-                      <input
-                        type="url"
-                        value={editForm.document_url}
-                        onChange={(e) => setEditForm({ ...editForm, document_url: e.target.value })}
-                        style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
-                      />
-                    </div>
+                    <input
+                      type="url"
+                      value={editForm.logo_url}
+                      onChange={(e) => setEditForm({ ...editForm, logo_url: e.target.value })}
+                      style={{ padding: '8px', border: '1px solid #e5e7eb', borderRadius: '6px' }}
+                    />
                   </div>
                   <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                     <button
@@ -430,7 +327,7 @@ const CertificationsManager = () => {
                       width: '50px',
                       height: '50px',
                       borderRadius: '10px',
-                      background: cert.color,
+                      background: '#1e40af',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -441,8 +338,7 @@ const CertificationsManager = () => {
                     <div>
                       <div style={{ fontWeight: '700', fontSize: '16px', marginBottom: '4px' }}>{cert.name}</div>
                       <div style={{ fontSize: '13px', color: '#666' }}>
-                        {cert.description}
-                        {cert.expiry_date && ` | Vigencia: ${new Date(cert.expiry_date).toLocaleDateString()}`}
+                        Emitido por: {cert.issuer}
                       </div>
                     </div>
                   </div>

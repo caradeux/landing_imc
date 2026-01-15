@@ -4,8 +4,12 @@ import { Mail, Save, AlertCircle } from 'lucide-react'
 
 const EmailSettingsManager = () => {
   const [settings, setSettings] = useState({
-    destination_email: '',
-    reply_to_email: ''
+    smtp_host: '',
+    smtp_port: 465,
+    smtp_user: '',
+    smtp_password: '',
+    from_email: '',
+    from_name: ''
   })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -118,26 +122,90 @@ const EmailSettingsManager = () => {
                 fontWeight: '600'
               }}>
                 <Mail size={20} />
-                <span>Email de Destino para Cotizaciones</span>
+                <span>Configuración SMTP</span>
               </div>
-              <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px', lineHeight: '1.6' }}>
-                Este es el email donde se recibirán todas las solicitudes de cotización y mensajes del formulario de contacto del sitio web.
-              </p>
-              <input
-                type="email"
-                value={settings.destination_email}
-                onChange={(e) => handleChange('destination_email', e.target.value)}
-                placeholder="cotizaciones@empresa.cl"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  background: 'white'
-                }}
-                required
-              />
+              <div style={{ display: 'grid', gap: '15px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '15px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', fontWeight: '600' }}>
+                      Servidor SMTP
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.smtp_host}
+                      onChange={(e) => handleChange('smtp_host', e.target.value)}
+                      placeholder="mail.empresa.cl"
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '6px',
+                        fontSize: '14px'
+                      }}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', fontWeight: '600' }}>
+                      Puerto
+                    </label>
+                    <input
+                      type="number"
+                      value={settings.smtp_port}
+                      onChange={(e) => handleChange('smtp_port', parseInt(e.target.value))}
+                      placeholder="465"
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '6px',
+                        fontSize: '14px'
+                      }}
+                      required
+                    />
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', fontWeight: '600' }}>
+                      Usuario SMTP
+                    </label>
+                    <input
+                      type="email"
+                      value={settings.smtp_user}
+                      onChange={(e) => handleChange('smtp_user', e.target.value)}
+                      placeholder="contacto@empresa.cl"
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '6px',
+                        fontSize: '14px'
+                      }}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', fontWeight: '600' }}>
+                      Contraseña SMTP
+                    </label>
+                    <input
+                      type="password"
+                      value={settings.smtp_password}
+                      onChange={(e) => handleChange('smtp_password', e.target.value)}
+                      placeholder="••••••••"
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '6px',
+                        fontSize: '14px'
+                      }}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div style={{
@@ -155,26 +223,48 @@ const EmailSettingsManager = () => {
                 fontWeight: '600'
               }}>
                 <Mail size={20} />
-                <span>Email de Respuesta Automática</span>
+                <span>Información del Remitente</span>
               </div>
-              <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px', lineHeight: '1.6' }}>
-                Este email aparecerá como remitente en las respuestas automáticas a los clientes que envían el formulario. Asegúrate de que sea un email válido y monitoreado.
-              </p>
-              <input
-                type="email"
-                value={settings.reply_to_email}
-                onChange={(e) => handleChange('reply_to_email', e.target.value)}
-                placeholder="no-reply@empresa.cl"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  background: 'white'
-                }}
-                required
-              />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', fontWeight: '600' }}>
+                    Email del Remitente
+                  </label>
+                  <input
+                    type="email"
+                    value={settings.from_email}
+                    onChange={(e) => handleChange('from_email', e.target.value)}
+                    placeholder="contacto@empresa.cl"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '6px',
+                      fontSize: '14px'
+                    }}
+                    required
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontSize: '13px', fontWeight: '600' }}>
+                    Nombre del Remitente
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.from_name}
+                    onChange={(e) => handleChange('from_name', e.target.value)}
+                    placeholder="IMC Servicios Chile"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '6px',
+                      fontSize: '14px'
+                    }}
+                    required
+                  />
+                </div>
+              </div>
             </div>
 
             <div style={{
@@ -186,7 +276,7 @@ const EmailSettingsManager = () => {
               color: '#92400e',
               lineHeight: '1.6'
             }}>
-              <strong>Nota importante:</strong> Los emails configurados aquí deben ser válidos y estar activos. Asegúrate de revisar regularmente la bandeja de entrada del email de destino para no perder solicitudes de clientes.
+              <strong>Nota importante:</strong> Esta configuración se usa para enviar emails desde el formulario de contacto. Asegúrate de que los datos SMTP sean correctos y que el servidor de email esté configurado para permitir el envío.
             </div>
           </div>
 

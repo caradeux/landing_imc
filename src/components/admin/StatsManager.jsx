@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Plus, Edit2, Trash2, Save, X, AlertCircle, Award, TrendingUp, ArrowUp, ArrowDown } from 'lucide-react'
 
 const StatsManager = () => {
@@ -18,12 +18,7 @@ const StatsManager = () => {
 
   const loadStats = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_stats')
-        .select('*')
-        .order('order_index', { ascending: true })
-
-      if (error) throw error
+      const data = await api.getSiteStats()
       setStats(data || [])
     } catch (error) {
       console.error('Error loading stats:', error)
@@ -38,15 +33,11 @@ const StatsManager = () => {
 
     try {
       const maxOrder = Math.max(...stats.map(s => s.order_index), 0)
-      const { error } = await supabase
-        .from('site_stats')
-        .insert([{
-          ...editForm,
-          order_index: maxOrder + 1,
-          is_active: true
-        }])
-
-      if (error) throw error
+      await api.createSiteStat({
+        ...editForm,
+        order_index: maxOrder + 1,
+        is_active: true
+      })
 
       setMessage({ type: 'success', text: 'Estadística agregada correctamente' })
       setIsAdding(false)
@@ -61,12 +52,7 @@ const StatsManager = () => {
 
   const handleUpdate = async (id) => {
     try {
-      const { error } = await supabase
-        .from('site_stats')
-        .update({ ...editForm, updated_at: new Date().toISOString() })
-        .eq('id', id)
-
-      if (error) throw error
+      await api.updateSiteStat(id, editForm)
 
       setMessage({ type: 'success', text: 'Estadística actualizada correctamente' })
       setEditingId(null)
@@ -82,12 +68,7 @@ const StatsManager = () => {
     if (!confirm('¿Estás seguro de eliminar esta estadística?')) return
 
     try {
-      const { error } = await supabase
-        .from('site_stats')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
+      await api.deleteSiteStat(id)
 
       setMessage({ type: 'success', text: 'Estadística eliminada correctamente' })
       loadStats()
@@ -100,12 +81,7 @@ const StatsManager = () => {
 
   const handleToggleActive = async (id, currentStatus) => {
     try {
-      const { error } = await supabase
-        .from('site_stats')
-        .update({ is_active: !currentStatus })
-        .eq('id', id)
-
-      if (error) throw error
+      await api.updateSiteStat(id, { is_active: !currentStatus })
       loadStats()
     } catch (error) {
       console.error('Error toggling stat:', error)
@@ -127,8 +103,8 @@ const StatsManager = () => {
 
     try {
       await Promise.all([
-        supabase.from('site_stats').update({ order_index: index + 1 }).eq('id', newStats[index].id),
-        supabase.from('site_stats').update({ order_index: newIndex + 1 }).eq('id', newStats[newIndex].id)
+        api.updateSiteStat(newStats[index].id, { order_index: index + 1 }),
+        api.updateSiteStat(newStats[newIndex].id, { order_index: newIndex + 1 })
       ])
       loadStats()
     } catch (error) {

@@ -581,6 +581,96 @@ app.delete('/api/admin/testimonials/:id', async (req, res) => {
 });
 
 // =====================================================
+// SITE STATS ADMIN ENDPOINTS
+// =====================================================
+
+// Create site stat
+app.post('/api/admin/site-stats', async (req, res) => {
+  try {
+    const stat = await db.createSiteStat(req.body);
+    res.status(201).json(stat);
+  } catch (error) {
+    console.error('Error creating site stat:', error);
+    res.status(500).json({ error: 'Error creating site stat' });
+  }
+});
+
+// Update site stat
+app.put('/api/admin/site-stats/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const stat = await db.updateSiteStat(id, req.body);
+    if (!stat) {
+      return res.status(404).json({ error: 'Site stat not found' });
+    }
+    res.json(stat);
+  } catch (error) {
+    console.error('Error updating site stat:', error);
+    res.status(500).json({ error: 'Error updating site stat' });
+  }
+});
+
+// Delete site stat
+app.delete('/api/admin/site-stats/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const stat = await db.deleteSiteStat(id);
+    if (!stat) {
+      return res.status(404).json({ error: 'Site stat not found' });
+    }
+    res.json({ message: 'Site stat deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting site stat:', error);
+    res.status(500).json({ error: 'Error deleting site stat' });
+  }
+});
+
+// =====================================================
+// CERTIFICATIONS ADMIN ENDPOINTS
+// =====================================================
+
+// Create certification
+app.post('/api/admin/certifications', async (req, res) => {
+  try {
+    const certification = await db.createCertification(req.body);
+    res.status(201).json(certification);
+  } catch (error) {
+    console.error('Error creating certification:', error);
+    res.status(500).json({ error: 'Error creating certification' });
+  }
+});
+
+// Update certification
+app.put('/api/admin/certifications/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const certification = await db.updateCertification(id, req.body);
+    if (!certification) {
+      return res.status(404).json({ error: 'Certification not found' });
+    }
+    res.json(certification);
+  } catch (error) {
+    console.error('Error updating certification:', error);
+    res.status(500).json({ error: 'Error updating certification' });
+  }
+});
+
+// Delete certification
+app.delete('/api/admin/certifications/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const certification = await db.deleteCertification(id);
+    if (!certification) {
+      return res.status(404).json({ error: 'Certification not found' });
+    }
+    res.json({ message: 'Certification deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting certification:', error);
+    res.status(500).json({ error: 'Error deleting certification' });
+  }
+});
+
+// =====================================================
 // DATABASE MIGRATION ENDPOINT
 // =====================================================
 

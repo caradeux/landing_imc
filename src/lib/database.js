@@ -238,12 +238,13 @@ export const db = {
 
   // Update email settings
   async updateEmailSettings(settingsData) {
-    const { destination_email, reply_to_email } = settingsData;
+    const { smtp_host, smtp_port, smtp_user, smtp_password, from_email, from_name } = settingsData;
     const result = await this.query(
       `UPDATE email_settings 
-       SET destination_email = $1, reply_to_email = $2, updated_at = now()
+       SET smtp_host = $1, smtp_port = $2, smtp_user = $3, smtp_password = $4, 
+           from_email = $5, from_name = $6, updated_at = now()
        WHERE id = (SELECT id FROM email_settings LIMIT 1) RETURNING *`,
-      [destination_email, reply_to_email]
+      [smtp_host, smtp_port, smtp_user, smtp_password, from_email, from_name]
     );
     return result.rows[0];
   },
@@ -288,6 +289,64 @@ export const db = {
   // Delete testimonial
   async deleteTestimonial(id) {
     const result = await this.query('DELETE FROM testimonials WHERE id = $1 RETURNING *', [id]);
+    return result.rows[0];
+  },
+
+  // Create site stat
+  async createSiteStat(statData) {
+    const { label, value, icon, order_index } = statData;
+    const result = await this.query(
+      `INSERT INTO site_stats (label, value, icon, order_index, is_active) 
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [label, value, icon, order_index, true]
+    );
+    return result.rows[0];
+  },
+
+  // Update site stat
+  async updateSiteStat(id, statData) {
+    const { label, value, icon, order_index, is_active } = statData;
+    const result = await this.query(
+      `UPDATE site_stats 
+       SET label = $2, value = $3, icon = $4, order_index = $5, is_active = $6, updated_at = now()
+       WHERE id = $1 RETURNING *`,
+      [id, label, value, icon, order_index, is_active]
+    );
+    return result.rows[0];
+  },
+
+  // Delete site stat
+  async deleteSiteStat(id) {
+    const result = await this.query('DELETE FROM site_stats WHERE id = $1 RETURNING *', [id]);
+    return result.rows[0];
+  },
+
+  // Create certification
+  async createCertification(certData) {
+    const { name, issuer, logo_url, order_index } = certData;
+    const result = await this.query(
+      `INSERT INTO certifications (name, issuer, logo_url, order_index, is_active) 
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [name, issuer, logo_url, order_index, true]
+    );
+    return result.rows[0];
+  },
+
+  // Update certification
+  async updateCertification(id, certData) {
+    const { name, issuer, logo_url, order_index, is_active } = certData;
+    const result = await this.query(
+      `UPDATE certifications 
+       SET name = $2, issuer = $3, logo_url = $4, order_index = $5, is_active = $6, updated_at = now()
+       WHERE id = $1 RETURNING *`,
+      [id, name, issuer, logo_url, order_index, is_active]
+    );
+    return result.rows[0];
+  },
+
+  // Delete certification
+  async deleteCertification(id) {
+    const result = await this.query('DELETE FROM certifications WHERE id = $1 RETURNING *', [id]);
     return result.rows[0];
   }
 };
