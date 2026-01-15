@@ -729,7 +729,6 @@ app.post('/api/admin/migrate', async (req, res) => {
     // Insert services data
     const servicesData = [
       {
-        id: 'b8e7c3a1-4f2d-4e8b-9c1a-2d3e4f5a6b7c',
         title: 'Servicios Eléctricos',
         description: 'Instalaciones eléctricas industriales y comerciales con certificación SEC. Especialistas en sistemas de alta y baja tensión.',
         icon: 'Zap',
@@ -739,7 +738,6 @@ app.post('/api/admin/migrate', async (req, res) => {
         display_order: 1
       },
       {
-        id: 'c9f8d4b2-5a3e-5f9c-ad2b-3e4f5a6b7c8d',
         title: 'Obras Civiles',
         description: 'Construcción y remodelación de espacios comerciales e industriales. Especialistas en retail y centros logísticos.',
         icon: 'Hammer',
@@ -749,7 +747,6 @@ app.post('/api/admin/migrate', async (req, res) => {
         display_order: 2
       },
       {
-        id: 'd0a9e5c3-6b4f-6a0d-be3c-4f5a6b7c8d9e',
         title: 'Carpintería Especializada',
         description: 'Carpintería en metalcom y madera para proyectos comerciales. Mobiliario y estructuras personalizadas.',
         icon: 'Wrench',
@@ -759,7 +756,6 @@ app.post('/api/admin/migrate', async (req, res) => {
         display_order: 3
       },
       {
-        id: 'e1b0f6d4-7c5a-7b1e-cf4d-5a6b7c8d9e0f',
         title: 'Estructuras Metálicas',
         description: 'Diseño, fabricación e instalación de estructuras metálicas para uso industrial y comercial.',
         icon: 'Home',
@@ -769,7 +765,6 @@ app.post('/api/admin/migrate', async (req, res) => {
         display_order: 4
       },
       {
-        id: 'f2c1a7e5-8d6b-8c2f-da5e-6b7c8d9e0f1a',
         title: 'Acabados Premium',
         description: 'Acabados de alta calidad para espacios comerciales y corporativos. Pintura, revestimientos y detalles arquitectónicos.',
         icon: 'Palette',
@@ -779,7 +774,6 @@ app.post('/api/admin/migrate', async (req, res) => {
         display_order: 5
       },
       {
-        id: 'a3d2b8f6-9e7c-9d3a-eb6f-7c8d9e0f1a2b',
         title: 'Automatización',
         description: 'Sistemas de automatización y control para procesos industriales y comerciales.',
         icon: 'Shield',
@@ -792,9 +786,9 @@ app.post('/api/admin/migrate', async (req, res) => {
     
     for (const service of servicesData) {
       await db.query(
-        `INSERT INTO services (id, title, description, icon, image_url, color, features, display_order, active, created_at, updated_at) 
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, now(), now())`,
-        [service.id, service.title, service.description, service.icon, service.image_url, service.color, service.features, service.display_order]
+        `INSERT INTO services (title, description, icon, image_url, color, features, display_order, active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, true, now(), now())`,
+        [service.title, service.description, service.icon, service.image_url, service.color, service.features, service.display_order]
       );
     }
     
