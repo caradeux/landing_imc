@@ -356,6 +356,7 @@ export const db = {
   try {
     await pool.query('SELECT NOW()');
     console.log('🟢 Database connection pool initialized successfully');
+console.log('📊 Server endpoints loaded successfully');
   } catch (error) {
     console.error('🔴 Failed to initialize database connection:', error.message);
   }
