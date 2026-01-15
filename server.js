@@ -729,7 +729,7 @@ app.post('/api/admin/migrate', async (req, res) => {
     // Insert services data
     const servicesData = [
       {
-        id: 'b8e7c3a1-4f2d-4e8b-9c1a-2d3e4f5g6h7i',
+        id: 'b8e7c3a1-4f2d-4e8b-9c1a-2d3e4f5a6b7c',
         title: 'Servicios Eléctricos',
         description: 'Instalaciones eléctricas industriales y comerciales con certificación SEC. Especialistas en sistemas de alta y baja tensión.',
         icon: 'Zap',
@@ -739,7 +739,7 @@ app.post('/api/admin/migrate', async (req, res) => {
         display_order: 1
       },
       {
-        id: 'c9f8d4b2-5g3e-5f9c-ad2b-3e4f5g6h7i8j',
+        id: 'c9f8d4b2-5a3e-5f9c-ad2b-3e4f5a6b7c8d',
         title: 'Obras Civiles',
         description: 'Construcción y remodelación de espacios comerciales e industriales. Especialistas en retail y centros logísticos.',
         icon: 'Hammer',
@@ -747,6 +747,46 @@ app.post('/api/admin/migrate', async (req, res) => {
         color: '#059669',
         features: JSON.stringify(["Construcción de bodegas industriales","Remodelación de tiendas retail","Fundaciones especializadas","Pavimentación industrial","Estructuras de hormigón","Obras de ampliación"]),
         display_order: 2
+      },
+      {
+        id: 'd0a9e5c3-6b4f-6a0d-be3c-4f5a6b7c8d9e',
+        title: 'Carpintería Especializada',
+        description: 'Carpintería en metalcom y madera para proyectos comerciales. Mobiliario y estructuras personalizadas.',
+        icon: 'Wrench',
+        image_url: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#dc2626',
+        features: JSON.stringify(["Carpintería en metalcom","Mobiliario comercial","Estructuras de madera","Divisiones modulares","Muebles a medida","Instalación de estanterías"]),
+        display_order: 3
+      },
+      {
+        id: 'e1b0f6d4-7c5a-7b1e-cf4d-5a6b7c8d9e0f',
+        title: 'Estructuras Metálicas',
+        description: 'Diseño, fabricación e instalación de estructuras metálicas para uso industrial y comercial.',
+        icon: 'Home',
+        image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#ea580c',
+        features: JSON.stringify(["Estructuras industriales","Techumbres metálicas","Escaleras y pasarelas","Galpones industriales","Estructuras antisísmicas","Soldadura certificada"]),
+        display_order: 4
+      },
+      {
+        id: 'f2c1a7e5-8d6b-8c2f-da5e-6b7c8d9e0f1a',
+        title: 'Acabados Premium',
+        description: 'Acabados de alta calidad para espacios comerciales y corporativos. Pintura, revestimientos y detalles arquitectónicos.',
+        icon: 'Palette',
+        image_url: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#7c3aed',
+        features: JSON.stringify(["Pintura industrial y decorativa","Revestimientos especializados","Cielos falsos","Pisos industriales","Señalética corporativa","Acabados arquitectónicos"]),
+        display_order: 5
+      },
+      {
+        id: 'a3d2b8f6-9e7c-9d3a-eb6f-7c8d9e0f1a2b',
+        title: 'Automatización',
+        description: 'Sistemas de automatización y control para procesos industriales y comerciales.',
+        icon: 'Shield',
+        image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#0284c7',
+        features: JSON.stringify(["Sistemas de control automatizado","Sensores industriales","Programación PLC","Monitoreo remoto","Integración de sistemas","Mantenimiento predictivo"]),
+        display_order: 6
       }
     ];
     
