@@ -509,6 +509,17 @@ app.put('/api/admin/contact-info', async (req, res) => {
   }
 });
 
+// Update email settings
+app.put('/api/admin/email-settings', async (req, res) => {
+  try {
+    const emailSettings = await db.updateEmailSettings(req.body);
+    res.json(emailSettings);
+  } catch (error) {
+    console.error('Error updating email settings:', error);
+    res.status(500).json({ error: 'Error updating email settings' });
+  }
+});
+
 // Set active color scheme
 app.put('/api/admin/color-schemes/:id/activate', async (req, res) => {
   try {

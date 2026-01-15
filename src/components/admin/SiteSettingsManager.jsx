@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Settings, Save, AlertCircle, Type, FileText } from 'lucide-react'
 
 const SiteSettingsManager = () => {
@@ -20,14 +20,7 @@ const SiteSettingsManager = () => {
 
   const loadSettings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('*')
-        .limit(1)
-        .maybeSingle()
-
-      if (error) throw error
-
+      const data = await api.getSiteSettings()
       if (data) {
         setSettings(data)
       }
@@ -45,27 +38,7 @@ const SiteSettingsManager = () => {
     setMessage({ type: '', text: '' })
 
     try {
-      const { data: existing } = await supabase
-        .from('site_settings')
-        .select('id')
-        .limit(1)
-        .maybeSingle()
-
-      if (existing) {
-        const { error } = await supabase
-          .from('site_settings')
-          .update({ ...settings, updated_at: new Date().toISOString() })
-          .eq('id', existing.id)
-
-        if (error) throw error
-      } else {
-        const { error } = await supabase
-          .from('site_settings')
-          .insert([settings])
-
-        if (error) throw error
-      }
-
+      await api.updateSiteSettings(settings)
       setMessage({ type: 'success', text: 'Configuración actualizada correctamente' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {

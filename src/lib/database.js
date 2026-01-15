@@ -236,6 +236,18 @@ export const db = {
     return result.rows[0];
   },
 
+  // Update email settings
+  async updateEmailSettings(settingsData) {
+    const { destination_email, reply_to_email } = settingsData;
+    const result = await this.query(
+      `UPDATE email_settings 
+       SET destination_email = $1, reply_to_email = $2, updated_at = now()
+       WHERE id = (SELECT id FROM email_settings LIMIT 1) RETURNING *`,
+      [destination_email, reply_to_email]
+    );
+    return result.rows[0];
+  },
+
   // Set active color scheme
   async setActiveColorScheme(schemeId) {
     // First deactivate all schemes

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Palette, Plus, Edit2, Trash2, Check, X } from 'lucide-react'
 
 const ColorSchemesManager = () => {
@@ -38,13 +38,7 @@ const ColorSchemesManager = () => {
   const loadSchemes = async () => {
     try {
       setLoading(true)
-      const { data, error } = await supabase
-        .from('color_schemes')
-        .select('*')
-        .order('is_default', { ascending: false })
-        .order('name', { ascending: true })
-
-      if (error) throw error
+      const data = await api.getColorSchemes()
       setSchemes(data || [])
     } catch (error) {
       console.error('Error loading color schemes:', error)

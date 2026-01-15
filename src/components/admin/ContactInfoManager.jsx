@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle, Save, AlertCircle } from 'lucide-react'
 
 const ContactInfoManager = () => {
@@ -22,14 +22,7 @@ const ContactInfoManager = () => {
 
   const loadContactInfo = async () => {
     try {
-      const { data, error } = await supabase
-        .from('contact_info')
-        .select('*')
-        .limit(1)
-        .maybeSingle()
-
-      if (error) throw error
-
+      const data = await api.getContactInfo()
       if (data) {
         setContactInfo(data)
       }
@@ -47,27 +40,7 @@ const ContactInfoManager = () => {
     setMessage({ type: '', text: '' })
 
     try {
-      const { data: existing } = await supabase
-        .from('contact_info')
-        .select('id')
-        .limit(1)
-        .maybeSingle()
-
-      if (existing) {
-        const { error } = await supabase
-          .from('contact_info')
-          .update({ ...contactInfo, updated_at: new Date().toISOString() })
-          .eq('id', existing.id)
-
-        if (error) throw error
-      } else {
-        const { error } = await supabase
-          .from('contact_info')
-          .insert([contactInfo])
-
-        if (error) throw error
-      }
-
+      await api.updateContactInfo(contactInfo)
       setMessage({ type: 'success', text: 'Información de contacto actualizada correctamente' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {

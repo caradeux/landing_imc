@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Image, Upload, Trash2, Save, X, Eye, EyeOff } from 'lucide-react'
 
 const ImagesManager = () => {
@@ -15,13 +15,7 @@ const ImagesManager = () => {
 
   const loadImages = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_images')
-        .select('*')
-        .order('category', { ascending: true })
-        .order('order_index', { ascending: true })
-
-      if (error) throw error
+      const data = await api.getSiteImages()
       setImages(data || [])
     } catch (error) {
       console.error('Error loading images:', error)
@@ -32,78 +26,19 @@ const ImagesManager = () => {
   }
 
   const handleFileUpload = async (e, imageId) => {
-    const file = e.target.files[0]
-    if (!file) return
-
-    if (!file.type.startsWith('image/')) {
-      setMessage({ type: 'error', text: 'Por favor selecciona una imagen válida' })
-      return
-    }
-
-    setUploading(true)
-    try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`
-      const filePath = `${fileName}`
-
-      const { error: uploadError } = await supabase.storage
-        .from('site-images')
-        .upload(filePath, file)
-
-      if (uploadError) throw uploadError
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('site-images')
-        .getPublicUrl(filePath)
-
-      if (imageId) {
-        const { error: updateError } = await supabase
-          .from('site_images')
-          .update({ url: publicUrl })
-          .eq('id', imageId)
-
-        if (updateError) throw updateError
-      }
-
-      setMessage({ type: 'success', text: 'Imagen subida exitosamente' })
-      loadImages()
-    } catch (error) {
-      console.error('Error uploading image:', error)
-      setMessage({ type: 'error', text: 'Error al subir la imagen' })
-    } finally {
-      setUploading(false)
-    }
+    // For now, we'll just show a message that file upload needs to be implemented
+    setMessage({ type: 'error', text: 'La subida de archivos requiere configuración adicional. Por favor, usa URLs directas por ahora.' })
   }
 
   const handleSave = async (image) => {
     try {
       if (image.id) {
-        const { error } = await supabase
-          .from('site_images')
-          .update({
-            key: image.key,
-            url: image.url,
-            alt_text: image.alt_text,
-            description: image.description,
-            category: image.category,
-            order_index: image.order_index,
-            is_active: image.is_active
-          })
-          .eq('id', image.id)
-
-        if (error) throw error
-        setMessage({ type: 'success', text: 'Imagen actualizada' })
+        // Update existing image - we need to implement this endpoint
+        setMessage({ type: 'error', text: 'Actualización de imágenes no implementada aún' })
       } else {
-        const { error } = await supabase
-          .from('site_images')
-          .insert([image])
-
-        if (error) throw error
-        setMessage({ type: 'success', text: 'Imagen creada' })
+        // Create new image - we need to implement this endpoint
+        setMessage({ type: 'error', text: 'Creación de imágenes no implementada aún' })
       }
-
-      setEditingImage(null)
-      loadImages()
     } catch (error) {
       console.error('Error saving image:', error)
       setMessage({ type: 'error', text: error.message || 'Error al guardar' })
@@ -114,14 +49,8 @@ const ImagesManager = () => {
     if (!confirm('¿Estás seguro de eliminar esta imagen?')) return
 
     try {
-      const { error } = await supabase
-        .from('site_images')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
-      setMessage({ type: 'success', text: 'Imagen eliminada' })
-      loadImages()
+      // Delete image - we need to implement this endpoint
+      setMessage({ type: 'error', text: 'Eliminación de imágenes no implementada aún' })
     } catch (error) {
       console.error('Error deleting image:', error)
       setMessage({ type: 'error', text: 'Error al eliminar' })
@@ -130,13 +59,8 @@ const ImagesManager = () => {
 
   const toggleActive = async (id, currentStatus) => {
     try {
-      const { error } = await supabase
-        .from('site_images')
-        .update({ is_active: !currentStatus })
-        .eq('id', id)
-
-      if (error) throw error
-      loadImages()
+      // Toggle active status - we need to implement this endpoint
+      setMessage({ type: 'error', text: 'Cambio de estado no implementado aún' })
     } catch (error) {
       console.error('Error toggling active:', error)
       setMessage({ type: 'error', text: 'Error al cambiar estado' })

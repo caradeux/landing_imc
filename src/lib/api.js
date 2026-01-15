@@ -173,6 +173,11 @@ class ApiClient {
     return this.put('/admin/contact-info', contactData);
   }
 
+  // Email Settings Admin
+  async updateEmailSettings(settingsData) {
+    return this.put('/admin/email-settings', settingsData);
+  }
+
   // Color Schemes Admin
   async activateColorScheme(id) {
     return this.put(`/admin/color-schemes/${id}/activate`);
