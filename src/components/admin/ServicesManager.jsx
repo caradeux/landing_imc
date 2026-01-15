@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Plus, Edit2, Trash2, Save, X, AlertCircle } from 'lucide-react'
 
 const ServicesManager = () => {
@@ -27,13 +27,8 @@ const ServicesManager = () => {
 
   const fetchServices = async () => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-      setServices(data || [])
+      const services = await api.getServices()
+      setServices(services || [])
     } catch (err) {
       setError('Error al cargar servicios: ' + err.message)
     } finally {
@@ -47,18 +42,9 @@ const ServicesManager = () => {
 
     try {
       if (editingId) {
-        const { error } = await supabase
-          .from('services')
-          .update(formData)
-          .eq('id', editingId)
-
-        if (error) throw error
+        await api.updateService(editingId, formData)
       } else {
-        const { error } = await supabase
-          .from('services')
-          .insert([formData])
-
-        if (error) throw error
+        await api.createService(formData)
       }
 
       await fetchServices()
@@ -86,12 +72,7 @@ const ServicesManager = () => {
     if (!confirm('¿Estás seguro de eliminar este servicio?')) return
 
     try {
-      const { error } = await supabase
-        .from('services')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
+      await api.deleteService(id)
       await fetchServices()
     } catch (err) {
       setError('Error al eliminar: ' + err.message)
