@@ -46,8 +46,10 @@ COPY package.json package-lock.json ./
 # Install production dependencies only
 RUN npm ci --only=production --no-audit --no-fund
 
-# Copy server code
+# Copy server code and source files
 COPY server.js ./
+COPY src/ ./src/
+COPY migrate-to-coolify-postgres.sql ./
 
 # Copy built React app from builder stage
 COPY --from=builder /app/dist ./public
