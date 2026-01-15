@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Plus, Edit2, Trash2, Save, X, AlertCircle } from 'lucide-react'
 
 const ProjectsManager = () => {
@@ -32,13 +32,8 @@ const ProjectsManager = () => {
 
   const fetchProjects = async () => {
     try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-      setProjects(data || [])
+      const projects = await api.getProjects()
+      setProjects(projects || [])
     } catch (err) {
       setError('Error al cargar proyectos: ' + err.message)
     } finally {
@@ -52,18 +47,9 @@ const ProjectsManager = () => {
 
     try {
       if (editingId) {
-        const { error } = await supabase
-          .from('projects')
-          .update(formData)
-          .eq('id', editingId)
-
-        if (error) throw error
+        await api.updateProject(editingId, formData)
       } else {
-        const { error } = await supabase
-          .from('projects')
-          .insert([formData])
-
-        if (error) throw error
+        await api.createProject(formData)
       }
 
       await fetchProjects()
@@ -95,12 +81,7 @@ const ProjectsManager = () => {
     if (!confirm('¿Estás seguro de eliminar este proyecto?')) return
 
     try {
-      const { error } = await supabase
-        .from('projects')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
+      await api.deleteProject(id)
       await fetchProjects()
     } catch (err) {
       setError('Error al eliminar: ' + err.message)

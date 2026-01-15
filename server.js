@@ -525,6 +525,51 @@ app.put('/api/admin/color-schemes/:id/activate', async (req, res) => {
 });
 
 // =====================================================
+// TESTIMONIALS ADMIN ENDPOINTS
+// =====================================================
+
+// Create testimonial
+app.post('/api/admin/testimonials', async (req, res) => {
+  try {
+    const testimonial = await db.createTestimonial(req.body);
+    res.status(201).json(testimonial);
+  } catch (error) {
+    console.error('Error creating testimonial:', error);
+    res.status(500).json({ error: 'Error creating testimonial' });
+  }
+});
+
+// Update testimonial
+app.put('/api/admin/testimonials/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const testimonial = await db.updateTestimonial(id, req.body);
+    if (!testimonial) {
+      return res.status(404).json({ error: 'Testimonial not found' });
+    }
+    res.json(testimonial);
+  } catch (error) {
+    console.error('Error updating testimonial:', error);
+    res.status(500).json({ error: 'Error updating testimonial' });
+  }
+});
+
+// Delete testimonial
+app.delete('/api/admin/testimonials/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const testimonial = await db.deleteTestimonial(id);
+    if (!testimonial) {
+      return res.status(404).json({ error: 'Testimonial not found' });
+    }
+    res.json({ message: 'Testimonial deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting testimonial:', error);
+    res.status(500).json({ error: 'Error deleting testimonial' });
+  }
+});
+
+// =====================================================
 // DATABASE MIGRATION ENDPOINT
 // =====================================================
 
@@ -578,8 +623,10 @@ app.post('/api/admin/migrate', async (req, res) => {
         client_name text NOT NULL,
         client_position text NOT NULL,
         client_company text NOT NULL,
+        client_photo_url text,
         testimonial_text text NOT NULL,
         rating integer NOT NULL DEFAULT 5,
+        project_name text,
         display_order integer NOT NULL DEFAULT 0,
         active boolean NOT NULL DEFAULT true,
         created_at timestamptz DEFAULT now(),
@@ -702,6 +749,16 @@ app.post('/api/admin/migrate', async (req, res) => {
     
     console.log('✅ Tables created successfully!');
     
+    // Add missing columns to existing tables
+    console.log('📊 Adding missing columns...');
+    try {
+      await db.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS client_photo_url text;');
+      await db.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS project_name text;');
+      console.log('✅ Missing columns added successfully!');
+    } catch (error) {
+      console.log('ℹ️ Columns may already exist:', error.message);
+    }
+    
     // Now insert the data (we'll do this in a separate step)
     console.log('📊 Inserting data...');
     
@@ -726,60 +783,60 @@ app.post('/api/admin/migrate', async (req, res) => {
     
     console.log('🗑️ Existing data cleared');
     
-    // Insert services data
+    // Insert services data from CSV export
     const servicesData = [
       {
         title: 'Servicios Eléctricos',
-        description: 'Instalaciones eléctricas industriales y comerciales con certificación SEC. Especialistas en sistemas de alta y baja tensión.',
+        description: 'Instalaciones certificadas y sistemas de automatización',
         icon: 'Zap',
         image_url: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         color: '#1e40af',
-        features: JSON.stringify(["Instalaciones eléctricas industriales","Sistemas de iluminación LED","Tableros eléctricos certificados","Mantención preventiva","Certificación SEC","Sistemas de emergencia"]),
+        features: JSON.stringify(["Instalaciones domiciliarias certificadas","Electricidad semi-industrial","Sistemas de iluminación LED","Automatización y control","Mantenimiento preventivo","Certificaciones SEC"]),
         display_order: 1
       },
       {
         title: 'Obras Civiles',
-        description: 'Construcción y remodelación de espacios comerciales e industriales. Especialistas en retail y centros logísticos.',
+        description: 'Construcción de alta resistencia y calidad certificada',
         icon: 'Hammer',
-        image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-        color: '#059669',
-        features: JSON.stringify(["Construcción de bodegas industriales","Remodelación de tiendas retail","Fundaciones especializadas","Pavimentación industrial","Estructuras de hormigón","Obras de ampliación"]),
+        image_url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#0f172a',
+        features: JSON.stringify(["Hormigón de alta resistencia","Enfierraduras especializadas","Fundaciones y cimientos","Estructuras de concreto","Pavimentación industrial","Control de calidad certificado"]),
         display_order: 2
       },
       {
         title: 'Carpintería Especializada',
-        description: 'Carpintería en metalcom y madera para proyectos comerciales. Mobiliario y estructuras personalizadas.',
+        description: 'Soluciones arquitectónicas y mobiliario comercial',
         icon: 'Wrench',
-        image_url: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        image_url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         color: '#dc2626',
-        features: JSON.stringify(["Carpintería en metalcom","Mobiliario comercial","Estructuras de madera","Divisiones modulares","Muebles a medida","Instalación de estanterías"]),
+        features: JSON.stringify(["Carpintería en metalcom","Estructuras de aluminio","Mobiliario comercial","Soluciones arquitectónicas","Acabados de lujo","Diseño personalizado"]),
         display_order: 3
       },
       {
-        title: 'Estructuras Metálicas',
-        description: 'Diseño, fabricación e instalación de estructuras metálicas para uso industrial y comercial.',
+        title: 'Techumbres Industriales',
+        description: 'Cubiertas metálicas y sistemas de protección',
         icon: 'Home',
         image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         color: '#ea580c',
-        features: JSON.stringify(["Estructuras industriales","Techumbres metálicas","Escaleras y pasarelas","Galpones industriales","Estructuras antisísmicas","Soldadura certificada"]),
+        features: JSON.stringify(["Cubiertas metálicas","Sistemas de drenaje","Aislación térmica","Impermeabilización","Mantenimiento especializado","Garantía extendida"]),
         display_order: 4
       },
       {
         title: 'Acabados Premium',
-        description: 'Acabados de alta calidad para espacios comerciales y corporativos. Pintura, revestimientos y detalles arquitectónicos.',
+        description: 'Pintura industrial y acabados especiales',
         icon: 'Palette',
         image_url: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-        color: '#7c3aed',
-        features: JSON.stringify(["Pintura industrial y decorativa","Revestimientos especializados","Cielos falsos","Pisos industriales","Señalética corporativa","Acabados arquitectónicos"]),
+        color: '#059669',
+        features: JSON.stringify(["Pintura industrial","Acabados especiales","Protección anticorrosiva","Sistemas de recubrimiento","Preparación de superficies","Control de calidad"]),
         display_order: 5
       },
       {
-        title: 'Automatización',
-        description: 'Sistemas de automatización y control para procesos industriales y comerciales.',
+        title: 'Soldadura Certificada',
+        description: 'Soldadura especializada con certificación AWS',
         icon: 'Shield',
-        image_url: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-        color: '#0284c7',
-        features: JSON.stringify(["Sistemas de control automatizado","Sensores industriales","Programación PLC","Monitoreo remoto","Integración de sistemas","Mantenimiento predictivo"]),
+        image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#7c3aed',
+        features: JSON.stringify(["Soldadura especializada","Estructuras metálicas","Certificación AWS","Soldadura bajo agua","Reparaciones industriales","Control de calidad"]),
         display_order: 6
       }
     ];
@@ -793,6 +850,362 @@ app.post('/api/admin/migrate', async (req, res) => {
     }
     
     console.log('✅ Sample data inserted successfully!');
+    
+    // Insert real projects data from CSV export
+    console.log('📊 Inserting real projects data...');
+    const projectsData = [
+      {
+        title: 'Remodelación Jumbo Maipú',
+        description: 'Remodelación integral de supermercado Jumbo incluyendo sistemas eléctricos, obras civiles y acabados premium.',
+        category: 'Retail',
+        year: '2024',
+        area: '2,500 m²',
+        duration: '3 meses',
+        location: 'Maipú, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Servicios Eléctricos', 'Obras Civiles', 'Acabados Premium']),
+        highlights: JSON.stringify(['Instalación de sistema LED completo', 'Renovación de pisos industriales', 'Modernización de sistemas eléctricos', 'Acabados de alta calidad']),
+        display_order: 1
+      },
+      {
+        title: 'Construcción Bodega Construmart',
+        description: 'Construcción de bodega industrial con estructuras de alta resistencia y sistemas especializados.',
+        category: 'Industrial',
+        year: '2023',
+        area: '5,000 m²',
+        duration: '6 meses',
+        location: 'Quilicura, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Obras Civiles', 'Estructuras Metálicas', 'Techumbres']),
+        highlights: JSON.stringify(['Fundaciones de alta resistencia', 'Estructuras metálicas certificadas', 'Sistema de techumbre industrial', 'Instalaciones eléctricas industriales']),
+        display_order: 2
+      },
+      {
+        title: 'Remodelación Integral Departamento Residencial',
+        description: 'Proyecto de remodelación integral de departamento, incluyendo renovación de cocina y baños, cambio de revestimientos, actualización de instalaciones eléctricas y sanitarias, pintura completa y mejoras en distribución para optimizar espacios.',
+        category: 'Logística',
+        year: '2025',
+        area: '80 m²',
+        duration: '8 meses',
+        location: 'Viña del Mar, Chile',
+        image_url: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Obras Civiles', 'Automatización', 'Estructuras']),
+        highlights: JSON.stringify(['Sistemas automatizados', 'Estructuras de gran envergadura', 'Pavimentación especializada', 'Instalaciones de alta tecnología']),
+        display_order: 3
+      },
+      {
+        title: 'Modernización Easy Providencia',
+        description: 'Modernización completa de tienda Easy con nuevos estándares de diseño y funcionalidad.',
+        category: 'Retail',
+        year: '2024',
+        area: '3,200 m²',
+        duration: '4 meses',
+        location: 'Providencia, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Carpintería Especializada', 'Servicios Eléctricos', 'Acabados']),
+        highlights: JSON.stringify(['Mobiliario comercial personalizado', 'Sistemas de iluminación LED', 'Carpintería en metalcom', 'Acabados arquitectónicos']),
+        display_order: 4
+      },
+      {
+        title: 'Oficinas Corporativas',
+        description: 'Oficinas corporativas modernas con diseño arquitectónico de vanguardia.',
+        category: 'Corporativo',
+        year: '2024',
+        area: '1,800 m²',
+        duration: '5 meses',
+        location: 'Las Condes, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Carpintería', 'Acabados Premium', 'Servicios Eléctricos']),
+        highlights: JSON.stringify(['Diseño arquitectónico moderno', 'Acabados de lujo', 'Sistemas inteligentes', 'Espacios colaborativos']),
+        display_order: 5
+      }
+    ];
+    
+    for (const project of projectsData) {
+      await db.query(
+        `INSERT INTO projects (title, description, category, year, area, duration, location, image_url, services, highlights, display_order, active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, true, now(), now())`,
+        [project.title, project.description, project.category, project.year, project.area, project.duration, project.location, project.image_url, project.services, project.highlights, project.display_order]
+      );
+    }
+    console.log('✅ Real projects data inserted');
+    
+    // Insert real testimonials data from CSV export
+    console.log('📊 Inserting real testimonials data...');
+    const testimonialsData = [
+      {
+        client_name: 'Juan Pérez',
+        client_company: 'Jumbo Supermercados',
+        client_position: 'Gerente de Operaciones',
+        client_photo_url: '',
+        testimonial_text: 'Excelente trabajo en la remodelación de nuestra tienda. El equipo fue muy profesional y cumplió con todos los plazos establecidos. La calidad del trabajo superó nuestras expectativas.',
+        rating: 5,
+        project_name: 'Remodelación Jumbo Maipú',
+        display_order: 1
+      },
+      {
+        client_name: 'María González',
+        client_company: 'Construmart',
+        client_position: 'Jefa de Proyectos',
+        client_photo_url: '',
+        testimonial_text: 'La construcción de nuestra nueva bodega fue impecable. Destacamos la atención al detalle y el compromiso con la seguridad en cada etapa del proyecto.',
+        rating: 5,
+        project_name: 'Construcción Bodega Construmart',
+        display_order: 2
+      },
+      {
+        client_name: 'Carlos Rodríguez',
+        client_company: 'Easy',
+        client_position: 'Director de Mantención',
+        client_photo_url: '',
+        testimonial_text: 'Muy satisfechos con la modernización de nuestras instalaciones. El equipo demostró gran expertise técnico y excelente capacidad de coordinación.',
+        rating: 5,
+        project_name: 'Modernización Easy Providencia',
+        display_order: 3
+      }
+    ];
+    
+    for (const testimonial of testimonialsData) {
+      await db.query(
+        `INSERT INTO testimonials (client_name, client_company, client_position, client_photo_url, testimonial_text, rating, project_name, display_order, active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, now(), now())`,
+        [testimonial.client_name, testimonial.client_company, testimonial.client_position, testimonial.client_photo_url, testimonial.testimonial_text, testimonial.rating, testimonial.project_name, testimonial.display_order]
+      );
+    }
+    console.log('✅ Real testimonials data inserted');
+    
+    // Insert clients data from CSV export
+    console.log('📊 Inserting clients data...');
+    const clientsData = [
+      {
+        name: 'Jumbo',
+        logo_url: '/images/logos/jumbo.png',
+        website_url: null,
+        order_index: 1
+      },
+      {
+        name: 'Contrumart',
+        logo_url: '/images/logos/contrumart.png',
+        website_url: null,
+        order_index: 2
+      },
+      {
+        name: 'Santa Isabel',
+        logo_url: '/images/logos/Santa_Isabel.png',
+        website_url: null,
+        order_index: 3
+      },
+      {
+        name: 'Easy',
+        logo_url: '/images/logos/easy.png',
+        website_url: null,
+        order_index: 4
+      },
+      {
+        name: 'Líder',
+        logo_url: '/images/logos/Lider.png',
+        website_url: null,
+        order_index: 5
+      },
+      {
+        name: 'Homecenter Sodimac',
+        logo_url: '/images/logos/Homecenter_Sodimac.png',
+        website_url: null,
+        order_index: 6
+      }
+    ];
+    
+    for (const client of clientsData) {
+      await db.query(
+        `INSERT INTO clients (name, logo_url, website_url, order_index, is_active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, true, now(), now())`,
+        [client.name, client.logo_url, client.website_url, client.order_index]
+      );
+    }
+    console.log('✅ Clients data inserted');
+    
+    // Insert site stats data from CSV export
+    console.log('📊 Inserting site stats data...');
+    const siteStatsData = [
+      {
+        label: 'Años de Experiencia',
+        value: '15+',
+        icon: 'Award',
+        order_index: 1
+      },
+      {
+        label: 'Proyectos Completados',
+        value: '250+',
+        icon: 'Target',
+        order_index: 2
+      },
+      {
+        label: 'Clientes Satisfechos',
+        value: '50+',
+        icon: 'Star',
+        order_index: 3
+      },
+      {
+        label: 'Índice de Seguridad',
+        value: '0% Accidentes',
+        icon: 'Shield',
+        order_index: 4
+      }
+    ];
+    
+    for (const stat of siteStatsData) {
+      await db.query(
+        `INSERT INTO site_stats (label, value, icon, order_index, is_active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, true, now(), now())`,
+        [stat.label, stat.value, stat.icon, stat.order_index]
+      );
+    }
+    console.log('✅ Site stats data inserted');
+    
+    // Insert certifications data from CSV export
+    console.log('📊 Inserting certifications data...');
+    const certificationsData = [
+      {
+        name: 'ISO 9001:2015',
+        issuer: 'ISO',
+        logo_url: '',
+        order_index: 1
+      },
+      {
+        name: 'Certificación SEC',
+        issuer: 'SEC',
+        logo_url: '',
+        order_index: 2
+      },
+      {
+        name: 'Mutual de Seguridad',
+        issuer: 'Mutual de Seguridad',
+        logo_url: '',
+        order_index: 3
+      }
+    ];
+    
+    for (const cert of certificationsData) {
+      await db.query(
+        `INSERT INTO certifications (name, issuer, logo_url, order_index, is_active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, true, now(), now())`,
+        [cert.name, cert.issuer, cert.logo_url, cert.order_index]
+      );
+    }
+    console.log('✅ Certifications data inserted');
+    
+    // Insert email settings data from CSV export
+    console.log('📊 Inserting email settings data...');
+    await db.query(
+      `INSERT INTO email_settings (smtp_host, smtp_port, smtp_user, smtp_password, from_email, from_name, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, now(), now())`,
+      [
+        'mail.imcsonline.online',
+        465,
+        'contacto@imcsonline.online',
+        'Marcelo2025..',
+        'contacto@imcsonline.online',
+        'IMC Servicios Chile'
+      ]
+    );
+    console.log('✅ Email settings data inserted');
+    
+    // Insert site images data from CSV export
+    console.log('📊 Inserting site images data...');
+    const siteImagesData = [
+      {
+        key: 'hero_banner',
+        url: 'https://images.pexels.com/photos/1078884/pexels-photo-1078884.jpeg',
+        alt_text: 'Banner principal',
+        order_index: 1
+      },
+      {
+        key: 'about_image',
+        url: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg',
+        alt_text: 'Sobre nosotros',
+        order_index: 2
+      },
+      {
+        key: 'parallax_1',
+        url: 'https://images.pexels.com/photos/1170686/pexels-photo-1170686.jpeg',
+        alt_text: 'Parallax 1',
+        order_index: 3
+      },
+      {
+        key: 'parallax_2',
+        url: 'https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg',
+        alt_text: 'Parallax 2',
+        order_index: 4
+      }
+    ];
+    
+    for (const image of siteImagesData) {
+      await db.query(
+        `INSERT INTO site_images (key, url, alt_text, order_index, is_active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, true, now(), now())`,
+        [image.key, image.url, image.alt_text, image.order_index]
+      );
+    }
+    console.log('✅ Site images data inserted');
+    
+    // Insert additional color schemes from CSV export
+    console.log('📊 Inserting additional color schemes...');
+    const additionalColorSchemes = [
+      {
+        name: 'Naranja Energético',
+        is_active: false,
+        primary_color: '#ea580c',
+        secondary_color: '#9a3412',
+        accent_color: '#fb923c',
+        background_color: '#ffffff',
+        text_color: '#292524',
+        text_light_color: '#78716c',
+        border_color: '#e7e5e4',
+        success_color: '#10b981',
+        warning_color: '#f59e0b',
+        error_color: '#ef4444',
+        overlay_color: 'rgba(0, 0, 0, 0.5)'
+      },
+      {
+        name: 'Verde Corporativo',
+        is_active: false,
+        primary_color: '#059669',
+        secondary_color: '#047857',
+        accent_color: '#10b981',
+        background_color: '#ffffff',
+        text_color: '#1f2937',
+        text_light_color: '#6b7280',
+        border_color: '#e5e7eb',
+        success_color: '#10b981',
+        warning_color: '#f59e0b',
+        error_color: '#ef4444',
+        overlay_color: 'rgba(0, 0, 0, 0.5)'
+      },
+      {
+        name: 'Rojo Corporativo',
+        is_active: false,
+        primary_color: '#dc2626',
+        secondary_color: '#7f1d1d',
+        accent_color: '#ef4444',
+        background_color: '#ffffff',
+        text_color: '#18181b',
+        text_light_color: '#52525b',
+        border_color: '#e4e4e7',
+        success_color: '#10b981',
+        warning_color: '#f59e0b',
+        error_color: '#ef4444',
+        overlay_color: 'rgba(0, 0, 0, 0.5)'
+      }
+    ];
+    
+    for (const scheme of additionalColorSchemes) {
+      await db.query(
+        `INSERT INTO color_schemes (name, is_active, primary_color, secondary_color, accent_color, background_color, text_color, text_light_color, border_color, success_color, warning_color, error_color, overlay_color, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, now(), now())`,
+        [scheme.name, scheme.is_active, scheme.primary_color, scheme.secondary_color, scheme.accent_color, scheme.background_color, scheme.text_color, scheme.text_light_color, scheme.border_color, scheme.success_color, scheme.warning_color, scheme.error_color, scheme.overlay_color]
+      );
+    }
+    console.log('✅ Additional color schemes inserted');
     
     // Insert additional data
     console.log('📊 Inserting additional data...');
@@ -854,6 +1267,8 @@ app.post('/api/admin/migrate', async (req, res) => {
       console.log('✅ Color scheme inserted');
       
       console.log('✅ Additional data inserted successfully!');
+    
+    console.log('✅ All additional data inserted successfully!');
     } catch (error) {
       console.error('❌ Error inserting additional data:', error);
       // Continue with verification even if additional data fails
@@ -904,7 +1319,150 @@ app.post('/api/admin/migrate', async (req, res) => {
   }
 });
 
-// Test endpoint to check migration file content
+// Insert real data endpoint
+app.post('/api/admin/insert-real-data', async (req, res) => {
+  try {
+    console.log('🚀 Starting real data insertion...');
+    
+    // Clear existing data first (except services which are already correct)
+    console.log('🗑️ Clearing existing project and testimonial data...');
+    await db.query('DELETE FROM projects;');
+    await db.query('DELETE FROM testimonials;');
+    console.log('✅ Existing data cleared');
+    
+    // Insert projects data
+    console.log('📊 Inserting projects data...');
+    const projectsData = [
+      {
+        title: 'Remodelación Jumbo Maipú',
+        description: 'Remodelación integral de supermercado Jumbo incluyendo sistemas eléctricos, obras civiles y acabados premium.',
+        category: 'Retail',
+        year: '2024',
+        area: '2,500 m²',
+        duration: '3 meses',
+        location: 'Maipú, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Servicios Eléctricos', 'Obras Civiles', 'Acabados Premium']),
+        highlights: JSON.stringify(['Instalación de sistema LED completo', 'Renovación de pisos industriales', 'Modernización de sistemas eléctricos', 'Acabados de alta calidad']),
+        display_order: 1
+      },
+      {
+        title: 'Construcción Bodega Construmart',
+        description: 'Construcción de bodega industrial con estructuras de alta resistencia y sistemas especializados.',
+        category: 'Industrial',
+        year: '2023',
+        area: '5,000 m²',
+        duration: '6 meses',
+        location: 'Quilicura, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Obras Civiles', 'Estructuras Metálicas', 'Techumbres']),
+        highlights: JSON.stringify(['Fundaciones de alta resistencia', 'Estructuras metálicas certificadas', 'Sistema de techumbre industrial', 'Instalaciones eléctricas industriales']),
+        display_order: 2
+      },
+      {
+        title: 'Modernización Easy Providencia',
+        description: 'Modernización completa de tienda Easy con nuevos estándares de diseño y funcionalidad.',
+        category: 'Retail',
+        year: '2024',
+        area: '3,200 m²',
+        duration: '4 meses',
+        location: 'Providencia, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Carpintería Especializada', 'Servicios Eléctricos', 'Acabados']),
+        highlights: JSON.stringify(['Mobiliario comercial personalizado', 'Sistemas de iluminación LED', 'Carpintería en metalcom', 'Acabados arquitectónicos']),
+        display_order: 3
+      },
+      {
+        title: 'Oficinas Corporativas',
+        description: 'Oficinas corporativas modernas con diseño arquitectónico de vanguardia.',
+        category: 'Corporativo',
+        year: '2024',
+        area: '1,800 m²',
+        duration: '5 meses',
+        location: 'Las Condes, Santiago',
+        image_url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        services: JSON.stringify(['Carpintería', 'Acabados Premium', 'Servicios Eléctricos']),
+        highlights: JSON.stringify(['Diseño arquitectónico moderno', 'Acabados de lujo', 'Sistemas inteligentes', 'Espacios colaborativos']),
+        display_order: 4
+      }
+    ];
+    
+    let projectCount = 0;
+    for (const project of projectsData) {
+      const result = await db.query(
+        `INSERT INTO projects (title, description, category, year, area, duration, location, image_url, services, highlights, display_order, active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, true, now(), now()) RETURNING id`,
+        [project.title, project.description, project.category, project.year, project.area, project.duration, project.location, project.image_url, project.services, project.highlights, project.display_order]
+      );
+      console.log(`✅ Inserted project: ${project.title} (ID: ${result.rows[0].id})`);
+      projectCount++;
+    }
+    
+    // Insert testimonials data
+    console.log('📊 Inserting testimonials data...');
+    const testimonialsData = [
+      {
+        client_name: 'Juan Pérez',
+        client_company: 'Jumbo Supermercados',
+        client_position: 'Gerente de Operaciones',
+        client_photo_url: '',
+        testimonial_text: 'Excelente trabajo en la remodelación de nuestra tienda. El equipo fue muy profesional y cumplió con todos los plazos establecidos. La calidad del trabajo superó nuestras expectativas.',
+        rating: 5,
+        project_name: 'Remodelación Jumbo Maipú',
+        display_order: 1
+      },
+      {
+        client_name: 'María González',
+        client_company: 'Construmart',
+        client_position: 'Jefa de Proyectos',
+        client_photo_url: '',
+        testimonial_text: 'La construcción de nuestra nueva bodega fue impecable. Destacamos la atención al detalle y el compromiso con la seguridad en cada etapa del proyecto.',
+        rating: 5,
+        project_name: 'Construcción Bodega Construmart',
+        display_order: 2
+      },
+      {
+        client_name: 'Carlos Rodríguez',
+        client_company: 'Easy',
+        client_position: 'Director de Mantención',
+        client_photo_url: '',
+        testimonial_text: 'Muy satisfechos con la modernización de nuestras instalaciones. El equipo demostró gran expertise técnico y excelente capacidad de coordinación.',
+        rating: 5,
+        project_name: 'Modernización Easy Providencia',
+        display_order: 3
+      }
+    ];
+    
+    let testimonialCount = 0;
+    for (const testimonial of testimonialsData) {
+      const result = await db.query(
+        `INSERT INTO testimonials (client_name, client_company, client_position, client_photo_url, testimonial_text, rating, project_name, display_order, active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, now(), now()) RETURNING id`,
+        [testimonial.client_name, testimonial.client_company, testimonial.client_position, testimonial.client_photo_url, testimonial.testimonial_text, testimonial.rating, testimonial.project_name, testimonial.display_order]
+      );
+      console.log(`✅ Inserted testimonial: ${testimonial.client_name} (ID: ${result.rows[0].id})`);
+      testimonialCount++;
+    }
+    
+    console.log('🎉 Real data insertion completed successfully!');
+    
+    res.json({
+      success: true,
+      message: 'Real data inserted successfully',
+      results: {
+        projects_inserted: projectCount,
+        testimonials_inserted: testimonialCount
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Error inserting real data:', error);
+    res.status(500).json({ 
+      error: 'Real data insertion failed', 
+      details: error.message 
+    });
+  }
+});
 app.get('/api/admin/test-migration', async (req, res) => {
   try {
     const fs = await import('fs');

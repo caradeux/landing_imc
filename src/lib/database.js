@@ -246,6 +246,37 @@ export const db = {
       [schemeId]
     );
     return result.rows[0];
+  },
+
+  // Create testimonial
+  async createTestimonial(testimonialData) {
+    const { client_name, client_company, client_position, client_photo_url, content, rating, project_name, display_order } = testimonialData;
+    const result = await this.query(
+      `INSERT INTO testimonials (client_name, client_company, client_position, client_photo_url, testimonial_text, rating, project_name, display_order) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+      [client_name, client_company, client_position, client_photo_url, content, rating, project_name, display_order]
+    );
+    return result.rows[0];
+  },
+
+  // Update testimonial
+  async updateTestimonial(id, testimonialData) {
+    const { client_name, client_company, client_position, client_photo_url, content, rating, project_name, display_order, active } = testimonialData;
+    const result = await this.query(
+      `UPDATE testimonials 
+       SET client_name = $2, client_company = $3, client_position = $4, client_photo_url = $5, 
+           testimonial_text = $6, rating = $7, project_name = $8, display_order = $9, 
+           active = $10, updated_at = now()
+       WHERE id = $1 RETURNING *`,
+      [id, client_name, client_company, client_position, client_photo_url, content, rating, project_name, display_order, active]
+    );
+    return result.rows[0];
+  },
+
+  // Delete testimonial
+  async deleteTestimonial(id) {
+    const result = await this.query('DELETE FROM testimonials WHERE id = $1 RETURNING *', [id]);
+    return result.rows[0];
   }
 };
 

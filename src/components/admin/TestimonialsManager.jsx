@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Plus, Edit2, Trash2, Save, Star, AlertCircle } from 'lucide-react'
 
 const TestimonialsManager = () => {
@@ -25,13 +25,8 @@ const TestimonialsManager = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-      setTestimonials(data || [])
+      const testimonials = await api.getTestimonials()
+      setTestimonials(testimonials || [])
     } catch (err) {
       setError('Error al cargar testimonios: ' + err.message)
     } finally {
@@ -45,18 +40,9 @@ const TestimonialsManager = () => {
 
     try {
       if (editingId) {
-        const { error } = await supabase
-          .from('testimonials')
-          .update(formData)
-          .eq('id', editingId)
-
-        if (error) throw error
+        await api.updateTestimonial(editingId, formData)
       } else {
-        const { error } = await supabase
-          .from('testimonials')
-          .insert([formData])
-
-        if (error) throw error
+        await api.createTestimonial(formData)
       }
 
       await fetchTestimonials()
@@ -73,7 +59,7 @@ const TestimonialsManager = () => {
       client_company: testimonial.client_company,
       client_position: testimonial.client_position,
       client_photo_url: testimonial.client_photo_url,
-      content: testimonial.content,
+      content: testimonial.testimonial_text, // Map database field to form field
       rating: testimonial.rating,
       project_name: testimonial.project_name,
       display_order: testimonial.display_order,
@@ -85,12 +71,7 @@ const TestimonialsManager = () => {
     if (!confirm('¿Estás seguro de eliminar este testimonio?')) return
 
     try {
-      const { error } = await supabase
-        .from('testimonials')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
+      await api.deleteTestimonial(id)
       await fetchTestimonials()
     } catch (err) {
       setError('Error al eliminar: ' + err.message)
@@ -490,7 +471,7 @@ const TestimonialsManager = () => {
               marginBottom: '15px',
               fontStyle: 'italic'
             }}>
-              "{testimonial.content}"
+              "{testimonial.testimonial_text}"
             </p>
 
             {testimonial.project_name && (

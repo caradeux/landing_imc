@@ -178,6 +178,19 @@ class ApiClient {
     return this.put(`/admin/color-schemes/${id}/activate`);
   }
 
+  // Testimonials Admin
+  async createTestimonial(testimonialData) {
+    return this.post('/admin/testimonials', testimonialData);
+  }
+
+  async updateTestimonial(id, testimonialData) {
+    return this.put(`/admin/testimonials/${id}`, testimonialData);
+  }
+
+  async deleteTestimonial(id) {
+    return this.delete(`/admin/testimonials/${id}`);
+  }
+
   // =====================================================
   // SUPABASE COMPATIBILITY LAYER
   // =====================================================
@@ -320,6 +333,9 @@ export const {
   createProject,
   updateProject,
   deleteProject,
+  createTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
   updateSiteSettings,
   updateContactInfo,
   activateColorScheme,
