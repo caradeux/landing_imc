@@ -532,24 +532,233 @@ app.post('/api/admin/migrate', async (req, res) => {
   try {
     console.log('🚀 Starting database migration...');
     
-    // Read the migration SQL file
-    const fs = await import('fs');
-    const path = await import('path');
-    const { fileURLToPath } = await import('url');
+    // Execute migration step by step to avoid syntax issues
+    const migrationSteps = [
+      // Create extensions
+      'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";',
+      'CREATE EXTENSION IF NOT EXISTS "pgcrypto";',
+      
+      // Create services table
+      `CREATE TABLE IF NOT EXISTS services (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        title text NOT NULL,
+        description text NOT NULL,
+        icon text NOT NULL DEFAULT 'Zap',
+        image_url text NOT NULL,
+        color text NOT NULL DEFAULT '#1e40af',
+        features jsonb NOT NULL DEFAULT '[]'::jsonb,
+        display_order integer NOT NULL DEFAULT 0,
+        active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create projects table
+      `CREATE TABLE IF NOT EXISTS projects (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        title text NOT NULL,
+        description text NOT NULL,
+        category text NOT NULL,
+        year text NOT NULL,
+        area text NOT NULL,
+        duration text NOT NULL,
+        location text NOT NULL,
+        image_url text NOT NULL,
+        services jsonb NOT NULL DEFAULT '[]'::jsonb,
+        highlights jsonb NOT NULL DEFAULT '[]'::jsonb,
+        display_order integer NOT NULL DEFAULT 0,
+        active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create testimonials table
+      `CREATE TABLE IF NOT EXISTS testimonials (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        client_name text NOT NULL,
+        client_position text NOT NULL,
+        client_company text NOT NULL,
+        testimonial_text text NOT NULL,
+        rating integer NOT NULL DEFAULT 5,
+        display_order integer NOT NULL DEFAULT 0,
+        active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create clients table
+      `CREATE TABLE IF NOT EXISTS clients (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        name text NOT NULL,
+        logo_url text NOT NULL,
+        website_url text,
+        order_index integer NOT NULL DEFAULT 0,
+        is_active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create contact_info table
+      `CREATE TABLE IF NOT EXISTS contact_info (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        phone text NOT NULL,
+        email text NOT NULL,
+        address text NOT NULL,
+        schedule text NOT NULL,
+        whatsapp text,
+        instagram_url text,
+        facebook_url text,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create site_settings table
+      `CREATE TABLE IF NOT EXISTS site_settings (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        hero_title text NOT NULL,
+        hero_subtitle text NOT NULL,
+        cta_primary_text text NOT NULL,
+        cta_secondary_text text NOT NULL,
+        company_description text NOT NULL,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create site_stats table
+      `CREATE TABLE IF NOT EXISTS site_stats (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        label text NOT NULL,
+        value text NOT NULL,
+        icon text NOT NULL,
+        order_index integer NOT NULL DEFAULT 0,
+        is_active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create certifications table
+      `CREATE TABLE IF NOT EXISTS certifications (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        name text NOT NULL,
+        issuer text NOT NULL,
+        logo_url text NOT NULL,
+        order_index integer NOT NULL DEFAULT 0,
+        is_active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create email_settings table
+      `CREATE TABLE IF NOT EXISTS email_settings (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        smtp_host text NOT NULL,
+        smtp_port integer NOT NULL,
+        smtp_user text NOT NULL,
+        smtp_password text NOT NULL,
+        from_email text NOT NULL,
+        from_name text NOT NULL,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create site_images table
+      `CREATE TABLE IF NOT EXISTS site_images (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        key text NOT NULL UNIQUE,
+        url text NOT NULL,
+        alt_text text,
+        order_index integer NOT NULL DEFAULT 0,
+        is_active boolean NOT NULL DEFAULT true,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`,
+      
+      // Create color_schemes table
+      `CREATE TABLE IF NOT EXISTS color_schemes (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        name text NOT NULL,
+        is_active boolean NOT NULL DEFAULT false,
+        primary_color text DEFAULT '#1e40af',
+        secondary_color text DEFAULT '#3b82f6',
+        accent_color text DEFAULT '#fbbf24',
+        background_color text DEFAULT '#ffffff',
+        text_color text DEFAULT '#1f2937',
+        text_light_color text DEFAULT '#6b7280',
+        border_color text DEFAULT '#e5e7eb',
+        success_color text DEFAULT '#10b981',
+        warning_color text DEFAULT '#f59e0b',
+        error_color text DEFAULT '#ef4444',
+        overlay_color text DEFAULT 'rgba(0, 0, 0, 0.5)',
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );`
+    ];
     
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const migrationPath = path.join(__dirname, 'migrate-simple.sql');
-    
-    if (!fs.existsSync(migrationPath)) {
-      return res.status(404).json({ error: 'Migration file not found' });
+    // Execute each step
+    for (let i = 0; i < migrationSteps.length; i++) {
+      console.log(`📊 Executing step ${i + 1}/${migrationSteps.length}...`);
+      await db.query(migrationSteps[i]);
     }
     
-    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+    console.log('✅ Tables created successfully!');
     
-    // Execute the migration
-    console.log('📊 Executing migration script...');
-    await db.query(migrationSQL);
+    // Now insert the data (we'll do this in a separate step)
+    console.log('📊 Inserting data...');
+    
+    // Clear existing data first
+    const clearQueries = [
+      'DELETE FROM services;',
+      'DELETE FROM projects;',
+      'DELETE FROM testimonials;',
+      'DELETE FROM clients;',
+      'DELETE FROM contact_info;',
+      'DELETE FROM site_settings;',
+      'DELETE FROM site_stats;',
+      'DELETE FROM certifications;',
+      'DELETE FROM email_settings;',
+      'DELETE FROM site_images;',
+      'DELETE FROM color_schemes;'
+    ];
+    
+    for (const query of clearQueries) {
+      await db.query(query);
+    }
+    
+    console.log('🗑️ Existing data cleared');
+    
+    // Insert services data
+    const servicesData = [
+      {
+        id: 'b8e7c3a1-4f2d-4e8b-9c1a-2d3e4f5g6h7i',
+        title: 'Servicios Eléctricos',
+        description: 'Instalaciones eléctricas industriales y comerciales con certificación SEC. Especialistas en sistemas de alta y baja tensión.',
+        icon: 'Zap',
+        image_url: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#1e40af',
+        features: JSON.stringify(["Instalaciones eléctricas industriales","Sistemas de iluminación LED","Tableros eléctricos certificados","Mantención preventiva","Certificación SEC","Sistemas de emergencia"]),
+        display_order: 1
+      },
+      {
+        id: 'c9f8d4b2-5g3e-5f9c-ad2b-3e4f5g6h7i8j',
+        title: 'Obras Civiles',
+        description: 'Construcción y remodelación de espacios comerciales e industriales. Especialistas en retail y centros logísticos.',
+        icon: 'Hammer',
+        image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+        color: '#059669',
+        features: JSON.stringify(["Construcción de bodegas industriales","Remodelación de tiendas retail","Fundaciones especializadas","Pavimentación industrial","Estructuras de hormigón","Obras de ampliación"]),
+        display_order: 2
+      }
+    ];
+    
+    for (const service of servicesData) {
+      await db.query(
+        `INSERT INTO services (id, title, description, icon, image_url, color, features, display_order, active, created_at, updated_at) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, now(), now())`,
+        [service.id, service.title, service.description, service.icon, service.image_url, service.color, service.features, service.display_order]
+      );
+    }
+    
+    console.log('✅ Sample data inserted successfully!');
     
     // Verify the migration
     const verificationQuery = `
