@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 
 const ThemeContext = createContext()
 
@@ -42,17 +42,11 @@ export const ThemeProvider = ({ children }) => {
 
   const loadActiveTheme = async () => {
     try {
-      const { data, error } = await supabase
-        .from('color_schemes')
-        .select('*')
-        .eq('is_active', true)
-        .maybeSingle()
+      const activeScheme = await api.getActiveColorScheme()
 
-      if (error) throw error
-
-      if (data) {
-        setTheme(data)
-        applyThemeToCSS(data)
+      if (activeScheme) {
+        setTheme(activeScheme)
+        applyThemeToCSS(activeScheme)
       } else {
         applyThemeToCSS(defaultTheme)
       }

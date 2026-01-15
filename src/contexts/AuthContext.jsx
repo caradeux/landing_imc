@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext({})
 
@@ -13,45 +12,38 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
+  // Simplified auth - for now, we'll use a basic admin check
+  // In the future, this can be replaced with proper JWT authentication
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user ?? null)
-      setLoading(false)
+    // Check if user is logged in (localStorage for now)
+    const savedUser = localStorage.getItem('admin_user')
+    if (savedUser) {
+      setUser(JSON.parse(savedUser))
     }
-
-    getSession()
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      (async () => {
-        setUser(session?.user ?? null)
-      })()
-    })
+    setLoading(false)
   }, [])
 
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    if (error) throw error
-    return data
+    // Simple admin login - replace with proper authentication later
+    if (email === 'admin@imcsonline.online' && password === 'admin123') {
+      const userData = { email, id: '1', role: 'admin' }
+      setUser(userData)
+      localStorage.setItem('admin_user', JSON.stringify(userData))
+      return { user: userData }
+    } else {
+      throw new Error('Invalid credentials')
+    }
   }
 
   const signUp = async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-    if (error) throw error
-    return data
+    throw new Error('Sign up not implemented yet')
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) throw error
+    setUser(null)
+    localStorage.removeItem('admin_user')
   }
 
   const value = {

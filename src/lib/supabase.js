@@ -1,10 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
+// Legacy Supabase compatibility layer
+// This file provides backward compatibility for components that haven't been migrated yet
+import { api } from './api'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+// Export the API client as supabase for backward compatibility
+export const supabase = {
+  from: (table) => api.from(table),
+  // Add other Supabase methods as needed for compatibility
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// For components that import { supabase } directly
+export default supabase
