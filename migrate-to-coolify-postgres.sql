@@ -197,12 +197,12 @@ CREATE TABLE IF NOT EXISTS color_schemes (
 
 -- Function to update updated_at column
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $
+RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Create triggers for updated_at
 CREATE TRIGGER update_services_updated_at
@@ -252,7 +252,7 @@ CREATE TRIGGER update_color_schemes_updated_at
 
 -- Function to ensure single active color scheme
 CREATE OR REPLACE FUNCTION ensure_single_active_color_scheme()
-RETURNS TRIGGER AS $
+RETURNS TRIGGER AS $$
 BEGIN
   IF NEW.is_active = true THEN
     UPDATE color_schemes 
@@ -261,7 +261,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER ensure_single_active_scheme
   BEFORE INSERT OR UPDATE ON color_schemes

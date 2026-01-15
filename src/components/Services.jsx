@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Zap, Hammer, Wrench, Home, Palette, Shield, ArrowRight } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import ParallaxSection from './ParallaxSection'
 
 const iconMap = {

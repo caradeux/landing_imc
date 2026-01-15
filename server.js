@@ -539,7 +539,7 @@ app.post('/api/admin/migrate', async (req, res) => {
     
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const migrationPath = path.join(__dirname, 'migrate-to-coolify-postgres.sql');
+    const migrationPath = path.join(__dirname, 'migrate-simple.sql');
     
     if (!fs.existsSync(migrationPath)) {
       return res.status(404).json({ error: 'Migration file not found' });

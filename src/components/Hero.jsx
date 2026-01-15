@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import ParallaxSection from './ParallaxSection'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 
 const Hero = ({ onQuoteClick }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -32,14 +32,7 @@ const Hero = ({ onQuoteClick }) => {
 
   const loadSiteSettings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('*')
-        .limit(1)
-        .maybeSingle()
-
-      if (error) throw error
-
+      const data = await api.getSiteSettings()
       if (data) {
         setSiteSettings(data)
       }
@@ -50,17 +43,12 @@ const Hero = ({ onQuoteClick }) => {
 
   const loadBannerImages = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_images')
-        .select('*')
-        .eq('category', 'banner')
-        .eq('is_active', true)
-        .order('order_index', { ascending: true })
+      const images = await api.getSiteImages()
+      const bannerImages = images.filter(img => img.category === 'banner' && img.is_active)
+        .sort((a, b) => a.order_index - b.order_index)
 
-      if (error) throw error
-
-      if (data && data.length > 0) {
-        const formattedSlides = data.map(img => ({
+      if (bannerImages && bannerImages.length > 0) {
+        const formattedSlides = bannerImages.map(img => ({
           image: img.url
         }))
         setSlides(formattedSlides)
