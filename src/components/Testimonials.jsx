@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Star, Quote } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import ParallaxSection from './ParallaxSection'
 
 const Testimonials = () => {
@@ -14,14 +14,8 @@ const Testimonials = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .eq('active', true)
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-      setTestimonials(data || [])
+      const testimonials = await api.getTestimonials()
+      setTestimonials(testimonials || [])
     } catch (error) {
       console.error('Error al cargar testimonios:', error)
     } finally {

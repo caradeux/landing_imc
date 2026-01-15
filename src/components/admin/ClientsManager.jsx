@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../lib/supabase'
+import { api } from '../../lib/api'
 import { Plus, Edit2, Trash2, Save, X, AlertCircle, Building2, ArrowUp, ArrowDown } from 'lucide-react'
 
 const ClientsManager = () => {
@@ -23,13 +23,8 @@ const ClientsManager = () => {
 
   const loadClients = async () => {
     try {
-      const { data, error } = await supabase
-        .from('clients')
-        .select('*')
-        .order('order_index', { ascending: true })
-
-      if (error) throw error
-      setClients(data || [])
+      const clients = await api.getClients()
+      setClients(clients || [])
     } catch (error) {
       console.error('Error loading clients:', error)
       setMessage({ type: 'error', text: 'Error al cargar los clientes' })

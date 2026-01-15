@@ -23,15 +23,9 @@ const Services = () => {
 
   const fetchServices = async () => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .eq('active', true)
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-
-      const servicesWithIcons = (data || []).map(service => ({
+      const services = await api.getServices()
+      
+      const servicesWithIcons = (services || []).map(service => ({
         ...service,
         icon: iconMap[service.icon] || Zap
       }))

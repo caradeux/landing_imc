@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Calendar, MapPin, Users, Clock, ArrowRight, X } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { supabase } from '../lib/supabase'
+import { api } from '../lib/api'
 import ParallaxSection from './ParallaxSection'
 
 const Projects = () => {
@@ -16,14 +16,8 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('active', true)
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-      setProjects(data || [])
+      const projects = await api.getProjects()
+      setProjects(projects || [])
     } catch (error) {
       console.error('Error al cargar proyectos:', error)
     } finally {
