@@ -65,12 +65,31 @@ const Header = ({ isScrolled, onQuoteClick }) => {
               ))}
             </div>
             
-            <button 
-              className="btn btn-primary"
+            <button
               onClick={onQuoteClick}
-              style={{ marginLeft: '20px' }}
+              style={{
+                marginLeft: '20px',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '25px',
+                padding: '12px 28px',
+                fontSize: '15px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(245, 158, 11, 0.4)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'scale(1.05)'
+                e.target.style.boxShadow = '0 6px 25px rgba(245, 158, 11, 0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'scale(1)'
+                e.target.style.boxShadow = '0 4px 20px rgba(245, 158, 11, 0.4)'
+              }}
             >
-              Cotizar Proyecto
+              Cotiza Gratis
             </button>
 
             {/* Mobile Menu Button */}
@@ -123,12 +142,23 @@ const Header = ({ isScrolled, onQuoteClick }) => {
                 {item.name}
               </button>
             ))}
-            <button 
-              className="btn btn-primary"
+            <button
               onClick={onQuoteClick}
-              style={{ width: '100%', marginTop: '15px' }}
+              style={{
+                width: '100%',
+                marginTop: '15px',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '25px',
+                padding: '14px 28px',
+                fontSize: '16px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(245, 158, 11, 0.4)'
+              }}
             >
-              Cotizar Proyecto
+              Cotiza Gratis
             </button>
           </div>
         )}

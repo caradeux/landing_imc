@@ -3,7 +3,7 @@ import { useAuth } from './contexts/AuthContext'
 import SEO from './components/SEO'
 import TopBar from './components/TopBar'
 import Header from './components/Header'
-import PromoBanner from './components/PromoBanner'
+// PromoBanner removed per user request
 import Hero from './components/Hero'
 import ProductosEstrella from './components/ProductosEstrella'
 import ProcesoTrabajo from './components/ProcesoTrabajo'
@@ -66,7 +66,6 @@ function App() {
   return (
     <div className="App">
       <SEO />
-      <PromoBanner />
       <TopBar />
       <Header
         isScrolled={isScrolled}
@@ -75,7 +74,6 @@ function App() {
       <Hero onQuoteClick={() => setIsQuoteModalOpen(true)} />
       <ProductosEstrella />
       <ProcesoTrabajo />
-      <Services />
       <About />
       <Projects />
       <Testimonials />

@@ -48,9 +48,9 @@ const ProductosEstrella = () => {
   }
 
   return (
-    <section style={{
-      padding: '80px 0',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+    <section id="services" style={{
+      padding: '100px 0',
+      background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -90,27 +90,31 @@ const ProductosEstrella = () => {
           </span>
           <h2 style={{
             color: 'white',
-            fontSize: '2.8rem',
+            fontSize: '3rem',
             fontWeight: '800',
-            marginBottom: '15px'
+            marginBottom: '20px',
+            lineHeight: '1.2'
           }}>
-            Nuestros Servicios Estrella
+            Nuestros Servicios
           </h2>
           <p style={{
             color: 'rgba(255,255,255,0.7)',
-            fontSize: '1.1rem',
-            maxWidth: '600px',
-            margin: '0 auto'
+            fontSize: '1.2rem',
+            maxWidth: '650px',
+            margin: '0 auto',
+            lineHeight: '1.6'
           }}>
-            Especialistas en fabricación e instalación con los mejores materiales y garantía
+            Fabricación e instalación profesional con garantía. Más de 15 años transformando hogares en la V Región.
           </p>
         </motion.div>
 
         {/* Products Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '25px'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '30px',
+          maxWidth: '1300px',
+          margin: '0 auto'
         }}>
           {productos.map((producto, index) => (
             <motion.div
@@ -119,16 +123,17 @@ const ProductosEstrella = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
               style={{
                 background: 'white',
-                borderRadius: '20px',
+                borderRadius: '24px',
                 overflow: 'hidden',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.3)'
+                boxShadow: '0 25px 60px rgba(0,0,0,0.25)'
               }}
             >
               {/* Image */}
               <div style={{
-                height: '180px',
+                height: '220px',
                 backgroundImage: `url(${producto.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -136,49 +141,65 @@ const ProductosEstrella = () => {
               }}>
                 <div style={{
                   position: 'absolute',
+                  inset: 0,
+                  background: `linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.4) 100%)`
+                }} />
+                <div style={{
+                  position: 'absolute',
                   top: '15px',
                   right: '15px',
-                  background: producto.color,
-                  color: 'white',
-                  padding: '6px 14px',
-                  borderRadius: '15px',
-                  fontSize: '13px',
-                  fontWeight: '700'
+                  background: 'rgba(255,255,255,0.95)',
+                  color: producto.color,
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  fontSize: '14px',
+                  fontWeight: '800',
+                  backdropFilter: 'blur(10px)'
                 }}>
                   {producto.precio}
                 </div>
               </div>
 
               {/* Content */}
-              <div style={{ padding: '25px' }}>
+              <div style={{ padding: '28px' }}>
                 <h3 style={{
-                  fontSize: '1.4rem',
-                  fontWeight: '700',
-                  marginBottom: '10px',
-                  color: '#333'
+                  fontSize: '1.5rem',
+                  fontWeight: '800',
+                  marginBottom: '12px',
+                  color: '#1e293b'
                 }}>
                   {producto.title}
                 </h3>
                 <p style={{
-                  color: '#666',
-                  fontSize: '14px',
-                  marginBottom: '15px',
-                  lineHeight: '1.5'
+                  color: '#64748b',
+                  fontSize: '15px',
+                  marginBottom: '20px',
+                  lineHeight: '1.6'
                 }}>
                   {producto.description}
                 </p>
 
                 {/* Features */}
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: '24px' }}>
                   {producto.features.map((feature, idx) => (
                     <div key={idx} style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: '6px'
+                      gap: '10px',
+                      marginBottom: '8px'
                     }}>
-                      <Check size={16} style={{ color: producto.color }} />
-                      <span style={{ fontSize: '13px', color: '#555' }}>{feature}</span>
+                      <div style={{
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: `${producto.color}15`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <Check size={12} style={{ color: producto.color }} />
+                      </div>
+                      <span style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -188,23 +209,24 @@ const ProductosEstrella = () => {
                   onClick={() => openWhatsApp(producto.whatsapp)}
                   style={{
                     width: '100%',
-                    background: `linear-gradient(135deg, ${producto.color} 0%, ${producto.color}dd 100%)`,
+                    background: `linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)`,
                     color: 'white',
                     border: 'none',
-                    borderRadius: '12px',
-                    padding: '14px',
-                    fontSize: '15px',
-                    fontWeight: '600',
+                    borderRadius: '14px',
+                    padding: '16px',
+                    fontSize: '16px',
+                    fontWeight: '700',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '8px'
+                    gap: '10px',
+                    boxShadow: '0 8px 25px rgba(245, 158, 11, 0.35)'
                   }}
-                  whileHover={{ scale: 1.02, boxShadow: `0 8px 25px ${producto.color}50` }}
+                  whileHover={{ scale: 1.02, boxShadow: '0 12px 30px rgba(245, 158, 11, 0.45)' }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Cotiza Gratis <ArrowRight size={18} />
+                  Cotiza Gratis <ArrowRight size={20} />
                 </motion.button>
               </div>
             </motion.div>
