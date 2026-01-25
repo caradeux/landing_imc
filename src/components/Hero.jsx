@@ -4,37 +4,37 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import ParallaxSection from './ParallaxSection'
 import { api } from '../lib/api'
 
-// Imágenes reales de proyectos para el Hero
+// Imágenes reales de proyectos para el Hero - Enfocado en servicios principales
 const heroImages = [
   {
     image: "/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg",
-    title: "Remodelación de Cocinas Premium",
-    subtitle: "Transformamos espacios con acabados de lujo"
+    title: "Muebles de Cocina Premium",
+    subtitle: "Diseño y fabricación de cocinas a medida"
   },
   {
-    image: "/images/projects/edificio-greco-restauracion/vista-panoramica-edificio-greco.jpg",
-    title: "Restauración de Edificios",
-    subtitle: "Especialistas en trabajos de altura y restauración"
+    image: "/images/projects/remodelacion-cocinas-lujo/cocina-negra-isla-marmol-blanco.jpg",
+    title: "Cocinas de Alta Gama",
+    subtitle: "Gabinetes, cubiertas y acabados de lujo"
   },
   {
     image: "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg",
-    title: "Obras Civiles Retail",
-    subtitle: "Proyectos comerciales de alta calidad"
-  },
-  {
-    image: "/images/projects/construccion-muros/muro-estucado-terminado.jpg",
-    title: "Construcción y Albañilería",
-    subtitle: "Muros y estructuras con garantía"
+    title: "Barandas de Vidrio Templado",
+    subtitle: "Instalación profesional con garantía"
   },
   {
     image: "/images/projects/remodelacion-cocinas-lujo/cocina-premium-madera-marmol-negro.jpg",
-    title: "Diseño de Interiores",
-    subtitle: "Cocinas y espacios de alta gama"
+    title: "Clósets y Muebles a Medida",
+    subtitle: "Soluciones personalizadas para tu hogar"
   },
   {
-    image: "/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg",
-    title: "Pintura y Restauración",
-    subtitle: "Acabados profesionales certificados"
+    image: "/images/projects/remodelacion-cocinas-lujo/cocina-blanca-moderna-campana-acero.jpg",
+    title: "Diseño de Interiores",
+    subtitle: "Transformamos tus espacios con estilo"
+  },
+  {
+    image: "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg",
+    title: "Cristales y Espejos",
+    subtitle: "Suministro e instalación especializada"
   }
 ]
 
