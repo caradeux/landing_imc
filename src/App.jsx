@@ -3,7 +3,10 @@ import { useAuth } from './contexts/AuthContext'
 import SEO from './components/SEO'
 import TopBar from './components/TopBar'
 import Header from './components/Header'
+import PromoBanner from './components/PromoBanner'
 import Hero from './components/Hero'
+import ProductosEstrella from './components/ProductosEstrella'
+import ProcesoTrabajo from './components/ProcesoTrabajo'
 import Services from './components/Services'
 import About from './components/About'
 import Projects from './components/Projects'
@@ -63,12 +66,15 @@ function App() {
   return (
     <div className="App">
       <SEO />
+      <PromoBanner />
       <TopBar />
       <Header
         isScrolled={isScrolled}
         onQuoteClick={() => setIsQuoteModalOpen(true)}
       />
       <Hero onQuoteClick={() => setIsQuoteModalOpen(true)} />
+      <ProductosEstrella />
+      <ProcesoTrabajo />
       <Services />
       <About />
       <Projects />

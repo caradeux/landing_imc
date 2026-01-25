@@ -4,9 +4,7 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Instagram, Facebook, Mes
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
     phone: '',
-    company: '',
     service: '',
     message: ''
   })
@@ -39,9 +37,7 @@ const Contact = () => {
         setIsSubmitted(true)
         setFormData({
           name: '',
-          email: '',
           phone: '',
-          company: '',
           service: '',
           message: ''
         })
@@ -62,12 +58,13 @@ const Contact = () => {
   }
 
   const services = [
-    'Servicios Eléctricos',
+    'Muebles de Cocina',
+    'Clósets a Medida',
+    'Barandas de Vidrio',
+    'Espejos y Cristales',
+    'Remodelación',
     'Obras Civiles',
-    'Carpintería Especializada',
-    'Techumbres Industriales',
-    'Acabados Premium',
-    'Soldadura Certificada',
+    'Pintura',
     'Otro'
   ]
 
@@ -345,11 +342,19 @@ const Contact = () => {
             <h3 style={{
               fontSize: '1.8rem',
               fontWeight: '700',
-              marginBottom: '30px',
+              marginBottom: '25px',
               color: '#333'
             }}>
-              Solicita tu Cotización
+              Cotiza Gratis en 24h
             </h3>
+            <p style={{
+              color: '#666',
+              fontSize: '15px',
+              marginBottom: '25px',
+              lineHeight: '1.5'
+            }}>
+              Completa el formulario y te contactamos por WhatsApp con tu presupuesto.
+            </p>
 
             {isSubmitted ? (
               <div style={{
@@ -371,69 +376,32 @@ const Contact = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '20px',
-                  marginBottom: '20px'
-                }}>
-                  <div className="form-group">
-                    <label>Nombre Completo *</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Tu nombre completo"
-                    />
-                  </div>
-                  
-                  <div className="form-group">
-                    <label>Email *</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="tu@email.com"
-                    />
-                  </div>
-                </div>
-
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '20px',
-                  marginBottom: '20px'
-                }}>
-                  <div className="form-group">
-                    <label>Teléfono *</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="+56 9 XXXX XXXX"
-                    />
-                  </div>
-                  
-                  <div className="form-group">
-                    <label>Empresa</label>
-                    <input
-                      type="text"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      placeholder="Nombre de tu empresa"
-                    />
-                  </div>
+                <div className="form-group">
+                  <label>Nombre *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Tu nombre"
+                  />
                 </div>
 
                 <div className="form-group">
-                  <label>Servicio de Interés *</label>
+                  <label>Teléfono / WhatsApp *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="+56 9 XXXX XXXX"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>¿Qué servicio te interesa? *</label>
                   <select
                     name="service"
                     value={formData.service}
@@ -450,14 +418,13 @@ const Contact = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Mensaje *</label>
+                  <label>Cuéntanos tu proyecto (opcional)</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    required
-                    placeholder="Cuéntanos sobre tu proyecto..."
-                    rows="5"
+                    placeholder="Medidas, materiales, ideas..."
+                    rows="3"
                   />
                 </div>
 
@@ -466,21 +433,22 @@ const Contact = () => {
                   disabled={isSubmitting}
                   style={{
                     width: '100%',
-                    padding: '16px',
-                    background: isSubmitting 
-                      ? '#ccc' 
-                      : 'linear-gradient(135deg, #1e40af 0%, #0f172a 100%)',
+                    padding: '18px',
+                    background: isSubmitting
+                      ? '#ccc'
+                      : 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
                     color: 'white',
                     border: 'none',
                     borderRadius: '12px',
-                    fontSize: '16px',
-                    fontWeight: '600',
+                    fontSize: '17px',
+                    fontWeight: '700',
                     cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '10px',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 8px 25px rgba(37, 211, 102, 0.3)'
                   }}
                 >
                   {isSubmitting ? (
@@ -498,7 +466,7 @@ const Contact = () => {
                   ) : (
                     <>
                       <Send size={20} />
-                      Enviar Mensaje
+                      Cotiza Gratis
                     </>
                   )}
                 </button>
