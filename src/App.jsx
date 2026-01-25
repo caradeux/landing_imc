@@ -11,6 +11,7 @@ import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import QuoteModal from './components/QuoteModal'
+import WhatsAppButton from './components/WhatsAppButton'
 import Login from './components/admin/Login'
 import Dashboard from './components/admin/Dashboard'
 
@@ -78,6 +79,8 @@ function App() {
       {isQuoteModalOpen && (
         <QuoteModal onClose={() => setIsQuoteModalOpen(false)} />
       )}
+
+      <WhatsAppButton />
     </div>
   )
 }
