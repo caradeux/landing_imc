@@ -33,7 +33,7 @@ const Projects = () => {
     )
   }
 
-  const categories = ['all', 'Retail', 'Industrial', 'Logística', 'Corporativo']
+  const categories = ['all', 'Residencial', 'Retail', 'Restauración', 'Obras Civiles']
 
   const filteredProjects = filter === 'all' 
     ? projects 
@@ -41,12 +41,12 @@ const Projects = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'Retail': 'var(--color-primary)',
-      'Industrial': 'var(--color-secondary)',
-      'Logística': 'var(--color-error)',
-      'Corporativo': 'var(--color-warning)'
+      'Residencial': '#667eea',
+      'Retail': '#10b981',
+      'Restauración': '#f59e0b',
+      'Obras Civiles': '#6366f1'
     }
-    return colors[category] || 'var(--color-primary)'
+    return colors[category] || '#667eea'
   }
 
   return (

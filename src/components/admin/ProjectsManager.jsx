@@ -24,7 +24,7 @@ const ProjectsManager = () => {
   const [highlightInput, setHighlightInput] = useState('')
   const [error, setError] = useState('')
 
-  const categoryOptions = ['Retail', 'Industrial', 'Logística', 'Corporativo']
+  const categoryOptions = ['Residencial', 'Retail', 'Restauración', 'Obras Civiles']
 
   useEffect(() => {
     fetchProjects()

@@ -1,55 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  
+
   <!-- Homepage -->
   <url>
     <loc>https://imcservicioschile.cl/</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
+
   <!-- Services Section -->
   <url>
     <loc>https://imcservicioschile.cl/#services</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <!-- About Section -->
   <url>
     <loc>https://imcservicioschile.cl/#about</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Projects Section -->
+
+  <!-- Projects Section - Principal -->
   <url>
     <loc>https://imcservicioschile.cl/#projects</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg</image:loc>
+      <image:title>Remodelación de cocinas de lujo en Viña del Mar - IMC Servicios Chile</image:title>
+      <image:caption>Cocina moderna con isla central de mármol, gabinetes premium y electrodomésticos de alta gama</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg</image:loc>
+      <image:title>Restauración de balcones Edificio Greco II Reñaca - IMC Servicios Chile</image:title>
+      <image:caption>Trabajo de restauración y pintura anticorrosiva en barandas de edificio frente al mar</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg</image:loc>
+      <image:title>Obras civiles Easy Viña del Mar - IMC Servicios Chile</image:title>
+      <image:caption>Instalación de separadores de vidrio templado en tienda retail</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/construccion-muros/muro-estucado-terminado.jpg</image:loc>
+      <image:title>Construcción de muros perimetrales Santiago - IMC Servicios Chile</image:title>
+      <image:caption>Muro perimetral terminado con estucado profesional y pintura exterior</image:caption>
+    </image:image>
   </url>
-  
+
   <!-- Testimonials Section -->
   <url>
     <loc>https://imcservicioschile.cl/#testimonials</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+
   <!-- Contact Section -->
   <url>
     <loc>https://imcservicioschile.cl/#contact</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
+  <!-- Project Images for Google Image Search -->
+  <url>
+    <loc>https://imcservicioschile.cl/images/projects/remodelacion-cocinas-lujo/cocina-moderna-marmol-beige-01.jpg</loc>
+    <lastmod>2025-01-25</lastmod>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/remodelacion-cocinas-lujo/cocina-moderna-marmol-beige-01.jpg</image:loc>
+      <image:title>Cocina moderna con mármol beige - Remodelación de cocinas Viña del Mar</image:title>
+      <image:caption>Remodelación integral de cocina con piso de mármol, gabinetes modernos y electrodomésticos empotrables</image:caption>
+      <image:geo_location>Viña del Mar, Chile</image:geo_location>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://imcservicioschile.cl/images/projects/remodelacion-cocinas-lujo/cocina-premium-madera-marmol-negro.jpg</loc>
+    <lastmod>2025-01-25</lastmod>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/remodelacion-cocinas-lujo/cocina-premium-madera-marmol-negro.jpg</image:loc>
+      <image:title>Cocina premium con mármol negro y madera - IMC Servicios Chile</image:title>
+      <image:caption>Cocina de diseño con cubiertas de mármol negro, gabinetes de madera y refrigerador industrial</image:caption>
+      <image:geo_location>Reñaca, Viña del Mar, Chile</image:geo_location>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://imcservicioschile.cl/images/projects/edificio-greco-restauracion/vista-panoramica-edificio-greco.jpg</loc>
+    <lastmod>2025-01-25</lastmod>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/edificio-greco-restauracion/vista-panoramica-edificio-greco.jpg</image:loc>
+      <image:title>Restauración Edificio Greco II Reñaca - Vista al mar</image:title>
+      <image:caption>Trabajo de restauración y pintura en edificio residencial con vista panorámica al océano Pacífico</image:caption>
+      <image:geo_location>Reñaca, Viña del Mar, Chile</image:geo_location>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://imcservicioschile.cl/images/projects/easy-vina-del-mar/soldadura-bolardos-proceso.jpg</loc>
+    <lastmod>2025-01-25</lastmod>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/easy-vina-del-mar/soldadura-bolardos-proceso.jpg</image:loc>
+      <image:title>Soldadura de bolardos metálicos Easy Viña del Mar - IMC Servicios Chile</image:title>
+      <image:caption>Trabajo de soldadura certificada AWS en fabricación de bolardos de seguridad para retail</image:caption>
+      <image:geo_location>Viña del Mar, Chile</image:geo_location>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://imcservicioschile.cl/images/projects/construccion-muros/albanileria-ladrillo-proceso.jpg</loc>
+    <lastmod>2025-01-25</lastmod>
+    <image:image>
+      <image:loc>https://imcservicioschile.cl/images/projects/construccion-muros/albanileria-ladrillo-proceso.jpg</image:loc>
+      <image:title>Albañilería y construcción de muros Santiago - IMC Servicios Chile</image:title>
+      <image:caption>Proceso de construcción de muro perimetral con ladrillo fiscal y armadura de acero</image:caption>
+      <image:geo_location>Santiago, Chile</image:geo_location>
+    </image:image>
+  </url>
+
 </urlset>
