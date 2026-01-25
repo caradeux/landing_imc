@@ -73,6 +73,7 @@ function App() {
       />
       <Hero onQuoteClick={() => setIsQuoteModalOpen(true)} />
       <ProductosEstrella />
+      <Services />
       <ProcesoTrabajo />
       <About />
       <Projects />

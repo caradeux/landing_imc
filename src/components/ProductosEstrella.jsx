@@ -7,7 +7,6 @@ const productos = [
     title: 'Muebles de Cocina',
     description: 'Cocinas a medida que transforman tu hogar. Diseño, fabricación e instalación.',
     image: '/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg',
-    precio: 'Desde $1.500.000',
     features: ['Diseño 3D incluido', 'Materiales premium', 'Instalación profesional'],
     color: '#1e40af',
     whatsapp: 'Hola, me interesa cotizar muebles de cocina. ¿Podrían darme más información?'
@@ -16,7 +15,6 @@ const productos = [
     title: 'Clósets a Medida',
     description: 'Aprovecha cada centímetro. Clósets que se adaptan a TU espacio.',
     image: '/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg',
-    precio: 'Desde $800.000',
     features: ['Medidas exactas', 'Máximo aprovechamiento', 'Variedad de acabados'],
     color: '#7c3aed',
     whatsapp: 'Hola, me interesa cotizar un clóset a medida. ¿Podrían darme más información?'
@@ -25,7 +23,6 @@ const productos = [
     title: 'Barandas de Vidrio',
     description: 'Vidrio templado certificado SEC. Seguridad y elegancia para tu hogar.',
     image: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg',
-    precio: 'Desde $150.000/ml',
     features: ['Vidrio templado 10mm', 'Acero inoxidable', 'Certificación SEC'],
     color: '#0891b2',
     whatsapp: 'Hola, me interesa cotizar barandas de vidrio. ¿Podrían darme más información?'
@@ -34,7 +31,6 @@ const productos = [
     title: 'Espejos y Cristales',
     description: 'Espejos a medida que agrandan visualmente tus espacios.',
     image: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg',
-    precio: 'Desde $50.000/m²',
     features: ['Corte a medida', 'Instalación segura', 'Diseños modernos'],
     color: '#059669',
     whatsapp: 'Hola, me interesa cotizar espejos o cristales. ¿Podrían darme más información?'
@@ -48,8 +44,8 @@ const ProductosEstrella = () => {
   }
 
   return (
-    <section id="services" style={{
-      padding: '100px 0',
+    <section id="destacados" style={{
+      padding: '80px 0',
       background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
       position: 'relative',
       overflow: 'hidden'
@@ -90,21 +86,21 @@ const ProductosEstrella = () => {
           </span>
           <h2 style={{
             color: 'white',
-            fontSize: '3rem',
+            fontSize: '2.8rem',
             fontWeight: '800',
             marginBottom: '20px',
             lineHeight: '1.2'
           }}>
-            Nuestros Servicios
+            Lo Más Solicitado
           </h2>
           <p style={{
             color: 'rgba(255,255,255,0.7)',
-            fontSize: '1.2rem',
-            maxWidth: '650px',
+            fontSize: '1.1rem',
+            maxWidth: '600px',
             margin: '0 auto',
             lineHeight: '1.6'
           }}>
-            Fabricación e instalación profesional con garantía. Más de 15 años transformando hogares en la V Región.
+            Especialistas en muebles a medida, vidrios y cristales para tu hogar
           </p>
         </motion.div>
 
@@ -144,20 +140,6 @@ const ProductosEstrella = () => {
                   inset: 0,
                   background: `linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.4) 100%)`
                 }} />
-                <div style={{
-                  position: 'absolute',
-                  top: '15px',
-                  right: '15px',
-                  background: 'rgba(255,255,255,0.95)',
-                  color: producto.color,
-                  padding: '8px 16px',
-                  borderRadius: '20px',
-                  fontSize: '14px',
-                  fontWeight: '800',
-                  backdropFilter: 'blur(10px)'
-                }}>
-                  {producto.precio}
-                </div>
               </div>
 
               {/* Content */}
