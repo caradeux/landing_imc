@@ -8,24 +8,44 @@ const WhatsAppButton = () => {
 
   const quickMessages = [
     {
-      label: 'Muebles de Cocina',
-      message: 'Hola, me interesa cotizar muebles de cocina. ¿Podrían darme más información?'
+      label: 'Cotizar Proyecto',
+      message: 'Hola, me interesa cotizar un proyecto. ¿Podrían darme más información?',
+      icon: '📋'
     },
     {
-      label: 'Clósets',
-      message: 'Hola, me interesa cotizar un clóset a medida. ¿Podrían darme más información?'
+      label: 'Muebles de Cocina',
+      message: 'Hola, me interesa cotizar muebles de cocina a medida. ¿Podrían darme más información?',
+      icon: '🍳'
+    },
+    {
+      label: 'Clósets a Medida',
+      message: 'Hola, me interesa cotizar un clóset a medida. ¿Podrían darme más información?',
+      icon: '🚪'
     },
     {
       label: 'Barandas de Vidrio',
-      message: 'Hola, me interesa cotizar barandas de vidrio. ¿Podrían darme más información?'
+      message: 'Hola, me interesa cotizar barandas de vidrio templado. ¿Podrían darme más información?',
+      icon: '🪟'
     },
     {
       label: 'Espejos y Cristales',
-      message: 'Hola, me interesa cotizar espejos o cristales. ¿Podrían darme más información?'
+      message: 'Hola, me interesa cotizar espejos o cristales. ¿Podrían darme más información?',
+      icon: '✨'
     },
     {
-      label: 'Otro Servicio',
-      message: 'Hola, me interesa cotizar un proyecto. ¿Podrían darme más información?'
+      label: 'Remodelación',
+      message: 'Hola, me interesa cotizar una remodelación. ¿Podrían darme más información?',
+      icon: '🏠'
+    },
+    {
+      label: 'Obras Civiles',
+      message: 'Hola, me interesa cotizar obras civiles. ¿Podrían darme más información?',
+      icon: '🏗️'
+    },
+    {
+      label: 'Pintura y Restauración',
+      message: 'Hola, me interesa cotizar trabajos de pintura o restauración. ¿Podrían darme más información?',
+      icon: '🎨'
     }
   ]
 
@@ -118,31 +138,53 @@ const WhatsAppButton = () => {
               color: '#333',
               lineHeight: '1.5'
             }}>
-              ¡Hola! Selecciona el servicio que te interesa para iniciar una conversación:
+              ¡Hola! ¿En qué podemos ayudarte?
             </div>
 
             {/* Quick Message Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '8px',
+              maxHeight: '280px',
+              overflowY: 'auto'
+            }}>
               {quickMessages.map((item, index) => (
                 <motion.button
                   key={index}
                   onClick={() => openWhatsApp(item.message)}
                   style={{
-                    background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
-                    color: 'white',
-                    border: 'none',
+                    background: index === 0
+                      ? 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)'
+                      : 'white',
+                    color: index === 0 ? 'white' : '#333',
+                    border: index === 0 ? 'none' : '1px solid #e0e0e0',
                     borderRadius: '10px',
-                    padding: '12px 15px',
-                    fontSize: '14px',
+                    padding: '10px 12px',
+                    fontSize: '12px',
                     fontWeight: '600',
                     cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'all 0.3s ease'
+                    textAlign: 'center',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '4px',
+                    gridColumn: index === 0 ? 'span 2' : 'span 1'
                   }}
-                  whileHover={{ scale: 1.02, boxShadow: '0 4px 15px rgba(37, 211, 102, 0.4)' }}
+                  whileHover={{
+                    scale: 1.03,
+                    boxShadow: index === 0
+                      ? '0 4px 15px rgba(37, 211, 102, 0.4)'
+                      : '0 4px 15px rgba(0, 0, 0, 0.1)',
+                    background: index === 0
+                      ? 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)'
+                      : '#f8f8f8'
+                  }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {item.label}
+                  <span style={{ fontSize: '18px' }}>{item.icon}</span>
+                  <span>{item.label}</span>
                 </motion.button>
               ))}
             </div>
