@@ -49,16 +49,17 @@ const ProcesoTrabajo = () => {
           style={{ textAlign: 'center', marginBottom: '60px' }}
         >
           <span style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
             color: 'white',
-            padding: '8px 20px',
-            borderRadius: '20px',
-            fontSize: '14px',
-            fontWeight: '600',
+            padding: '8px 24px',
+            borderRadius: '25px',
+            fontSize: '13px',
+            fontWeight: '700',
             display: 'inline-block',
-            marginBottom: '20px'
+            marginBottom: '20px',
+            letterSpacing: '1px'
           }}>
-            CÓMO TRABAJAMOS
+            PROCESO SIMPLE
           </span>
           <h2 style={{
             color: '#333',

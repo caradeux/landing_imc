@@ -50,9 +50,7 @@ const Services = () => {
     <section id="services" className="section" style={{
       background: 'linear-gradient(135deg, var(--color-section-bg-light) 0%, var(--color-section-bg-dark) 50%, var(--color-section-bg-light) 100%)',
       position: 'relative',
-      overflow: 'hidden',
-      width: '100vw',
-      marginLeft: 'calc(-50vw + 50%)'
+      overflow: 'hidden'
     }}>
       {/* Background Elements */}
       <div style={{
@@ -159,9 +157,9 @@ const Services = () => {
         <ParallaxSection speed={0.2} direction="up">
           <div className="services-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(6, 1fr)',
-            gap: '20px',
-            maxWidth: 'none',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '25px',
+            maxWidth: '1400px',
             margin: '0 auto',
             padding: '0 20px'
           }}>
@@ -173,13 +171,13 @@ const Services = () => {
                 className="service-card"
                 style={{
                   background: 'rgba(255, 255, 255, 0.98)',
-                  borderRadius: '28px',
+                  borderRadius: '20px',
                   overflow: 'hidden',
-                  boxShadow: '0 25px 70px rgba(0, 0, 0, 0.15)',
+                  boxShadow: '0 15px 40px rgba(0, 0, 0, 0.12)',
                   border: '1px solid rgba(255, 255, 255, 0.3)',
                   backdropFilter: 'blur(25px)',
                   position: 'relative',
-                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'all 0.4s ease',
                   cursor: 'pointer',
                   transform: 'translateY(0)',
                   animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
@@ -220,12 +218,12 @@ const Services = () => {
 
                 {/* Service Image */}
                 <div className="service-image" style={{
-                  height: '220px',
+                  height: '200px',
                   backgroundImage: `url(${service.image_url})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   position: 'relative',
-                  borderRadius: '28px 28px 0 0',
+                  borderRadius: '20px 20px 0 0',
                   overflow: 'hidden'
         }}>
           <div style={{
@@ -478,53 +476,32 @@ const Services = () => {
           transform: translateY(-3px);
         }
         
-        @media (max-width: 1400px) {
-          .services-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 25px !important;
-          }
-        }
-        
-        @media (max-width: 1000px) {
+        @media (max-width: 1100px) {
           .services-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 20px !important;
           }
         }
-        
-        @media (max-width: 768px) {
+
+        @media (max-width: 700px) {
           .services-grid {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
-            padding: 0 10px !important;
+            padding: 0 15px !important;
           }
-          
-          .service-card h3 {
-            font-size: 1.6rem !important;
-          }
-          
-          .service-card p {
-            font-size: 1rem !important;
-          }
-          
-          .service-image {
-            height: 220px !important;
-          }
-          
-          .service-content {
-            padding: 25px !important;
-          }
-        }
-        
-        @media (max-width: 480px) {
+
           .service-card h3 {
             font-size: 1.4rem !important;
           }
-          
-          .service-image {
-            height: 200px !important;
+
+          .service-card p {
+            font-size: 0.95rem !important;
           }
-          
+
+          .service-image {
+            height: 180px !important;
+          }
+
           .service-content {
             padding: 20px !important;
           }

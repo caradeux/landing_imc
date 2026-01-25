@@ -5,38 +5,38 @@ import { ArrowRight, Check } from 'lucide-react'
 const productos = [
   {
     title: 'Muebles de Cocina',
-    description: 'Diseño y fabricación de cocinas a medida con materiales premium.',
+    description: 'Cocinas a medida que transforman tu hogar. Diseño, fabricación e instalación.',
     image: '/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg',
     precio: 'Desde $1.500.000',
-    features: ['Diseño personalizado', 'Materiales premium', 'Instalación incluida'],
-    color: '#e74c3c',
+    features: ['Diseño 3D incluido', 'Materiales premium', 'Instalación profesional'],
+    color: '#1e40af',
     whatsapp: 'Hola, me interesa cotizar muebles de cocina. ¿Podrían darme más información?'
   },
   {
     title: 'Clósets a Medida',
-    description: 'Clósets y walk-in closets diseñados para optimizar tu espacio.',
+    description: 'Aprovecha cada centímetro. Clósets que se adaptan a TU espacio.',
     image: '/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg',
     precio: 'Desde $800.000',
     features: ['Medidas exactas', 'Máximo aprovechamiento', 'Variedad de acabados'],
-    color: '#9b59b6',
+    color: '#7c3aed',
     whatsapp: 'Hola, me interesa cotizar un clóset a medida. ¿Podrían darme más información?'
   },
   {
     title: 'Barandas de Vidrio',
-    description: 'Barandas de vidrio templado para balcones, escaleras y terrazas.',
+    description: 'Vidrio templado certificado SEC. Seguridad y elegancia para tu hogar.',
     image: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg',
     precio: 'Desde $150.000/ml',
     features: ['Vidrio templado 10mm', 'Acero inoxidable', 'Certificación SEC'],
-    color: '#3498db',
+    color: '#0891b2',
     whatsapp: 'Hola, me interesa cotizar barandas de vidrio. ¿Podrían darme más información?'
   },
   {
     title: 'Espejos y Cristales',
-    description: 'Instalación de espejos decorativos y cristales para todo tipo de espacios.',
+    description: 'Espejos a medida que agrandan visualmente tus espacios.',
     image: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg',
     precio: 'Desde $50.000/m²',
     features: ['Corte a medida', 'Instalación segura', 'Diseños modernos'],
-    color: '#1abc9c',
+    color: '#059669',
     whatsapp: 'Hola, me interesa cotizar espejos o cristales. ¿Podrían darme más información?'
   }
 ]
@@ -75,16 +75,18 @@ const ProductosEstrella = () => {
           style={{ textAlign: 'center', marginBottom: '50px' }}
         >
           <span style={{
-            background: 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)',
-            color: 'white',
-            padding: '8px 20px',
-            borderRadius: '20px',
-            fontSize: '14px',
-            fontWeight: '600',
+            background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+            color: '#1e40af',
+            padding: '8px 24px',
+            borderRadius: '25px',
+            fontSize: '13px',
+            fontWeight: '800',
             display: 'inline-block',
-            marginBottom: '20px'
+            marginBottom: '20px',
+            letterSpacing: '1px',
+            boxShadow: '0 4px 20px rgba(251, 191, 36, 0.3)'
           }}>
-            PRODUCTOS DESTACADOS
+            LO MAS SOLICITADO
           </span>
           <h2 style={{
             color: 'white',

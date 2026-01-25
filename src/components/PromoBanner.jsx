@@ -42,9 +42,9 @@ const PromoBanner = () => {
         exit={{ y: -100, opacity: 0 }}
         transition={{ duration: 0.5 }}
         style={{
-          background: 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)',
+          background: 'linear-gradient(135deg, #1e40af 0%, #0f172a 100%)',
           color: 'white',
-          padding: '12px 20px',
+          padding: '14px 20px',
           position: 'relative',
           zIndex: 100
         }}
@@ -66,32 +66,36 @@ const PromoBanner = () => {
               justifyContent: 'center'
             }}>
               <span style={{
-                background: 'rgba(255,255,255,0.2)',
-                padding: '4px 12px',
-                borderRadius: '15px',
+                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                color: '#1e40af',
+                padding: '6px 16px',
+                borderRadius: '20px',
                 fontSize: '12px',
-                fontWeight: '700',
-                textTransform: 'uppercase'
+                fontWeight: '800',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 15px rgba(251, 191, 36, 0.4)',
+                letterSpacing: '0.5px'
               }}>
-                Oferta del Mes
+                Promo Enero
               </span>
 
               <span style={{ fontSize: '15px', fontWeight: '600' }}>
-                15% OFF en Muebles de Cocina
+                Instalacion GRATIS en Muebles de Cocina
               </span>
 
               {/* Countdown */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                background: 'rgba(0,0,0,0.2)',
-                padding: '4px 12px',
-                borderRadius: '15px',
-                fontSize: '13px'
+                gap: '8px',
+                background: 'rgba(255,255,255,0.15)',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                fontSize: '13px',
+                fontWeight: '600'
               }}>
                 <Clock size={14} />
-                <span>{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
+                <span>Termina en {timeLeft.days}d {timeLeft.hours}h</span>
               </div>
             </div>
 
@@ -99,22 +103,23 @@ const PromoBanner = () => {
             <motion.button
               onClick={openWhatsApp}
               style={{
-                background: 'white',
-                color: '#e74c3c',
+                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                color: '#1e40af',
                 border: 'none',
-                borderRadius: '20px',
-                padding: '8px 20px',
-                fontSize: '13px',
-                fontWeight: '700',
+                borderRadius: '25px',
+                padding: '10px 24px',
+                fontSize: '14px',
+                fontWeight: '800',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '8px',
+                boxShadow: '0 4px 20px rgba(251, 191, 36, 0.4)'
               }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, boxShadow: '0 6px 25px rgba(251, 191, 36, 0.5)' }}
               whileTap={{ scale: 0.98 }}
             >
-              Cotiza Ahora <ArrowRight size={16} />
+              Quiero mi Promo <ArrowRight size={16} />
             </motion.button>
 
             {/* Close Button */}
