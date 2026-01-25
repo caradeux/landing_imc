@@ -1,14 +1,68 @@
 import React, { useState, useEffect } from 'react'
-import { Calendar, MapPin, Users, Clock, ArrowRight, X } from 'lucide-react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { Calendar, MapPin, Users, Clock, ArrowRight, X, ChevronLeft, ChevronRight, Grid, Image } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { api } from '../lib/api'
 import ParallaxSection from './ParallaxSection'
+
+// Galerías de imágenes por proyecto
+const projectGalleries = {
+  "Remodelación Integral de Cocinas Premium": [
+    "/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-moderna-marmol-beige-01.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-gabinetes-gris-oscuro-proceso.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-premium-madera-marmol-negro.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-moderna-madera-oscura-minimalista.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-premium-barra-desayuno-taburetes.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-blanca-piso-marmol-hornos.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-negra-isla-marmol-blanco.jpg",
+    "/images/projects/remodelacion-cocinas-lujo/cocina-blanca-moderna-campana-acero.jpg"
+  ],
+  "Restauración de Balcones - Edificio Greco II": [
+    "/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg",
+    "/images/projects/edificio-greco-restauracion/balcon-vista-mar-proceso.jpg",
+    "/images/projects/edificio-greco-restauracion/baranda-oxidada-antes-restauracion.jpg",
+    "/images/projects/edificio-greco-restauracion/ventana-oxido-reparacion.jpg",
+    "/images/projects/edificio-greco-restauracion/baranda-oxido-detalle-antes.jpg",
+    "/images/projects/edificio-greco-restauracion/baranda-oxido-balcon-antes.jpg",
+    "/images/projects/edificio-greco-restauracion/vista-panoramica-edificio-greco.jpg",
+    "/images/projects/edificio-greco-restauracion/reparacion-cielo-departamento.jpg",
+    "/images/projects/edificio-greco-restauracion/reparacion-muro-ventana.jpg",
+    "/images/projects/edificio-greco-restauracion/base-baranda-deteriorada.jpg"
+  ],
+  "Obras Civiles - Easy Viña del Mar": [
+    "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg",
+    "/images/projects/easy-vina-del-mar/bolardos-metalicos-pintados.jpg",
+    "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg",
+    "/images/projects/easy-vina-del-mar/soldadura-bolardos-proceso.jpg",
+    "/images/projects/easy-vina-del-mar/tabiqueria-drywall-local-comercial.jpg"
+  ],
+  "Construcción y Reparación de Muros Perimetrales": [
+    "/images/projects/construccion-muros/muro-estucado-terminado.jpg",
+    "/images/projects/construccion-muros/cimientos-armadura-acero.jpg",
+    "/images/projects/construccion-muros/albanileria-ladrillo-proceso.jpg",
+    "/images/projects/construccion-muros/muro-ladrillo-construccion.jpg",
+    "/images/projects/construccion-muros/muro-estucado-gris.jpg",
+    "/images/projects/construccion-muros/demolicion-muro-antiguo.jpg",
+    "/images/projects/construccion-muros/muro-cemento-fresco.jpg"
+  ],
+  "Remodelación de Penthouse - Lobby y Entrada": [
+    "/images/projects/remodelacion-penthouse/lobby-entrada-elegante-penthouse.jpg",
+    "/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg"
+  ],
+  "Trabajos de Pintura - Cocina, Murallas y Cielo": [
+    "/images/projects/edificio-greco-restauracion/reparacion-cielo-departamento.jpg",
+    "/images/projects/edificio-greco-restauracion/reparacion-muro-ventana.jpg",
+    "/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg"
+  ]
+}
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedProject, setSelectedProject] = useState(null)
   const [filter, setFilter] = useState('all')
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [viewMode, setViewMode] = useState('gallery') // 'gallery' or 'grid'
 
   useEffect(() => {
     fetchProjects()
@@ -25,6 +79,26 @@ const Projects = () => {
     }
   }
 
+  const getProjectGallery = (projectTitle) => {
+    return projectGalleries[projectTitle] || [selectedProject?.image_url]
+  }
+
+  const nextImage = () => {
+    const gallery = getProjectGallery(selectedProject?.title)
+    setCurrentImageIndex((prev) => (prev + 1) % gallery.length)
+  }
+
+  const prevImage = () => {
+    const gallery = getProjectGallery(selectedProject?.title)
+    setCurrentImageIndex((prev) => (prev - 1 + gallery.length) % gallery.length)
+  }
+
+  useEffect(() => {
+    if (selectedProject) {
+      setCurrentImageIndex(0)
+    }
+  }, [selectedProject])
+
   if (loading) {
     return (
       <section id="projects" className="section" style={{ background: '#f8fafc', textAlign: 'center', padding: '100px 40px' }}>
@@ -35,8 +109,8 @@ const Projects = () => {
 
   const categories = ['all', 'Residencial', 'Retail', 'Restauración', 'Obras Civiles']
 
-  const filteredProjects = filter === 'all' 
-    ? projects 
+  const filteredProjects = filter === 'all'
+    ? projects
     : projects.filter(project => project.category === filter)
 
   const getCategoryColor = (category) => {
@@ -75,7 +149,7 @@ const Projects = () => {
 
         {/* Filter Buttons */}
         <ParallaxSection speed={0.2} direction="up">
-          <motion.div 
+          <motion.div
             style={{
               display: 'flex',
               justifyContent: 'center',
@@ -96,7 +170,7 @@ const Projects = () => {
                   padding: '10px 20px',
                   border: 'none',
                   borderRadius: '25px',
-                  background: filter === category 
+                  background: filter === category
                     ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
                     : 'white',
                   color: filter === category ? 'white' : '#666',
@@ -104,7 +178,7 @@ const Projects = () => {
                   transition: 'all 0.3s ease',
                   fontSize: '14px',
                   fontWeight: '600',
-                  boxShadow: filter === category 
+                  boxShadow: filter === category
                     ? '0 4px 15px rgba(102, 126, 234, 0.3)'
                     : '0 2px 10px rgba(0, 0, 0, 0.1)'
                 }}
@@ -121,322 +195,641 @@ const Projects = () => {
           </motion.div>
         </ParallaxSection>
 
-        {/* Projects Grid - Ancho Completo */}
+        {/* Projects Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '25px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '30px',
           width: '100%',
           maxWidth: 'none',
           padding: '0 40px',
           justifyContent: 'center'
         }}>
-          {filteredProjects.map((project, index) => (
-            <motion.div 
-              key={project.id} 
-              style={{
-                background: 'white',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.3s ease',
-                border: '1px solid rgba(0, 0, 0, 0.05)',
-                height: 'fit-content'
-              }}
-              onClick={() => setSelectedProject(project)}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 * index }}
-              viewport={{ once: true }}
-              whileHover={{ 
-                y: -10,
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
-                transition: { duration: 0.3 }
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
+          {filteredProjects.map((project, index) => {
+            const gallery = projectGalleries[project.title] || []
+            const imageCount = gallery.length || 1
+
+            return (
               <motion.div
+                key={project.id}
                 style={{
-                  height: '200px',
-                  backgroundImage: `url(${project.image_url})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  position: 'relative'
+                  background: 'white',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.4s ease',
+                  border: '1px solid rgba(0, 0, 0, 0.05)',
+                  height: 'fit-content'
                 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
+                onClick={() => setSelectedProject(project)}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                whileHover={{
+                  y: -12,
+                  boxShadow: '0 25px 60px rgba(0, 0, 0, 0.15)',
+                  transition: { duration: 0.3 }
+                }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div style={{
-                  position: 'absolute',
-                  top: '15px',
-                  left: '15px',
-                  background: getCategoryColor(project.category),
-                  color: 'white',
-                  padding: '6px 12px',
-                  borderRadius: '15px',
-                  fontSize: '12px',
-                  fontWeight: '600'
-                }}>
-                  {project.category}
+                {/* Image Container with gallery preview */}
+                <div style={{ position: 'relative' }}>
+                  <motion.div
+                    style={{
+                      height: '250px',
+                      backgroundImage: `url(${project.image_url})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      position: 'relative'
+                    }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {/* Category Badge */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '15px',
+                      left: '15px',
+                      background: getCategoryColor(project.category),
+                      color: 'white',
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '700',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}>
+                      {project.category}
+                    </div>
+
+                    {/* Image Count Badge */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '15px',
+                      right: '15px',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      color: 'white',
+                      padding: '8px 14px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      backdropFilter: 'blur(10px)'
+                    }}>
+                      <Image size={14} />
+                      {imageCount} fotos
+                    </div>
+
+                    {/* Gradient overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: '100px',
+                      background: 'linear-gradient(transparent, rgba(0,0,0,0.5))'
+                    }} />
+                  </motion.div>
+
+                  {/* Mini gallery preview */}
+                  {imageCount > 1 && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '15px',
+                      left: '15px',
+                      right: '15px',
+                      display: 'flex',
+                      gap: '8px'
+                    }}>
+                      {gallery.slice(0, 4).map((img, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            width: '50px',
+                            height: '35px',
+                            borderRadius: '6px',
+                            backgroundImage: `url(${img})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            border: '2px solid white',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                            opacity: idx === 0 ? 1 : 0.7
+                          }}
+                        />
+                      ))}
+                      {imageCount > 4 && (
+                        <div style={{
+                          width: '50px',
+                          height: '35px',
+                          borderRadius: '6px',
+                          background: 'rgba(0,0,0,0.7)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'white',
+                          fontSize: '11px',
+                          fontWeight: '700',
+                          border: '2px solid white'
+                        }}>
+                          +{imageCount - 4}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                
-                <div style={{
-                  position: 'absolute',
-                  top: '15px',
-                  right: '15px',
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  color: '#333',
-                  padding: '6px 12px',
-                  borderRadius: '15px',
-                  fontSize: '12px',
-                  fontWeight: '600'
-                }}>
-                  {project.year}
+
+                <div style={{ padding: '25px' }}>
+                  <h3 style={{
+                    fontSize: '1.4rem',
+                    fontWeight: '800',
+                    marginBottom: '12px',
+                    color: '#333'
+                  }}>
+                    {project.title}
+                  </h3>
+
+                  <p style={{
+                    color: '#666',
+                    marginBottom: '20px',
+                    fontSize: '14px',
+                    lineHeight: '1.6',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  }}>
+                    {project.description}
+                  </p>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '12px',
+                    marginBottom: '20px',
+                    fontSize: '13px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
+                      <MapPin size={14} />
+                      <span>{project.location}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
+                      <Users size={14} />
+                      <span>{project.area}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
+                      <Clock size={14} />
+                      <span>{project.duration}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
+                      <Calendar size={14} />
+                      <span>{project.year}</span>
+                    </div>
+                  </div>
+
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      gap: '6px',
+                      flexWrap: 'wrap'
+                    }}>
+                      {project.services.slice(0, 2).map((service, index) => (
+                        <span
+                          key={index}
+                          style={{
+                            background: `${getCategoryColor(project.category)}15`,
+                            color: getCategoryColor(project.category),
+                            padding: '5px 10px',
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            fontWeight: '600'
+                          }}
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      color: getCategoryColor(project.category),
+                      fontWeight: '600',
+                      fontSize: '13px'
+                    }}>
+                      Ver Galería
+                      <ArrowRight size={16} />
+                    </div>
+                  </div>
                 </div>
               </motion.div>
+            )
+          })}
+        </div>
+      </div>
 
-              <div style={{ padding: '25px' }}>
-                <h3 style={{
-                  fontSize: '1.3rem',
-                  fontWeight: '700',
-                  marginBottom: '12px',
-                  color: '#333'
+      {/* Project Modal with Gallery */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            className="modal-overlay"
+            onClick={() => setSelectedProject(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.9)',
+              zIndex: 9999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px'
+            }}
+          >
+            <motion.div
+              className="modal"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              style={{
+                background: 'white',
+                borderRadius: '24px',
+                maxWidth: '1200px',
+                width: '100%',
+                maxHeight: '90vh',
+                overflow: 'auto',
+                position: 'relative'
+              }}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedProject(null)}
+                style={{
+                  position: 'absolute',
+                  top: '20px',
+                  right: '20px',
+                  zIndex: 100,
+                  background: 'rgba(0, 0, 0, 0.7)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '45px',
+                  height: '45px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: 'white',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <X size={24} />
+              </button>
+
+              {/* Gallery Section */}
+              <div style={{ position: 'relative' }}>
+                {/* Main Image */}
+                <div style={{
+                  height: '500px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  borderRadius: '24px 24px 0 0'
                 }}>
-                  {project.title}
-                </h3>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentImageIndex}
+                      initial={{ opacity: 0, x: 100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -100 }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundImage: `url(${getProjectGallery(selectedProject.title)[currentImageIndex]})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                    />
+                  </AnimatePresence>
 
+                  {/* Navigation Arrows */}
+                  {getProjectGallery(selectedProject.title).length > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        style={{
+                          position: 'absolute',
+                          left: '20px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          background: 'rgba(255, 255, 255, 0.9)',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '50px',
+                          height: '50px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        <ChevronLeft size={28} color="#333" />
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        style={{
+                          position: 'absolute',
+                          right: '20px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          background: 'rgba(255, 255, 255, 0.9)',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '50px',
+                          height: '50px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        <ChevronRight size={28} color="#333" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Image Counter */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    color: 'white',
+                    padding: '10px 20px',
+                    borderRadius: '25px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    backdropFilter: 'blur(10px)'
+                  }}>
+                    {currentImageIndex + 1} / {getProjectGallery(selectedProject.title).length}
+                  </div>
+
+                  {/* View Mode Toggle */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    right: '20px',
+                    display: 'flex',
+                    gap: '10px'
+                  }}>
+                    <button
+                      onClick={() => setViewMode('gallery')}
+                      style={{
+                        background: viewMode === 'gallery' ? getCategoryColor(selectedProject.category) : 'rgba(255,255,255,0.9)',
+                        color: viewMode === 'gallery' ? 'white' : '#333',
+                        border: 'none',
+                        borderRadius: '10px',
+                        padding: '10px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Image size={20} />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      style={{
+                        background: viewMode === 'grid' ? getCategoryColor(selectedProject.category) : 'rgba(255,255,255,0.9)',
+                        color: viewMode === 'grid' ? 'white' : '#333',
+                        border: 'none',
+                        borderRadius: '10px',
+                        padding: '10px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Grid size={20} />
+                    </button>
+                  </div>
+
+                  {/* Category & Title Overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '80px',
+                    left: '30px',
+                    color: 'white'
+                  }}>
+                    <div style={{
+                      background: getCategoryColor(selectedProject.category),
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      marginBottom: '10px',
+                      display: 'inline-block',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                    }}>
+                      {selectedProject.category}
+                    </div>
+                    <h2 style={{
+                      fontSize: '2.2rem',
+                      fontWeight: '800',
+                      textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+                      maxWidth: '600px'
+                    }}>
+                      {selectedProject.title}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Thumbnail Strip */}
+                <div style={{
+                  display: 'flex',
+                  gap: '10px',
+                  padding: '15px 20px',
+                  background: '#f8fafc',
+                  overflowX: 'auto',
+                  borderBottom: '1px solid #eee'
+                }}>
+                  {getProjectGallery(selectedProject.title).map((img, idx) => (
+                    <motion.div
+                      key={idx}
+                      onClick={() => setCurrentImageIndex(idx)}
+                      style={{
+                        minWidth: '80px',
+                        height: '60px',
+                        borderRadius: '10px',
+                        backgroundImage: `url(${img})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        cursor: 'pointer',
+                        border: currentImageIndex === idx ? `3px solid ${getCategoryColor(selectedProject.category)}` : '3px solid transparent',
+                        opacity: currentImageIndex === idx ? 1 : 0.6,
+                        transition: 'all 0.3s ease'
+                      }}
+                      whileHover={{ opacity: 1, scale: 1.05 }}
+                    />
+                  ))}
+                </div>
+
+                {/* Grid View */}
+                {viewMode === 'grid' && (
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+                    gap: '10px',
+                    padding: '20px',
+                    background: '#f8fafc'
+                  }}>
+                    {getProjectGallery(selectedProject.title).map((img, idx) => (
+                      <motion.div
+                        key={idx}
+                        onClick={() => {
+                          setCurrentImageIndex(idx)
+                          setViewMode('gallery')
+                        }}
+                        style={{
+                          aspectRatio: '4/3',
+                          borderRadius: '12px',
+                          backgroundImage: `url(${img})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                        }}
+                        whileHover={{ scale: 1.05, boxShadow: '0 8px 25px rgba(0,0,0,0.2)' }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Project Details */}
+              <div style={{ padding: '30px' }}>
                 <p style={{
+                  fontSize: '1.1rem',
+                  lineHeight: '1.7',
                   color: '#666',
-                  marginBottom: '20px',
-                  fontSize: '14px',
-                  lineHeight: '1.5'
+                  marginBottom: '30px'
                 }}>
-                  {project.description}
+                  {selectedProject.description}
                 </p>
 
                 <div style={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
-                  gap: '12px',
-                  marginBottom: '20px',
-                  fontSize: '13px'
+                  gap: '30px',
+                  marginBottom: '30px'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
-                    <MapPin size={14} />
-                    <span>{project.location}</span>
+                  <div>
+                    <h4 style={{ fontWeight: '700', marginBottom: '15px', color: '#333', fontSize: '1.1rem' }}>
+                      Detalles del Proyecto
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 15px', background: '#f8fafc', borderRadius: '10px' }}>
+                        <MapPin size={18} style={{ color: getCategoryColor(selectedProject.category) }} />
+                        <span style={{ color: '#666' }}>{selectedProject.location}</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 15px', background: '#f8fafc', borderRadius: '10px' }}>
+                        <Users size={18} style={{ color: getCategoryColor(selectedProject.category) }} />
+                        <span style={{ color: '#666' }}>{selectedProject.area}</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 15px', background: '#f8fafc', borderRadius: '10px' }}>
+                        <Clock size={18} style={{ color: getCategoryColor(selectedProject.category) }} />
+                        <span style={{ color: '#666' }}>{selectedProject.duration}</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 15px', background: '#f8fafc', borderRadius: '10px' }}>
+                        <Calendar size={18} style={{ color: getCategoryColor(selectedProject.category) }} />
+                        <span style={{ color: '#666' }}>{selectedProject.year}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
-                    <Users size={14} />
-                    <span>{project.area}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
-                    <Clock size={14} />
-                    <span>{project.duration}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666' }}>
-                    <Calendar size={14} />
-                    <span>{project.year}</span>
+
+                  <div>
+                    <h4 style={{ fontWeight: '700', marginBottom: '15px', color: '#333', fontSize: '1.1rem' }}>
+                      Servicios Realizados
+                    </h4>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                      {selectedProject.services.map((service, index) => (
+                        <span
+                          key={index}
+                          style={{
+                            background: `${getCategoryColor(selectedProject.category)}15`,
+                            color: getCategoryColor(selectedProject.category),
+                            padding: '10px 16px',
+                            borderRadius: '10px',
+                            fontSize: '14px',
+                            fontWeight: '600'
+                          }}
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}>
+                <div>
+                  <h4 style={{ fontWeight: '700', marginBottom: '15px', color: '#333', fontSize: '1.1rem' }}>
+                    Aspectos Destacados
+                  </h4>
                   <div style={{
-                    display: 'flex',
-                    gap: '6px',
-                    flexWrap: 'wrap'
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '12px'
                   }}>
-                    {project.services.slice(0, 2).map((service, index) => (
-                      <span
-                        key={index}
-                        style={{
-                          background: `${getCategoryColor(project.category)}20`,
-                          color: getCategoryColor(project.category),
-                          padding: '4px 8px',
-                          borderRadius: '8px',
-                          fontSize: '11px',
-                          fontWeight: '600'
-                        }}
-                      >
-                        {service}
-                      </span>
+                    {selectedProject.highlights.map((highlight, index) => (
+                      <div key={index} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '12px 15px',
+                        background: '#f8fafc',
+                        borderRadius: '10px',
+                        border: '1px solid #eee'
+                      }}>
+                        <div style={{
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          background: getCategoryColor(selectedProject.category),
+                          boxShadow: `0 0 10px ${getCategoryColor(selectedProject.category)}50`
+                        }} />
+                        <span style={{ color: '#555', fontSize: '14px' }}>
+                          {highlight}
+                        </span>
+                      </div>
                     ))}
                   </div>
-                  
-                  <ArrowRight 
-                    size={20} 
-                    style={{ 
-                      color: getCategoryColor(project.category),
-                      transition: 'transform 0.3s ease'
-                    }} 
-                  />
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <motion.div 
-          className="modal-overlay" 
-          onClick={() => setSelectedProject(null)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div 
-            className="modal" 
-            onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, scale: 0.8, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 50 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            <button 
-              className="close-btn"
-              onClick={() => setSelectedProject(null)}
-            >
-              <X size={20} />
-            </button>
-
-            <div style={{
-              height: '300px',
-              backgroundImage: `url(${selectedProject.image_url})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              position: 'relative',
-              borderRadius: '16px 16px 0 0'
-            }}>
-              <div style={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '30px',
-                color: 'white'
-              }}>
-                <div style={{
-                  background: getCategoryColor(selectedProject.category),
-                  padding: '8px 16px',
-                  borderRadius: '20px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  marginBottom: '10px',
-                  display: 'inline-block'
-                }}>
-                  {selectedProject.category}
-                </div>
-                <h2 style={{
-                  fontSize: '2rem',
-                  fontWeight: '700',
-                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)'
-                }}>
-                  {selectedProject.title}
-                </h2>
-              </div>
-            </div>
-
-            <div className="modal-body">
-              <p style={{
-                fontSize: '1.1rem',
-                lineHeight: '1.6',
-                color: '#666',
-                marginBottom: '30px'
-              }}>
-                {selectedProject.description}
-              </p>
-
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '20px',
-                marginBottom: '30px'
-              }}>
-                <div>
-                  <h4 style={{ fontWeight: '600', marginBottom: '15px', color: '#333' }}>
-                    Detalles del Proyecto
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <MapPin size={16} style={{ color: '#666' }} />
-                      <span style={{ color: '#666' }}>{selectedProject.location}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Users size={16} style={{ color: '#666' }} />
-                      <span style={{ color: '#666' }}>{selectedProject.area}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Clock size={16} style={{ color: '#666' }} />
-                      <span style={{ color: '#666' }}>{selectedProject.duration}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Calendar size={16} style={{ color: '#666' }} />
-                      <span style={{ color: '#666' }}>{selectedProject.year}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 style={{ fontWeight: '600', marginBottom: '15px', color: '#333' }}>
-                    Servicios Realizados
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {selectedProject.services.map((service, index) => (
-                      <span
-                        key={index}
-                        style={{
-                          background: `${getCategoryColor(selectedProject.category)}20`,
-                          color: getCategoryColor(selectedProject.category),
-                          padding: '8px 12px',
-                          borderRadius: '8px',
-                          fontSize: '14px',
-                          fontWeight: '600'
-                        }}
-                      >
-                        {service}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h4 style={{ fontWeight: '600', marginBottom: '15px', color: '#333' }}>
-                  Aspectos Destacados
-                </h4>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '10px'
-                }}>
-                  {selectedProject.highlights.map((highlight, index) => (
-                    <div key={index} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px'
-                    }}>
-                      <div style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        background: getCategoryColor(selectedProject.category)
-                      }} />
-                      <span style={{ color: '#666', fontSize: '14px' }}>
-                        {highlight}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   )
 }

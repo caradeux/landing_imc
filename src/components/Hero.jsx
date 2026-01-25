@@ -4,15 +4,43 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import ParallaxSection from './ParallaxSection'
 import { api } from '../lib/api'
 
+// Imágenes reales de proyectos para el Hero
+const heroImages = [
+  {
+    image: "/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg",
+    title: "Remodelación de Cocinas Premium",
+    subtitle: "Transformamos espacios con acabados de lujo"
+  },
+  {
+    image: "/images/projects/edificio-greco-restauracion/vista-panoramica-edificio-greco.jpg",
+    title: "Restauración de Edificios",
+    subtitle: "Especialistas en trabajos de altura y restauración"
+  },
+  {
+    image: "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg",
+    title: "Obras Civiles Retail",
+    subtitle: "Proyectos comerciales de alta calidad"
+  },
+  {
+    image: "/images/projects/construccion-muros/muro-estucado-terminado.jpg",
+    title: "Construcción y Albañilería",
+    subtitle: "Muros y estructuras con garantía"
+  },
+  {
+    image: "/images/projects/remodelacion-cocinas-lujo/cocina-premium-madera-marmol-negro.jpg",
+    title: "Diseño de Interiores",
+    subtitle: "Cocinas y espacios de alta gama"
+  },
+  {
+    image: "/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg",
+    title: "Pintura y Restauración",
+    subtitle: "Acabados profesionales certificados"
+  }
+]
+
 const Hero = ({ onQuoteClick }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [slides, setSlides] = useState([
-    {
-      title: "Líderes en Construcción y Servicios Especializados",
-      subtitle: "Más de 15 años transformando espacios retail, industriales y comerciales con la más alta calidad y profesionalismo.",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-    }
-  ])
+  const [slides, setSlides] = useState(heroImages)
   const [siteSettings, setSiteSettings] = useState({
     hero_title: "Líderes en Construcción y Servicios Especializados",
     hero_subtitle: "Más de 15 años transformando espacios retail, industriales y comerciales con la más alta calidad y profesionalismo.",
@@ -26,7 +54,6 @@ const Hero = ({ onQuoteClick }) => {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [1, 1, 0.8, 0])
 
   useEffect(() => {
-    loadBannerImages()
     loadSiteSettings()
   }, [])
 
@@ -41,33 +68,14 @@ const Hero = ({ onQuoteClick }) => {
     }
   }
 
-  const loadBannerImages = async () => {
-    try {
-      const images = await api.getSiteImages()
-      const bannerImages = images.filter(img => img.category === 'banner' && img.is_active)
-        .sort((a, b) => a.order_index - b.order_index)
-
-      if (bannerImages && bannerImages.length > 0) {
-        const formattedSlides = bannerImages.map(img => ({
-          image: img.url
-        }))
-        setSlides(formattedSlides)
-      }
-    } catch (error) {
-      console.error('Error loading banner images:', error)
-    }
-  }
-
   useEffect(() => {
     if (slides.length > 0) {
       const timer = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length)
-      }, 5000)
+      }, 4000)
       return () => clearInterval(timer)
     }
   }, [slides.length])
-
-
 
   return (
     <main>
@@ -80,7 +88,7 @@ const Hero = ({ onQuoteClick }) => {
       background: '#000'
     }}>
       {/* Background Slider */}
-      <motion.div 
+      <motion.div
         style={{
           position: 'absolute',
           top: 0,
@@ -105,14 +113,18 @@ const Hero = ({ onQuoteClick }) => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: currentSlide === index ? 1 : 0,
-              transition: 'opacity 1s ease-in-out'
+              transition: 'opacity 1s ease-in-out',
+              transform: currentSlide === index ? 'scale(1.05)' : 'scale(1)',
             }}
             initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
+            animate={{
+              scale: currentSlide === index ? 1.05 : 1,
+              opacity: currentSlide === index ? 1 : 0
+            }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           />
         ))}
-        
+
         {/* Overlay */}
         <div style={{
           position: 'absolute',
@@ -120,16 +132,16 @@ const Hero = ({ onQuoteClick }) => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'linear-gradient(135deg, rgba(30, 64, 175, 0.85) 0%, rgba(15, 23, 42, 0.85) 100%)',
+          background: 'linear-gradient(135deg, rgba(30, 64, 175, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%)',
           zIndex: 2
         }} />
       </motion.div>
 
       {/* Content */}
-      <motion.div 
-        className="container" 
-        style={{ 
-          position: 'relative', 
+      <motion.div
+        className="container"
+        style={{
+          position: 'relative',
           zIndex: 3,
           y: contentY,
           opacity: contentOpacity,
@@ -143,10 +155,10 @@ const Hero = ({ onQuoteClick }) => {
           minHeight: '500px',
           textAlign: 'center'
         }} className="hero-content">
-          
+
           {/* Main Content */}
-          <motion.div 
-            style={{ 
+          <motion.div
+            style={{
               color: 'white',
               maxWidth: '800px',
               margin: '0 auto'
@@ -155,8 +167,30 @@ const Hero = ({ onQuoteClick }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <motion.h1 
-              itemProp="name" 
+            {/* Dynamic slide title */}
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                marginBottom: '20px',
+                padding: '10px 25px',
+                background: 'rgba(255, 255, 255, 0.15)',
+                borderRadius: '30px',
+                display: 'inline-block',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
+              <span style={{ fontSize: '1rem', fontWeight: '600' }}>
+                {slides[currentSlide]?.subtitle}
+              </span>
+            </motion.div>
+
+            <motion.h1
+              itemProp="name"
               style={{
                 fontSize: '4rem',
                 fontWeight: '900',
@@ -238,21 +272,28 @@ const Hero = ({ onQuoteClick }) => {
               </motion.button>
             </motion.div>
 
-            {/* Slide Indicators */}
-            <motion.div 
-              style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}
+            {/* Slide Indicators with thumbnails */}
+            <motion.div
+              style={{
+                display: 'flex',
+                gap: '10px',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                maxWidth: '500px',
+                margin: '0 auto'
+              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 1.3 }}
             >
-              {slides.map((_, index) => (
+              {slides.map((slide, index) => (
                 <motion.button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   style={{
-                    width: '14px',
+                    width: currentSlide === index ? '50px' : '14px',
                     height: '14px',
-                    borderRadius: '50%',
+                    borderRadius: currentSlide === index ? '7px' : '50%',
                     border: 'none',
                     background: currentSlide === index ? 'white' : 'rgba(255, 255, 255, 0.4)',
                     cursor: 'pointer',
@@ -273,21 +314,21 @@ const Hero = ({ onQuoteClick }) => {
           .hero-content h1 {
             font-size: 2.8rem !important;
           }
-          
+
           .hero-content p {
             font-size: 1.2rem !important;
           }
-          
+
           .hero-content > div {
             padding: 0 20px;
           }
         }
-        
+
         @media (max-width: 480px) {
           .hero-content h1 {
             font-size: 2.2rem !important;
           }
-          
+
           .hero-content p {
             font-size: 1.1rem !important;
           }
