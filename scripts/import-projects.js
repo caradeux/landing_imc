@@ -4,7 +4,7 @@
  */
 
 // Usar la API de producción directamente
-const API_BASE_URL = 'https://imcservicioschile.cl/api';
+const API_BASE_URL = 'https://www.imcs.cl/api';
 
 const projectsData = [
   {
