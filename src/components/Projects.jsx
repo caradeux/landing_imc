@@ -4,55 +4,57 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { api } from '../lib/api'
 import ParallaxSection from './ParallaxSection'
 
-// Galerías de imágenes por proyecto
+// Galerías de imágenes por proyecto (fallback para proyectos sin gallery en DB)
 const projectGalleries = {
-  "Remodelación Integral de Cocinas Premium": [
-    "/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-moderna-marmol-beige-01.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-gabinetes-gris-oscuro-proceso.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-premium-madera-marmol-negro.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-moderna-madera-oscura-minimalista.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-premium-barra-desayuno-taburetes.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-blanca-piso-marmol-hornos.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-negra-isla-marmol-blanco.jpg",
-    "/images/projects/remodelacion-cocinas-lujo/cocina-blanca-moderna-campana-acero.jpg"
+  // Proyectos actuales con imágenes reales
+  "Remodelación Departamento Completo": [
+    "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0010.jpg",
+    "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0018.jpg",
+    "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0019.jpg",
+    "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0088.jpg",
+    "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0090.jpg"
   ],
-  "Restauración de Balcones - Edificio Greco II": [
-    "/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg",
-    "/images/projects/edificio-greco-restauracion/balcon-vista-mar-proceso.jpg",
-    "/images/projects/edificio-greco-restauracion/baranda-oxidada-antes-restauracion.jpg",
-    "/images/projects/edificio-greco-restauracion/ventana-oxido-reparacion.jpg",
-    "/images/projects/edificio-greco-restauracion/baranda-oxido-detalle-antes.jpg",
-    "/images/projects/edificio-greco-restauracion/baranda-oxido-balcon-antes.jpg",
-    "/images/projects/edificio-greco-restauracion/vista-panoramica-edificio-greco.jpg",
-    "/images/projects/edificio-greco-restauracion/reparacion-cielo-departamento.jpg",
-    "/images/projects/edificio-greco-restauracion/reparacion-muro-ventana.jpg",
-    "/images/projects/edificio-greco-restauracion/base-baranda-deteriorada.jpg"
+  "Fabricación Muebles de Cocina a Medida": [
+    "/images/projects/muebles-cocina-medida/IMG-20260125-WA0011.jpg",
+    "/images/projects/muebles-cocina-medida/IMG-20260125-WA0012.jpg",
+    "/images/projects/muebles-cocina-medida/IMG-20260125-WA0013.jpg",
+    "/images/projects/muebles-cocina-medida/IMG-20260125-WA0082.jpg",
+    "/images/projects/muebles-cocina-medida/IMG-20260125-WA0083.jpg"
   ],
-  "Obras Civiles - Easy Viña del Mar": [
-    "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg",
-    "/images/projects/easy-vina-del-mar/bolardos-metalicos-pintados.jpg",
-    "/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg",
-    "/images/projects/easy-vina-del-mar/soldadura-bolardos-proceso.jpg",
-    "/images/projects/easy-vina-del-mar/tabiqueria-drywall-local-comercial.jpg"
+  "Separación Vidrio Penthouse": [
+    "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0057.jpg",
+    "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0058.jpg",
+    "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0070.jpg",
+    "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0080.jpg"
   ],
-  "Construcción y Reparación de Muros Perimetrales": [
-    "/images/projects/construccion-muros/muro-estucado-terminado.jpg",
-    "/images/projects/construccion-muros/cimientos-armadura-acero.jpg",
-    "/images/projects/construccion-muros/albanileria-ladrillo-proceso.jpg",
-    "/images/projects/construccion-muros/muro-ladrillo-construccion.jpg",
-    "/images/projects/construccion-muros/muro-estucado-gris.jpg",
-    "/images/projects/construccion-muros/demolicion-muro-antiguo.jpg",
-    "/images/projects/construccion-muros/muro-cemento-fresco.jpg"
+  "Restauración Edificio Greco II": [
+    "/images/projects/restauracion-greco-ii/IMG-20260125-WA0023.jpg",
+    "/images/projects/restauracion-greco-ii/IMG-20260125-WA0027.jpg",
+    "/images/projects/restauracion-greco-ii/IMG-20260125-WA0028.jpg",
+    "/images/projects/restauracion-greco-ii/IMG-20260125-WA0042.jpg",
+    "/images/projects/restauracion-greco-ii/IMG-20260125-WA0078.jpg",
+    "/images/projects/restauracion-greco-ii/IMG-20260125-WA0100.jpg"
   ],
-  "Remodelación de Penthouse - Lobby y Entrada": [
-    "/images/projects/remodelacion-penthouse/lobby-entrada-elegante-penthouse.jpg",
-    "/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg"
+  "Obras Civiles Easy Viña del Mar": [
+    "/images/projects/easy-vina-obras/IMG-20260125-WA0060.jpg",
+    "/images/projects/easy-vina-obras/IMG-20260125-WA0062.jpg",
+    "/images/projects/easy-vina-obras/IMG-20260125-WA0063.jpg",
+    "/images/projects/easy-vina-obras/IMG-20260125-WA0064.jpg",
+    "/images/projects/easy-vina-obras/IMG-20260125-WA0068.jpg"
   ],
-  "Trabajos de Pintura - Cocina, Murallas y Cielo": [
-    "/images/projects/edificio-greco-restauracion/reparacion-cielo-departamento.jpg",
-    "/images/projects/edificio-greco-restauracion/reparacion-muro-ventana.jpg",
-    "/images/projects/edificio-greco-restauracion/baranda-pintada-despues-restauracion.jpg"
+  "Obras Civiles Santiago": [
+    "/images/projects/obras-civiles-santiago/IMG-20260125-WA0024.jpg",
+    "/images/projects/obras-civiles-santiago/IMG-20260125-WA0025.jpg",
+    "/images/projects/obras-civiles-santiago/IMG-20260125-WA0026.jpg",
+    "/images/projects/obras-civiles-santiago/IMG-20260125-WA0030.jpg",
+    "/images/projects/obras-civiles-santiago/IMG-20260125-WA0031.jpg"
+  ],
+  "Instalación de Pisos": [
+    "/images/projects/instalacion-pisos/IMG-20260125-WA0081.jpg",
+    "/images/projects/instalacion-pisos/IMG-20260125-WA0084.jpg",
+    "/images/projects/instalacion-pisos/IMG-20260125-WA0085.jpg",
+    "/images/projects/instalacion-pisos/IMG-20260125-WA0086.jpg",
+    "/images/projects/instalacion-pisos/IMG-20260125-WA0120.jpg"
   ]
 }
 
@@ -79,17 +81,26 @@ const Projects = () => {
     }
   }
 
-  const getProjectGallery = (projectTitle) => {
-    return projectGalleries[projectTitle] || [selectedProject?.image_url]
+  const getProjectGallery = (project) => {
+    // First check if project has gallery from database
+    if (project?.gallery && Array.isArray(project.gallery) && project.gallery.length > 0) {
+      return project.gallery
+    }
+    // Fallback to hardcoded galleries by title
+    if (project?.title && projectGalleries[project.title]) {
+      return projectGalleries[project.title]
+    }
+    // Last fallback: just the main image
+    return project?.image_url ? [project.image_url] : []
   }
 
   const nextImage = () => {
-    const gallery = getProjectGallery(selectedProject?.title)
+    const gallery = getProjectGallery(selectedProject)
     setCurrentImageIndex((prev) => (prev + 1) % gallery.length)
   }
 
   const prevImage = () => {
-    const gallery = getProjectGallery(selectedProject?.title)
+    const gallery = getProjectGallery(selectedProject)
     setCurrentImageIndex((prev) => (prev - 1 + gallery.length) % gallery.length)
   }
 
@@ -206,7 +217,7 @@ const Projects = () => {
           justifyContent: 'center'
         }}>
           {filteredProjects.map((project, index) => {
-            const gallery = projectGalleries[project.title] || []
+            const gallery = getProjectGallery(project)
             const imageCount = gallery.length || 1
 
             return (
