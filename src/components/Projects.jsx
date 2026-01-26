@@ -531,7 +531,7 @@ const Projects = () => {
                       style={{
                         width: '100%',
                         height: '100%',
-                        backgroundImage: `url(${getProjectGallery(selectedProject.title)[currentImageIndex]})`,
+                        backgroundImage: `url(${getProjectGallery(selectedProject)[currentImageIndex]})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                       }}
@@ -539,7 +539,7 @@ const Projects = () => {
                   </AnimatePresence>
 
                   {/* Navigation Arrows */}
-                  {getProjectGallery(selectedProject.title).length > 1 && (
+                  {getProjectGallery(selectedProject).length > 1 && (
                     <>
                       <button
                         onClick={prevImage}
@@ -602,7 +602,7 @@ const Projects = () => {
                     fontWeight: '600',
                     backdropFilter: 'blur(10px)'
                   }}>
-                    {currentImageIndex + 1} / {getProjectGallery(selectedProject.title).length}
+                    {currentImageIndex + 1} / {getProjectGallery(selectedProject).length}
                   </div>
 
                   {/* View Mode Toggle */}
@@ -686,7 +686,7 @@ const Projects = () => {
                   overflowX: 'auto',
                   borderBottom: '1px solid #eee'
                 }}>
-                  {getProjectGallery(selectedProject.title).map((img, idx) => (
+                  {getProjectGallery(selectedProject).map((img, idx) => (
                     <motion.div
                       key={idx}
                       onClick={() => setCurrentImageIndex(idx)}
@@ -716,7 +716,7 @@ const Projects = () => {
                     padding: '20px',
                     background: '#f8fafc'
                   }}>
-                    {getProjectGallery(selectedProject.title).map((img, idx) => (
+                    {getProjectGallery(selectedProject).map((img, idx) => (
                       <motion.div
                         key={idx}
                         onClick={() => {
