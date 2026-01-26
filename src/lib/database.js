@@ -47,6 +47,14 @@ export const db = {
     return result.rows;
   },
 
+  // Get featured services (Lo Más Solicitado)
+  async getFeaturedServices() {
+    const result = await this.query(
+      'SELECT * FROM services WHERE active = true AND featured = true ORDER BY display_order ASC'
+    );
+    return result.rows;
+  },
+
   // Get all projects
   async getProjects() {
     const result = await this.query(

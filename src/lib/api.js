@@ -71,6 +71,11 @@ class ApiClient {
     return this.get('/services');
   }
 
+  // Featured Services (Lo Más Solicitado)
+  async getFeaturedServices() {
+    return this.get('/services/featured');
+  }
+
   // Projects
   async getProjects() {
     return this.get('/projects');

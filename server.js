@@ -253,6 +253,17 @@ app.get('/api/services', async (req, res) => {
   }
 });
 
+// Get featured services (Lo Más Solicitado)
+app.get('/api/services/featured', async (req, res) => {
+  try {
+    const services = await db.getFeaturedServices();
+    res.json(services);
+  } catch (error) {
+    console.error('Error fetching featured services:', error);
+    res.status(500).json({ error: 'Error fetching featured services' });
+  }
+});
+
 // Get all projects
 app.get('/api/projects', async (req, res) => {
   try {
@@ -695,6 +706,7 @@ app.post('/api/admin/migrate', async (req, res) => {
         features jsonb NOT NULL DEFAULT '[]'::jsonb,
         display_order integer NOT NULL DEFAULT 0,
         active boolean NOT NULL DEFAULT true,
+        featured boolean NOT NULL DEFAULT false,
         created_at timestamptz DEFAULT now(),
         updated_at timestamptz DEFAULT now()
       );`,
@@ -938,15 +950,57 @@ app.post('/api/admin/migrate', async (req, res) => {
         image_url: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
         color: '#7c3aed',
         features: JSON.stringify(["Soldadura especializada","Estructuras metálicas","Certificación AWS","Soldadura bajo agua","Reparaciones industriales","Control de calidad"]),
-        display_order: 6
+        display_order: 6,
+        featured: false
+      },
+      // Servicios Residenciales / Hogar (destacados)
+      {
+        title: 'Muebles de Cocina',
+        description: 'Cocinas a medida que transforman tu hogar. Diseño, fabricación e instalación profesional con materiales premium.',
+        icon: 'Home',
+        image_url: '/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg',
+        color: '#1e40af',
+        features: JSON.stringify(["Diseño 3D incluido","Materiales premium","Instalación profesional","Garantía extendida","Asesoría personalizada"]),
+        display_order: 7,
+        featured: true
+      },
+      {
+        title: 'Clósets a Medida',
+        description: 'Aprovecha cada centímetro de tu espacio. Clósets y walk-in closets diseñados para optimizar tu hogar.',
+        icon: 'Wrench',
+        image_url: '/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg',
+        color: '#7c3aed',
+        features: JSON.stringify(["Medidas exactas","Máximo aprovechamiento","Variedad de acabados","Diseño personalizado","Instalación incluida"]),
+        display_order: 8,
+        featured: true
+      },
+      {
+        title: 'Barandas de Vidrio',
+        description: 'Vidrio templado certificado SEC. Seguridad y elegancia para balcones, escaleras y terrazas.',
+        icon: 'Shield',
+        image_url: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg',
+        color: '#0891b2',
+        features: JSON.stringify(["Vidrio templado 10mm","Acero inoxidable","Certificación SEC","Instalación segura","Diseños modernos"]),
+        display_order: 9,
+        featured: true
+      },
+      {
+        title: 'Espejos y Cristales',
+        description: 'Espejos a medida que agrandan visualmente tus espacios. Instalación profesional de cristales decorativos.',
+        icon: 'Palette',
+        image_url: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg',
+        color: '#059669',
+        features: JSON.stringify(["Corte a medida","Instalación segura","Diseños modernos","Espejos decorativos","Cristales especiales"]),
+        display_order: 10,
+        featured: true
       }
     ];
-    
+
     for (const service of servicesData) {
       await db.query(
-        `INSERT INTO services (title, description, icon, image_url, color, features, display_order, active, created_at, updated_at) 
-         VALUES ($1, $2, $3, $4, $5, $6, $7, true, now(), now())`,
-        [service.title, service.description, service.icon, service.image_url, service.color, service.features, service.display_order]
+        `INSERT INTO services (title, description, icon, image_url, color, features, display_order, featured, active, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, now(), now())`,
+        [service.title, service.description, service.icon, service.image_url, service.color, service.features, service.display_order, service.featured || false]
       );
     }
     

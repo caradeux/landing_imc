@@ -1,46 +1,68 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check, Zap, Hammer, Wrench, Home, Palette, Shield } from 'lucide-react'
+import { api } from '../lib/api'
 
-const productos = [
-  {
-    title: 'Muebles de Cocina',
-    description: 'Cocinas a medida que transforman tu hogar. Diseño, fabricación e instalación.',
-    image: '/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg',
-    features: ['Diseño 3D incluido', 'Materiales premium', 'Instalación profesional'],
-    color: '#1e40af',
-    whatsapp: 'Hola, me interesa cotizar muebles de cocina. ¿Podrían darme más información?'
-  },
-  {
-    title: 'Clósets a Medida',
-    description: 'Aprovecha cada centímetro. Clósets que se adaptan a TU espacio.',
-    image: '/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg',
-    features: ['Medidas exactas', 'Máximo aprovechamiento', 'Variedad de acabados'],
-    color: '#7c3aed',
-    whatsapp: 'Hola, me interesa cotizar un clóset a medida. ¿Podrían darme más información?'
-  },
-  {
-    title: 'Barandas de Vidrio',
-    description: 'Vidrio templado certificado SEC. Seguridad y elegancia para tu hogar.',
-    image: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg',
-    features: ['Vidrio templado 10mm', 'Acero inoxidable', 'Certificación SEC'],
-    color: '#0891b2',
-    whatsapp: 'Hola, me interesa cotizar barandas de vidrio. ¿Podrían darme más información?'
-  },
-  {
-    title: 'Espejos y Cristales',
-    description: 'Espejos a medida que agrandan visualmente tus espacios.',
-    image: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg',
-    features: ['Corte a medida', 'Instalación segura', 'Diseños modernos'],
-    color: '#059669',
-    whatsapp: 'Hola, me interesa cotizar espejos o cristales. ¿Podrían darme más información?'
-  }
-]
+const iconMap = {
+  Zap,
+  Hammer,
+  Wrench,
+  Home,
+  Palette,
+  Shield
+}
 
 const ProductosEstrella = () => {
+  const [productos, setProductos] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchFeaturedServices()
+  }, [])
+
+  const fetchFeaturedServices = async () => {
+    try {
+      const services = await api.getFeaturedServices()
+
+      // Parse features if they are strings and add icons
+      const servicesWithData = (services || []).map(service => ({
+        ...service,
+        icon: iconMap[service.icon] || Zap,
+        features: typeof service.features === 'string'
+          ? JSON.parse(service.features)
+          : service.features || [],
+        whatsapp: `Hola, me interesa cotizar ${service.title}. ¿Podrían darme más información?`
+      }))
+
+      setProductos(servicesWithData)
+    } catch (error) {
+      console.error('Error al cargar productos destacados:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const openWhatsApp = (message) => {
     const encoded = encodeURIComponent(message)
     window.open(`https://wa.me/56988542926?text=${encoded}`, '_blank')
+  }
+
+  if (loading) {
+    return (
+      <section id="destacados" style={{
+        padding: '80px 0',
+        background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+        textAlign: 'center'
+      }}>
+        <div className="container">
+          <div style={{ color: 'white' }}>Cargando productos destacados...</div>
+        </div>
+      </section>
+    )
+  }
+
+  if (productos.length === 0) {
+    return null // No mostrar sección si no hay productos destacados
   }
 
   return (
@@ -91,7 +113,7 @@ const ProductosEstrella = () => {
             marginBottom: '20px',
             lineHeight: '1.2'
           }}>
-            Lo Más Solicitado
+            Lo Mas Solicitado
           </h2>
           <p style={{
             color: 'rgba(255,255,255,0.7)',
@@ -114,7 +136,7 @@ const ProductosEstrella = () => {
         }}>
           {productos.map((producto, index) => (
             <motion.div
-              key={index}
+              key={producto.id || index}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -130,7 +152,7 @@ const ProductosEstrella = () => {
               {/* Image */}
               <div style={{
                 height: '220px',
-                backgroundImage: `url(${producto.image})`,
+                backgroundImage: `url(${producto.image_url})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 position: 'relative'
@@ -163,7 +185,7 @@ const ProductosEstrella = () => {
 
                 {/* Features */}
                 <div style={{ marginBottom: '24px' }}>
-                  {producto.features.map((feature, idx) => (
+                  {producto.features.slice(0, 3).map((feature, idx) => (
                     <div key={idx} style={{
                       display: 'flex',
                       alignItems: 'center',
