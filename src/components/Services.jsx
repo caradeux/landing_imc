@@ -69,8 +69,11 @@ const Services = () => {
     try {
       const dbServices = await api.getServices()
 
-      // Combinar servicios de DB con los residenciales
-      const allServices = [...(dbServices || []), ...residentialServices]
+      // Si hay servicios en la DB, usarlos directamente
+      // Si no hay, usar los residenciales como fallback
+      const allServices = (dbServices && dbServices.length > 0)
+        ? dbServices
+        : residentialServices
 
       const servicesWithIcons = allServices.map(service => ({
         ...service,
@@ -84,7 +87,7 @@ const Services = () => {
       setServices(servicesWithIcons)
     } catch (error) {
       console.error('Error al cargar servicios:', error)
-      // Si falla la API, al menos mostrar los residenciales
+      // Si falla la API, mostrar los residenciales
       setServices(residentialServices.map(s => ({ ...s, icon: iconMap[s.icon] || Zap })))
     } finally {
       setLoading(false)
