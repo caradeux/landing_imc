@@ -1,6 +1,8 @@
 // API client to replace Supabase calls with PostgreSQL API endpoints
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// En producción usar URL relativa, en desarrollo usar localhost
+const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+const API_BASE_URL = isProduction ? '/api' : (import.meta.env.VITE_API_URL || 'http://localhost:3001/api');
 
 class ApiClient {
   constructor() {
