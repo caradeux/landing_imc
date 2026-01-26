@@ -49,10 +49,16 @@ export const db = {
 
   // Get featured services (Lo Más Solicitado)
   async getFeaturedServices() {
-    const result = await this.query(
-      'SELECT * FROM services WHERE active = true AND featured = true ORDER BY display_order ASC'
-    );
-    return result.rows;
+    try {
+      const result = await this.query(
+        'SELECT * FROM services WHERE active = true AND featured = true ORDER BY display_order ASC'
+      );
+      return result.rows;
+    } catch (error) {
+      // Fallback if 'featured' column doesn't exist yet
+      console.log('Featured column not found, returning empty array');
+      return [];
+    }
   },
 
   // Get all projects

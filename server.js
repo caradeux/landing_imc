@@ -867,6 +867,7 @@ app.post('/api/admin/migrate', async (req, res) => {
     try {
       await db.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS client_photo_url text;');
       await db.query('ALTER TABLE testimonials ADD COLUMN IF NOT EXISTS project_name text;');
+      await db.query('ALTER TABLE services ADD COLUMN IF NOT EXISTS featured boolean NOT NULL DEFAULT false;');
       console.log('✅ Missing columns added successfully!');
     } catch (error) {
       console.log('ℹ️ Columns may already exist:', error.message);
