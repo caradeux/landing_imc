@@ -5,7 +5,7 @@ import TopBar from './components/TopBar'
 import Header from './components/Header'
 // PromoBanner removed per user request
 import Hero from './components/Hero'
-import ProductosEstrella from './components/ProductosEstrella'
+// ProductosEstrella removed - all services shown in Services section
 import ProcesoTrabajo from './components/ProcesoTrabajo'
 import Services from './components/Services'
 import About from './components/About'
@@ -72,7 +72,6 @@ function App() {
         onQuoteClick={() => setIsQuoteModalOpen(true)}
       />
       <Hero onQuoteClick={() => setIsQuoteModalOpen(true)} />
-      <ProductosEstrella />
       <Services />
       <ProcesoTrabajo />
       <About />

@@ -13,6 +13,50 @@ const iconMap = {
   Shield
 }
 
+// Servicios residenciales adicionales (hogar)
+const residentialServices = [
+  {
+    id: 'res-1',
+    title: 'Muebles de Cocina',
+    description: 'Cocinas a medida que transforman tu hogar. Diseño, fabricación e instalación profesional con materiales premium.',
+    icon: 'Home',
+    image_url: '/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg',
+    color: '#1e40af',
+    features: ['Diseño 3D incluido', 'Materiales premium', 'Instalación profesional', 'Garantía extendida', 'Asesoría personalizada'],
+    display_order: 7
+  },
+  {
+    id: 'res-2',
+    title: 'Clósets a Medida',
+    description: 'Aprovecha cada centímetro de tu espacio. Clósets y walk-in closets diseñados para optimizar tu hogar.',
+    icon: 'Wrench',
+    image_url: '/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg',
+    color: '#7c3aed',
+    features: ['Medidas exactas', 'Máximo aprovechamiento', 'Variedad de acabados', 'Diseño personalizado', 'Instalación incluida'],
+    display_order: 8
+  },
+  {
+    id: 'res-3',
+    title: 'Barandas de Vidrio',
+    description: 'Vidrio templado certificado SEC. Seguridad y elegancia para balcones, escaleras y terrazas.',
+    icon: 'Shield',
+    image_url: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg',
+    color: '#0891b2',
+    features: ['Vidrio templado 10mm', 'Acero inoxidable', 'Certificación SEC', 'Instalación segura', 'Diseños modernos'],
+    display_order: 9
+  },
+  {
+    id: 'res-4',
+    title: 'Espejos y Cristales',
+    description: 'Espejos a medida que agrandan visualmente tus espacios. Instalación profesional de cristales decorativos.',
+    icon: 'Palette',
+    image_url: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg',
+    color: '#059669',
+    features: ['Corte a medida', 'Instalación segura', 'Diseños modernos', 'Espejos decorativos', 'Cristales especiales'],
+    display_order: 10
+  }
+]
+
 const Services = () => {
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
@@ -23,16 +67,25 @@ const Services = () => {
 
   const fetchServices = async () => {
     try {
-      const services = await api.getServices()
-      
-      const servicesWithIcons = (services || []).map(service => ({
+      const dbServices = await api.getServices()
+
+      // Combinar servicios de DB con los residenciales
+      const allServices = [...(dbServices || []), ...residentialServices]
+
+      const servicesWithIcons = allServices.map(service => ({
         ...service,
-        icon: iconMap[service.icon] || Zap
+        icon: iconMap[service.icon] || Zap,
+        // Parse features si es string
+        features: typeof service.features === 'string'
+          ? JSON.parse(service.features)
+          : service.features || []
       }))
 
       setServices(servicesWithIcons)
     } catch (error) {
       console.error('Error al cargar servicios:', error)
+      // Si falla la API, al menos mostrar los residenciales
+      setServices(residentialServices.map(s => ({ ...s, icon: iconMap[s.icon] || Zap })))
     } finally {
       setLoading(false)
     }
