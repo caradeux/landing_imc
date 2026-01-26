@@ -974,6 +974,11 @@ app.post('/api/admin/migrate', async (req, res) => {
       console.log('  ✓ services.featured');
     } catch (e) { console.log('  ℹ️ services.featured:', e.message); }
 
+    try {
+      await db.query("ALTER TABLE projects ADD COLUMN IF NOT EXISTS gallery jsonb NOT NULL DEFAULT '[]'::jsonb;");
+      console.log('  ✓ projects.gallery');
+    } catch (e) { console.log('  ℹ️ projects.gallery:', e.message); }
+
     console.log('✅ Missing columns check completed!');
     
     // Now insert the data (we'll do this in a separate step)

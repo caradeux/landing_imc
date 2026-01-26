@@ -195,25 +195,25 @@ export const db = {
 
   // Create project
   async createProject(projectData) {
-    const { title, description, category, year, area, duration, location, image_url, services, highlights, display_order } = projectData;
+    const { title, description, category, year, area, duration, location, image_url, gallery, services, highlights, display_order } = projectData;
     const result = await this.query(
-      `INSERT INTO projects (title, description, category, year, area, duration, location, image_url, services, highlights, display_order) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
-      [title, description, category, year, area, duration, location, image_url, JSON.stringify(services), JSON.stringify(highlights), display_order]
+      `INSERT INTO projects (title, description, category, year, area, duration, location, image_url, gallery, services, highlights, display_order)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+      [title, description, category, year, area, duration, location, image_url, JSON.stringify(gallery || []), JSON.stringify(services), JSON.stringify(highlights), display_order]
     );
     return result.rows[0];
   },
 
   // Update project
   async updateProject(id, projectData) {
-    const { title, description, category, year, area, duration, location, image_url, services, highlights, display_order, active } = projectData;
+    const { title, description, category, year, area, duration, location, image_url, gallery, services, highlights, display_order, active } = projectData;
     const result = await this.query(
-      `UPDATE projects 
-       SET title = $2, description = $3, category = $4, year = $5, area = $6, duration = $7, 
-           location = $8, image_url = $9, services = $10, highlights = $11, display_order = $12, 
-           active = $13, updated_at = now()
+      `UPDATE projects
+       SET title = $2, description = $3, category = $4, year = $5, area = $6, duration = $7,
+           location = $8, image_url = $9, gallery = $10, services = $11, highlights = $12, display_order = $13,
+           active = $14, updated_at = now()
        WHERE id = $1 RETURNING *`,
-      [id, title, description, category, year, area, duration, location, image_url, JSON.stringify(services), JSON.stringify(highlights), display_order, active]
+      [id, title, description, category, year, area, duration, location, image_url, JSON.stringify(gallery || []), JSON.stringify(services), JSON.stringify(highlights), display_order, active]
     );
     return result.rows[0];
   },
