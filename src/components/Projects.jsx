@@ -5,29 +5,30 @@ import { api } from '../lib/api'
 import ParallaxSection from './ParallaxSection'
 
 // Galerías de imágenes por proyecto (fallback para proyectos sin gallery en DB)
+// IMPORTANTE: Los títulos deben coincidir EXACTAMENTE con los de la base de datos
 const projectGalleries = {
-  // Proyectos actuales con imágenes reales
-  "Remodelación Departamento Completo": [
+  // Proyectos actuales con imágenes reales - títulos SIN acentos para coincidir con DB
+  "Remodelacion Departamento Completo": [
     "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0010.jpg",
     "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0018.jpg",
     "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0019.jpg",
     "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0088.jpg",
     "/images/projects/remodelacion-depto-completo/IMG-20260125-WA0090.jpg"
   ],
-  "Fabricación Muebles de Cocina a Medida": [
+  "Fabricacion Muebles de Cocina a Medida": [
     "/images/projects/muebles-cocina-medida/IMG-20260125-WA0011.jpg",
     "/images/projects/muebles-cocina-medida/IMG-20260125-WA0012.jpg",
     "/images/projects/muebles-cocina-medida/IMG-20260125-WA0013.jpg",
     "/images/projects/muebles-cocina-medida/IMG-20260125-WA0082.jpg",
     "/images/projects/muebles-cocina-medida/IMG-20260125-WA0083.jpg"
   ],
-  "Separación Vidrio Penthouse": [
+  "Separacion Vidrio Lobby Penthouse": [
     "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0057.jpg",
     "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0058.jpg",
     "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0070.jpg",
     "/images/projects/separacion-vidrio-penthouse/IMG-20260125-WA0080.jpg"
   ],
-  "Restauración Edificio Greco II": [
+  "Restauracion Edificio Greco II": [
     "/images/projects/restauracion-greco-ii/IMG-20260125-WA0023.jpg",
     "/images/projects/restauracion-greco-ii/IMG-20260125-WA0027.jpg",
     "/images/projects/restauracion-greco-ii/IMG-20260125-WA0028.jpg",
@@ -35,7 +36,7 @@ const projectGalleries = {
     "/images/projects/restauracion-greco-ii/IMG-20260125-WA0078.jpg",
     "/images/projects/restauracion-greco-ii/IMG-20260125-WA0100.jpg"
   ],
-  "Obras Civiles Easy Viña del Mar": [
+  "Obras Civiles Easy Vina del Mar": [
     "/images/projects/easy-vina-obras/IMG-20260125-WA0060.jpg",
     "/images/projects/easy-vina-obras/IMG-20260125-WA0062.jpg",
     "/images/projects/easy-vina-obras/IMG-20260125-WA0063.jpg",
@@ -49,7 +50,7 @@ const projectGalleries = {
     "/images/projects/obras-civiles-santiago/IMG-20260125-WA0030.jpg",
     "/images/projects/obras-civiles-santiago/IMG-20260125-WA0031.jpg"
   ],
-  "Instalación de Pisos": [
+  "Instalacion de Pisos Laminados": [
     "/images/projects/instalacion-pisos/IMG-20260125-WA0081.jpg",
     "/images/projects/instalacion-pisos/IMG-20260125-WA0084.jpg",
     "/images/projects/instalacion-pisos/IMG-20260125-WA0085.jpg",
