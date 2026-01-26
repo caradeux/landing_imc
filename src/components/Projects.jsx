@@ -59,6 +59,23 @@ const projectGalleries = {
   ]
 }
 
+// Normalize string for comparison (remove accents, special chars, lowercase)
+const normalizeString = (str) => {
+  if (!str) return ''
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .replace(/[^a-z0-9\s]/g, '') // Remove special chars
+    .trim()
+}
+
+// Create a map of normalized keys to original keys for faster lookup
+const normalizedGalleryKeys = Object.keys(projectGalleries).reduce((acc, key) => {
+  acc[normalizeString(key)] = key
+  return acc
+}, {})
+
 const Projects = () => {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
@@ -87,10 +104,21 @@ const Projects = () => {
     if (project?.gallery && Array.isArray(project.gallery) && project.gallery.length > 0) {
       return project.gallery
     }
-    // Fallback to hardcoded galleries by title
+
+    // Fallback to hardcoded galleries by title (exact match first)
     if (project?.title && projectGalleries[project.title]) {
       return projectGalleries[project.title]
     }
+
+    // Try normalized match (handles encoding differences)
+    if (project?.title) {
+      const normalizedTitle = normalizeString(project.title)
+      const originalKey = normalizedGalleryKeys[normalizedTitle]
+      if (originalKey && projectGalleries[originalKey]) {
+        return projectGalleries[originalKey]
+      }
+    }
+
     // Last fallback: just the main image
     return project?.image_url ? [project.image_url] : []
   }
