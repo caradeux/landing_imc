@@ -682,6 +682,99 @@ app.delete('/api/admin/certifications/:id', async (req, res) => {
 });
 
 // =====================================================
+// ADD FEATURED COLUMN AND RESIDENTIAL SERVICES
+// =====================================================
+
+app.post('/api/admin/add-featured', async (req, res) => {
+  try {
+    console.log('🏠 Adding featured column and residential services...');
+
+    // Step 1: Add featured column if not exists
+    try {
+      await db.query('ALTER TABLE services ADD COLUMN featured boolean NOT NULL DEFAULT false;');
+      console.log('✅ Featured column added');
+    } catch (e) {
+      console.log('ℹ️ Featured column already exists or error:', e.message);
+    }
+
+    // Step 2: Add residential services
+    const residentialServices = [
+      {
+        title: 'Muebles de Cocina',
+        description: 'Cocinas a medida que transforman tu hogar. Diseño, fabricación e instalación profesional con materiales premium.',
+        icon: 'Home',
+        image_url: '/images/projects/remodelacion-cocinas-lujo/cocina-lujo-isla-central-marmol.jpg',
+        color: '#1e40af',
+        features: JSON.stringify(["Diseño 3D incluido","Materiales premium","Instalación profesional","Garantía extendida","Asesoría personalizada"]),
+        display_order: 7
+      },
+      {
+        title: 'Clósets a Medida',
+        description: 'Aprovecha cada centímetro de tu espacio. Clósets y walk-in closets diseñados para optimizar tu hogar.',
+        icon: 'Wrench',
+        image_url: '/images/projects/remodelacion-penthouse/cocina-gabinetes-blancos-encimera.jpg',
+        color: '#7c3aed',
+        features: JSON.stringify(["Medidas exactas","Máximo aprovechamiento","Variedad de acabados","Diseño personalizado","Instalación incluida"]),
+        display_order: 8
+      },
+      {
+        title: 'Barandas de Vidrio',
+        description: 'Vidrio templado certificado SEC. Seguridad y elegancia para balcones, escaleras y terrazas.',
+        icon: 'Shield',
+        image_url: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-01.jpg',
+        color: '#0891b2',
+        features: JSON.stringify(["Vidrio templado 10mm","Acero inoxidable","Certificación SEC","Instalación segura","Diseños modernos"]),
+        display_order: 9
+      },
+      {
+        title: 'Espejos y Cristales',
+        description: 'Espejos a medida que agrandan visualmente tus espacios. Instalación profesional de cristales decorativos.',
+        icon: 'Palette',
+        image_url: '/images/projects/easy-vina-del-mar/separacion-vidrio-retail-02.jpg',
+        color: '#059669',
+        features: JSON.stringify(["Corte a medida","Instalación segura","Diseños modernos","Espejos decorativos","Cristales especiales"]),
+        display_order: 10
+      }
+    ];
+
+    let added = 0;
+    for (const service of residentialServices) {
+      try {
+        // Check if exists
+        const existing = await db.query('SELECT id FROM services WHERE title = $1', [service.title]);
+        if (existing.rows.length === 0) {
+          await db.query(
+            `INSERT INTO services (title, description, icon, image_url, color, features, display_order, featured, active)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, true, true)`,
+            [service.title, service.description, service.icon, service.image_url, service.color, service.features, service.display_order]
+          );
+          added++;
+          console.log(`  ✅ Added: ${service.title}`);
+        } else {
+          // Update to mark as featured
+          await db.query('UPDATE services SET featured = true WHERE title = $1', [service.title]);
+          console.log(`  📝 Updated: ${service.title}`);
+        }
+      } catch (e) {
+        console.log(`  ❌ Error with ${service.title}:`, e.message);
+      }
+    }
+
+    // Get all services
+    const allServices = await db.query('SELECT title, featured FROM services ORDER BY display_order');
+
+    res.json({
+      success: true,
+      message: `Added ${added} new services`,
+      services: allServices.rows
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// =====================================================
 // DATABASE MIGRATION ENDPOINT
 // =====================================================
 
