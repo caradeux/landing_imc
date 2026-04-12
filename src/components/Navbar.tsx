@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Phone, Building2 } from 'lucide-react';
+import { Menu, X, Phone, Building2, LogIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
@@ -57,6 +57,15 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <Link
+                        href="https://imcscotizador.cl/login"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-2 font-bold text-sm uppercase tracking-widest transition-all hover:text-blue-400 opacity-70 hover:opacity-100 ${scrolled ? 'text-white' : 'text-white'}`}
+                    >
+                        <LogIn className="w-4 h-4" />
+                        Acceso
+                    </Link>
+                    <Link
                         href="#contacto"
                         className="bg-blue-600 hover:bg-white hover:text-blue-600 text-white px-8 py-3 rounded-xl font-black transition-all shadow-xl flex items-center gap-2 text-sm uppercase tracking-tighter"
                     >
@@ -95,6 +104,16 @@ const Navbar = () => {
                                     {link.name}
                                 </Link>
                             ))}
+                            <Link
+                                href="https://imcscotizador.cl/login"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setIsOpen(false)}
+                                className="text-white font-black text-xl flex items-center gap-4 uppercase tracking-tight opacity-70"
+                            >
+                                <span className="text-blue-500"><LogIn className="w-6 h-6" /></span>
+                                Acceso Interno
+                            </Link>                            
                             <Link
                                 href="#contacto"
                                 className="bg-blue-600 text-white text-center py-5 rounded-2xl font-black text-lg shadow-lg"
