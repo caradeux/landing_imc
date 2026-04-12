@@ -1,5 +1,5 @@
 import React from 'react'
-import { Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react'
+import { Phone, Mail, Clock, Instagram, Facebook, LogIn } from 'lucide-react'
 
 const TopBar = () => {
   return (
@@ -33,6 +33,27 @@ const TopBar = () => {
           </div>
           
           <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+            <a
+              href="https://imcscotizador.cl/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontSize: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                textDecoration: 'none',
+                borderRight: '1px solid rgba(255, 255, 255, 0.3)',
+                paddingRight: '15px',
+                transition: 'color 0.3s ease'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'white'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)'}
+            >
+              <LogIn size={13} />
+              Acceso Interno
+            </a>
             <span style={{ fontSize: '13px', opacity: 0.9 }}>Síguenos:</span>
             <a 
               href="https://instagram.com/imcservicioschile" 
